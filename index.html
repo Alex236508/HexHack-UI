@@ -2,91 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Admin GUI Panel</title>
-  <style>
-    body {
-      margin: 0;
-      background: #121212;
-      color: #00ff00;
-      font-family: Consolas, monospace;
-    }
-    #tab-bar {
-      display: flex;
-      justify-content: flex-start;
-      background: #1b1b1b;
-      border-bottom: 2px solid #00ff00;
-      padding: 8px;
-    }
-    .tab {
-      margin-right: 8px;
-      padding: 6px 12px;
-      cursor: pointer;
-      border: 1px solid #00ff00;
-      border-bottom: none;
-      border-radius: 4px 4px 0 0;
-      background: #0f0f0f;
-    }
-    .tab.active {
-      background: #1b1b1b;
-      font-weight: bold;
-    }
-    .panel {
-      display: none;
-      padding: 12px;
-      background: #1b1b1b;
-      border: 2px solid #00ff00;
-      margin: 10px;
-      border-radius: 8px;
-    }
-    .panel.active {
-      display: block;
-    }
-    button {
-      display: block;
-      width: 100%;
-      margin: 4px 0;
-      padding: 6px;
-      background: #0f0f0f;
-      color: #00ff00;
-      border: 1px solid #00ff00;
-      cursor: pointer;
-    }
-  </style>
+  <title>Hack Panel</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <div id="tab-bar">
-    <div class="tab active" data-target="panel-visual">Visual Effects</div>
-    <div class="tab" data-target="panel-utils">Utilities</div>
-  </div>
+  <!-- Containers for the two panels -->
+  <div id="panel-visual">Loading Visual Panel...</div>
+  <div id="panel-utils">Loading Utilities Panel...</div>
 
-  <div id="panel-visual" class="panel active">
-    <!-- Visual Effects buttons loaded by visual.js -->
-  </div>
-
-  <div id="panel-utils" class="panel">
-    <!-- Utilities buttons loaded by utilities.js -->
-  </div>
-
-  <!-- Load JS files -->
-  <script src="visual.js"></script>
+  <!-- Scripts -->
   <script src="utilities.js"></script>
-
-  <script>
-    // Tab switching
-    const tabs = document.querySelectorAll('.tab');
-    const panels = document.querySelectorAll('.panel');
-    tabs.forEach(tab => {
-      tab.addEventListener('click', ()=>{
-        // remove active
-        tabs.forEach(t=>t.classList.remove('active'));
-        panels.forEach(p=>p.classList.remove('active'));
-        // add active
-        tab.classList.add('active');
-        document.getElementById(tab.dataset.target).classList.add('active');
-      });
-    });
-  </script>
+  <script src="visuals.js"></script>
 
 </body>
 </html>
