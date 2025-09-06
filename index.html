@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hacker GUI Panel</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="gui-container">
+  <!-- Tabs for switching GUIs (optional for future utilities GUI) -->
+  <button id="visual-tab">Visual Effects</button>
+
+  <!-- Visual Effects GUI -->
+  <div id="visual-gui">
+    <h2>Visual Effects</h2>
+  </div>
+</div>
+
+<script src="visual.js"></script>
+<script>
+  // Optional: hide/show GUI tab logic
+  const visualTab = document.getElementById('visual-tab');
+  const visualGUI = document.getElementById('visual-gui');
+
+  visualTab.addEventListener('click', () => {
+    visualGUI.style.display = visualGUI.style.display === 'none' ? 'block' : 'none';
+  });
+</script>
+
+</body>
+</html>
