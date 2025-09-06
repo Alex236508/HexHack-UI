@@ -2,30 +2,43 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Hacker GUI Panel</title>
+  <title>Hacker Admin Panel</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div id="gui-container">
-  <!-- Tabs for switching GUIs (optional for future utilities GUI) -->
-  <button id="visual-tab">Visual Effects</button>
+  <!-- Tabs to switch between GUIs -->
+  <button id="tab-visual">Visual Effects</button>
+  <button id="tab-utils">Utilities</button>
 
-  <!-- Visual Effects GUI -->
-  <div id="visual-gui">
-    <h2>Visual Effects</h2>
-  </div>
+  <!-- Visual Effects Panel -->
+  <div id="panel-visual" style="display:none;"></div>
+
+  <!-- Utilities Panel -->
+  <div id="panel-utils" style="display:none;"></div>
 </div>
 
 <script src="visual.js"></script>
+<script src="utilities.js"></script>
 <script>
-  // Optional: hide/show GUI tab logic
-  const visualTab = document.getElementById('visual-tab');
-  const visualGUI = document.getElementById('visual-gui');
+  // Tab switching
+  const tabVisual = document.getElementById('tab-visual');
+  const tabUtils = document.getElementById('tab-utils');
+  const panelVisual = document.getElementById('panel-visual');
+  const panelUtils = document.getElementById('panel-utils');
 
-  visualTab.addEventListener('click', () => {
-    visualGUI.style.display = visualGUI.style.display === 'none' ? 'block' : 'none';
+  tabVisual.addEventListener('click', () => {
+    panelVisual.style.display = 'block';
+    panelUtils.style.display = 'none';
   });
+  tabUtils.addEventListener('click', () => {
+    panelUtils.style.display = 'block';
+    panelVisual.style.display = 'none';
+  });
+
+  // Optional: show Visual Effects by default
+  panelVisual.style.display = 'block';
 </script>
 
 </body>
