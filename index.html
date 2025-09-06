@@ -2,91 +2,91 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Hacker Admin Panel</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Admin GUI Panel</title>
+  <style>
+    body {
+      margin: 0;
+      background: #121212;
+      color: #00ff00;
+      font-family: Consolas, monospace;
+    }
+    #tab-bar {
+      display: flex;
+      justify-content: flex-start;
+      background: #1b1b1b;
+      border-bottom: 2px solid #00ff00;
+      padding: 8px;
+    }
+    .tab {
+      margin-right: 8px;
+      padding: 6px 12px;
+      cursor: pointer;
+      border: 1px solid #00ff00;
+      border-bottom: none;
+      border-radius: 4px 4px 0 0;
+      background: #0f0f0f;
+    }
+    .tab.active {
+      background: #1b1b1b;
+      font-weight: bold;
+    }
+    .panel {
+      display: none;
+      padding: 12px;
+      background: #1b1b1b;
+      border: 2px solid #00ff00;
+      margin: 10px;
+      border-radius: 8px;
+    }
+    .panel.active {
+      display: block;
+    }
+    button {
+      display: block;
+      width: 100%;
+      margin: 4px 0;
+      padding: 6px;
+      background: #0f0f0f;
+      color: #00ff00;
+      border: 1px solid #00ff00;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
 
-<div id="gui-container">
-  <!-- Tabs -->
-  <button id="tab-visual">Visual Effects</button>
-  <button id="tab-utils">Utilities</button>
+  <div id="tab-bar">
+    <div class="tab active" data-target="panel-visual">Visual Effects</div>
+    <div class="tab" data-target="panel-utils">Utilities</div>
+  </div>
 
-  <!-- Panels -->
-  <div id="panel-visual" class="panel"></div>
-  <div id="panel-utils" class="panel"></div>
-</div>
+  <div id="panel-visual" class="panel active">
+    <!-- Visual Effects buttons loaded by visual.js -->
+  </div>
 
-<!-- Boot-up Matrix Animation -->
-<div id="boot-overlay">
-  <canvas id="boot-canvas"></canvas>
-  <div id="boot-loading">Loading 0%</div>
-  <div id="boot-welcome" style="display:none;">Welcome, hacker</div>
-</div>
+  <div id="panel-utils" class="panel">
+    <!-- Utilities buttons loaded by utilities.js -->
+  </div>
 
-<script src="visual.js"></script>
-<script src="utilities.js"></script>
-<script>
-  // Tab switching
-  const tabVisual = document.getElementById('tab-visual');
-  const tabUtils = document.getElementById('tab-utils');
-  const panelVisual = document.getElementById('panel-visual');
-  const panelUtils = document.getElementById('panel-utils');
+  <!-- Load JS files -->
+  <script src="visual.js"></script>
+  <script src="utilities.js"></script>
 
-  tabVisual.addEventListener('click', () => {
-    panelVisual.style.display = 'block';
-    panelUtils.style.display = 'none';
-  });
-  tabUtils.addEventListener('click', () => {
-    panelUtils.style.display = 'block';
-    panelVisual.style.display = 'none';
-  });
-
-  // Show visual panel by default
-  panelVisual.style.display = 'block';
-
-  // Boot-up animation
-  const overlay = document.getElementById('boot-overlay');
-  const canvas = document.getElementById('boot-canvas');
-  const ctx = canvas.getContext('2d');
-  const loadingText = document.getElementById('boot-loading');
-  const welcomeText = document.getElementById('boot-welcome');
-
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-  const chars = '1010';
-  const cols = Math.floor(canvas.width / 10);
-  const drops = Array.from({length: cols}, () => Math.floor(Math.random() * canvas.height));
-
-  const matrixInterval = setInterval(() => {
-    ctx.fillStyle = 'rgba(0,0,0,0.05)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#0F0';
-    ctx.font = '10px monospace';
-    drops.forEach((y, i) => {
-      ctx.fillText(chars[Math.floor(Math.random()*chars.length)], i*10, y*10);
-      drops[i] = y*10 > canvas.height && Math.random() > 0.975 ? 0 : y+1;
+  <script>
+    // Tab switching
+    const tabs = document.querySelectorAll('.tab');
+    const panels = document.querySelectorAll('.panel');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', ()=>{
+        // remove active
+        tabs.forEach(t=>t.classList.remove('active'));
+        panels.forEach(p=>p.classList.remove('active'));
+        // add active
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.target).classList.add('active');
+      });
     });
-  }, 33);
+  </script>
 
-  let load = 0;
-  const loadInterval = setInterval(() => {
-    load++;
-    loadingText.innerText = `Loading ${load}%`;
-    if(load >= 100){
-      clearInterval(loadInterval);
-      loadingText.style.display = 'none';
-      welcomeText.style.display = 'block';
-      setTimeout(() => {
-        clearInterval(matrixInterval);
-        overlay.style.display = 'none';
-      }, 2000);
-    }
-  }, 30);
-
-</script>
-<script src="utilities.js"></script>
-<script src="visual.js"></script>
 </body>
 </html>
