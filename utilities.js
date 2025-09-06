@@ -1,10 +1,41 @@
-const panelUtils = document.getElementById('panel-utils');
-window.utilsGUIState = window.utilsGUIState || {};
+// Create panel if it doesn't exist
+let panelUtils = document.getElementById('panel-utils');
+if(!panelUtils){
+    panelUtils = document.createElement('div');
+    panelUtils.id = 'panel-utils';
+    panelUtils.style.cssText = `
+        position:fixed;
+        top:50px;
+        right:50px;
+        width:300px;
+        background:#1e1e1e;
+        color:#d4d4d4;
+        font-family:Consolas,monospace;
+        padding:10px;
+        border:2px solid #00FF00;
+        z-index:999999;
+        border-radius:8px;
+        box-shadow:0 0 10px rgba(0,0,0,0.5);
+        pointer-events:auto;
+    `;
+    document.body.appendChild(panelUtils);
+}
 
 // Helper to create buttons
 function addBtn(container, name, action){
   const btn = document.createElement('button');
   btn.textContent = name + ' [Stopped]';
+  btn.style.cssText = `
+    display:block;
+    width:100%;
+    margin:2px 0;
+    padding:6px;
+    background:transparent;
+    color:#00FF00;
+    border:2px solid #00FF00;
+    cursor:pointer;
+    text-align:center;
+  `;
   let running = false;
   btn.onclick = function() {
     running = !running;
@@ -17,7 +48,8 @@ function addBtn(container, name, action){
 // Developer Console (Eruda)
 addBtn(panelUtils, 'Developer Console', on => {
   if(on){
-    if(!window.utilsGUIState.erudaLoaded){
+    if(!window.utilsGUIState?.erudaLoaded){
+      window.utilsGUIState = window.utilsGUIState || {};
       let s = document.createElement('script');
       s.src = 'https://cdn.jsdelivr.net/npm/eruda@2.5.0/eruda.min.js';
       s.onload = function(){ eruda.init(); eruda.theme='Dark'; window.utilsGUIState.erudaLoaded=true; };
@@ -28,27 +60,24 @@ addBtn(panelUtils, 'Developer Console', on => {
 
 // Page Dark Theme
 addBtn(panelUtils, 'Page Dark Theme', on => {
+  window.utilsGUIState = window.utilsGUIState || {};
   const all = document.querySelectorAll('body *:not(#panel-utils):not(#panel-utils *)');
-  if(on){
-    if(!window.utilsGUIState.pageDark){
-      all.forEach(el=>{
-        if(el.style){
-          el.style.fontFamily="Comic Sans MS";
-          el.style.filter="invert(1)";
-        }
-      });
-      window.utilsGUIState.pageDark=true;
-    }
-  } else {
-    if(window.utilsGUIState.pageDark){
-      all.forEach(el=>{
-        if(el.style){
-          el.style.fontFamily="";
-          el.style.filter="";
-        }
-      });
-      window.utilsGUIState.pageDark=false;
-    }
+  if(on && !window.utilsGUIState.pageDark){
+    all.forEach(el=>{
+      if(el.style){
+        el.style.fontFamily="Comic Sans MS";
+        el.style.filter="invert(1)";
+      }
+    });
+    window.utilsGUIState.pageDark=true;
+  } else if(!on && window.utilsGUIState.pageDark){
+    all.forEach(el=>{
+      if(el.style){
+        el.style.fontFamily="";
+        el.style.filter="";
+      }
+    });
+    window.utilsGUIState.pageDark=false;
   }
 });
 
@@ -68,16 +97,15 @@ addBtn(panelUtils,'Calculator', on => {
 
 // Web X-Ray
 addBtn(panelUtils,'Web X-Ray', on => {
-  if(on){
-    if(!window.utilsGUIState.webXRayLoaded){
-      let s = document.createElement('script');
-      s.src='https://x-ray-goggles.mouse.org/webxray.js';
-      s.className='webxray';
-      s.setAttribute('data-lang','en-US');
-      s.setAttribute('data-baseuri','https://x-ray-goggles.mouse.org');
-      document.body.appendChild(s);
-      window.utilsGUIState.webXRayLoaded=true;
-    }
+  window.utilsGUIState = window.utilsGUIState || {};
+  if(on && !window.utilsGUIState.webXRayLoaded){
+    let s = document.createElement('script');
+    s.src='https://x-ray-goggles.mouse.org/webxray.js';
+    s.className='webxray';
+    s.setAttribute('data-lang','en-US');
+    s.setAttribute('data-baseuri','https://x-ray-goggles.mouse.org');
+    document.body.appendChild(s);
+    window.utilsGUIState.webXRayLoaded=true;
   }
 });
 
@@ -90,6 +118,7 @@ addBtn(panelUtils,'DNS Lookup', on => {
 
 // FPS Counter
 addBtn(panelUtils,'FPS Counter', on => {
+  window.utilsGUIState = window.utilsGUIState || {};
   if(on && !window.utilsGUIState.stats){
     let s = document.createElement('script');
     s.src='https://mrdoob.github.io/stats.js/build/stats.min.js';
@@ -140,16 +169,22 @@ addBtn(panelUtils,'Password Looker', on => {
 
 // Porta Proxy
 addBtn(panelUtils,'Porta Proxy', on => {
+  window.utilsGUIState = window.utilsGUIState || {};
   if(on && !window.utilsGUIState.portaFrame){
     const frame = document.createElement('iframe');
     frame.src = prompt("Enter URL (include https://)");
-    const stl = frame.style;
-    stl.position="fixed"; stl.left=stl.right=stl.top=stl.bottom=0; stl.margin=stl.border="0"; stl.width=stl.height="100%"; stl.zIndex="9999"; stl.backgroundColor="#FFFFFF";
+    Object.assign(frame.style,{
+      position:"fixed", left:0, top:0, right:0, bottom:0,
+      width:"100%", height:"100%", border:0, margin:0, zIndex:9999, backgroundColor:"#FFF"
+    });
     document.body.appendChild(frame);
 
     const btnT=document.createElement("button");
     btnT.innerHTML="Toggle";
-    btnT.style="position:fixed;bottom:0;right:0;margin:20px;z-index:99999;border:none;font-size:14px;padding:3px;";
+    Object.assign(btnT.style,{
+      position:"fixed", bottom:"20px", right:"20px",
+      zIndex:99999, border:"none", fontSize:"14px", padding:"3px"
+    });
     btnT.addEventListener("click",()=>{frame.style.display=(frame.style.display==="none")?"block":"none";});
     document.body.appendChild(btnT);
 
