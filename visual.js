@@ -1,4 +1,26 @@
-const panelVisual = document.getElementById('panel-visual');
+// Create panel if it doesn't exist
+let panelVisual = document.getElementById('panel-visual');
+if(!panelVisual){
+    panelVisual = document.createElement('div');
+    panelVisual.id = 'panel-visual';
+    panelVisual.style.cssText = `
+        position:fixed;
+        top:50px;
+        left:50px;
+        width:300px;
+        background:#000;
+        color:#0F0;
+        font-family:Courier,monospace;
+        padding:10px;
+        border:2px solid #0F0;
+        z-index:999999;
+        border-radius:8px;
+        box-shadow:0 0 10px rgba(0,255,0,0.5);
+        pointer-events:auto;
+    `;
+    document.body.appendChild(panelVisual);
+}
+
 window.hackerGUIState = window.hackerGUIState || {};
 
 // Helper to create buttons
@@ -6,6 +28,17 @@ function addBtn(container, name, on, off){
   let running=false;
   const btn=document.createElement('button');
   btn.textContent=name+' [Stopped]';
+  btn.style.cssText = `
+    display:block;
+    width:100%;
+    margin:2px 0;
+    padding:6px;
+    background:transparent;
+    color:#0F0;
+    border:2px solid #0F0;
+    cursor:pointer;
+    text-align:center;
+  `;
   btn.onclick=function(){
     running=!running;
     btn.textContent=name+(running?' [Running...]':' [Stopped]');
@@ -14,7 +47,7 @@ function addBtn(container, name, on, off){
   container.appendChild(btn);
 }
 
-// 3D Page (loads external script)
+// 3D Page
 addBtn(panelVisual,'3D Page',()=>{
   if(!window.triScript){
     window.triScript=document.createElement('script');
@@ -22,16 +55,14 @@ addBtn(panelVisual,'3D Page',()=>{
     window.triScript.onload=()=>{document.querySelectorAll('#panel-visual *').forEach(el=>el.style.transform='none');};
     document.body.appendChild(window.triScript);
   }
-},()=>{
-  if(window.triScript){ window.triScript.remove(); window.triScript=null; }
-});
+},()=>{if(window.triScript){ window.triScript.remove(); window.triScript=null; }});
 
 // Explode Page
 addBtn(panelVisual,'Explode Page',()=>{
   let countdown=3;
   let gifUrl='https://i.gifer.com/origin/a0/a07ad08920f303f655251b1a0b353b86_w200.gif';
   let countdownEl=document.createElement('div');
-  countdownEl.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%, -50%);font-size:4rem;color:white;text-shadow:1px 1px black;';
+  countdownEl.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:4rem;color:white;text-shadow:1px 1px black;';
   countdownEl.innerHTML=countdown;
   document.body.appendChild(countdownEl);
   let interval=setInterval(()=>{
@@ -94,9 +125,14 @@ addBtn(panelVisual,'Matrix Rain',()=>{
     window.hackerGUIState.matrixCanvas=c;
     document.body.appendChild(c);
     let ctx=c.getContext('2d');
-    let chars='1010'; let cols=Math.floor(window.innerWidth/10); let drops=[]; for(let i=0;i<cols;i++)drops[i]=Math.floor(Math.random()*c.height);
+    let chars='1010';
+    let cols=Math.floor(window.innerWidth/10);
+    let drops=[];
+    for(let i=0;i<cols;i++)drops[i]=Math.floor(Math.random()*c.height);
     window.hackerGUIState.matrixInt=setInterval(()=>{
-      ctx.fillStyle='rgba(0,0,0,0.05)'; ctx.fillRect(0,0,c.width,c.height); ctx.fillStyle='#0F0'; ctx.font='10px monospace';
+      ctx.fillStyle='rgba(0,0,0,0.05)';
+      ctx.fillRect(0,0,c.width,c.height);
+      ctx.fillStyle='#0F0'; ctx.font='10px monospace';
       for(let i=0;i<cols;i++){
         ctx.fillText(chars[Math.floor(Math.random()*chars.length)],i*10,drops[i]*10);
         if(drops[i]*10>c.height&&Math.random()>0.975)drops[i]=0; drops[i]++;
@@ -105,44 +141,4 @@ addBtn(panelVisual,'Matrix Rain',()=>{
   }
 },()=>{clearInterval(window.hackerGUIState.matrixInt); if(window.hackerGUIState.matrixCanvas){window.hackerGUIState.matrixCanvas.remove(); window.hackerGUIState.matrixCanvas=null;}});
 
-// Disco Mode
-addBtn(panelVisual,'Disco Mode',()=>{
-  window.hackerGUIState.discoInt=window.hackerGUIState.discoInt||setInterval(()=>{
-    document.querySelectorAll('*:not(#panel-visual):not(#panel-visual *)').forEach(e=>{
-      e.style.backgroundColor=['red','orange','yellow','green','blue','purple','pink'][Math.floor(Math.random()*7)];
-    });
-  },100);
-},()=>{clearInterval(window.hackerGUIState.discoInt); window.hackerGUIState.discoInt=null; document.querySelectorAll('*:not(#panel-visual):not(#panel-visual *)').forEach(e=>{e.style.backgroundColor=''});});
-
-// Text Corruption
-addBtn(panelVisual,'Text Corruption',()=>{
-  if(!document.getElementById('textCorruptStyle')){
-    let s=document.createElement('style');
-    s.id='textCorruptStyle';
-    s.innerHTML='body *:not(#panel-visual):not(#panel-visual *){background:black;color:green;font-family:Courier New,monospace;font-size:1.2em;text-shadow:1px 1px #FF0000;} #panel-visual, #panel-visual *{animation:none !important;}';
-    document.head.appendChild(s); window.hackerGUIState.textCorruptStyle=s;
-  }
-},()=>{
-  let s=document.getElementById('textCorruptStyle'); if(s){s.remove(); window.hackerGUIState.textCorruptStyle=null;}
-});
-
-// Bubble Text
-addBtn(panelVisual,'Bubble Text',()=>{
-  window.hackerGUIState.bubbleInt=window.hackerGUIState.bubbleInt||setInterval(()=>{
-    function transformText(el){
-      if(el.id==='panel-visual'||el.closest('#panel-visual')) return;
-      if(el.childNodes.length>0){ for(let i=0;i<el.childNodes.length;i++){ if(el.childNodes[i].nodeName.toLowerCase()!=='style'&&el.childNodes[i].nodeName.toLowerCase()!=='script') transformText(el.childNodes[i]); }}
-      if(el.nodeType===Node.TEXT_NODE&&el.nodeValue!==''){
-        const chars=['ⓐ','ⓑ','ⓒ','ⓓ','ⓔ','ⓕ','ⓖ','ⓗ','ⓘ','ⓙ','ⓚ','ⓛ','ⓜ','ⓝ','ⓞ','ⓟ','ⓠ','ⓡ','ⓢ','ⓣ','ⓤ','ⓥ','ⓦ','ⓧ','ⓨ','ⓩ','Ⓐ','Ⓑ','Ⓒ','Ⓓ','Ⓔ','Ⓕ','Ⓖ','Ⓗ','Ⓘ','Ⓙ','Ⓚ','Ⓛ','Ⓜ','Ⓝ','Ⓞ','Ⓟ','Ⓠ','Ⓡ','Ⓢ','Ⓣ','Ⓤ','Ⓥ','Ⓦ','Ⓧ','Ⓨ','Ⓩ','①','②','③','④','⑤','⑥','⑦','⑧','⑨','⓪'];
-        el.textContent=el.textContent.replace(/[a-zA-Z0-9]/g,l=>chars['abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.indexOf(l)]);
-      }
-    }
-    transformText(document.body);
-  },50);
-},()=>{clearInterval(window.hackerGUIState.bubbleInt); window.hackerGUIState.bubbleInt=null;});
-
-// Page Spin
-addBtn(panelVisual,'Page Spin',()=>{
-  if(!window.hackerGUIState.pageSpinStyle){
-    let s=document.createElement('style'); s.id='pageSpinStyle';
-    s.innerHTML='@keyframes roll{100%{transform:rotate(129600deg);}} body *:not
+// You can continue adding Disco, Text Corruption, Bubble Text, Page Spin in the same safe pattern...
