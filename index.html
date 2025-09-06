@@ -8,15 +8,20 @@
 <body>
 
 <div id="gui-container">
-  <!-- Tabs to switch between GUIs -->
+  <!-- Tabs -->
   <button id="tab-visual">Visual Effects</button>
   <button id="tab-utils">Utilities</button>
 
-  <!-- Visual Effects Panel -->
-  <div id="panel-visual" style="display:none;"></div>
+  <!-- Panels -->
+  <div id="panel-visual" class="panel"></div>
+  <div id="panel-utils" class="panel"></div>
+</div>
 
-  <!-- Utilities Panel -->
-  <div id="panel-utils" style="display:none;"></div>
+<!-- Boot-up Matrix Animation -->
+<div id="boot-overlay">
+  <canvas id="boot-canvas"></canvas>
+  <div id="boot-loading">Loading 0%</div>
+  <div id="boot-welcome" style="display:none;">Welcome, hacker</div>
 </div>
 
 <script src="visual.js"></script>
@@ -37,8 +42,49 @@
     panelVisual.style.display = 'none';
   });
 
-  // Optional: show Visual Effects by default
+  // Show visual panel by default
   panelVisual.style.display = 'block';
+
+  // Boot-up animation
+  const overlay = document.getElementById('boot-overlay');
+  const canvas = document.getElementById('boot-canvas');
+  const ctx = canvas.getContext('2d');
+  const loadingText = document.getElementById('boot-loading');
+  const welcomeText = document.getElementById('boot-welcome');
+
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const chars = '1010';
+  const cols = Math.floor(canvas.width / 10);
+  const drops = Array.from({length: cols}, () => Math.floor(Math.random() * canvas.height));
+
+  const matrixInterval = setInterval(() => {
+    ctx.fillStyle = 'rgba(0,0,0,0.05)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#0F0';
+    ctx.font = '10px monospace';
+    drops.forEach((y, i) => {
+      ctx.fillText(chars[Math.floor(Math.random()*chars.length)], i*10, y*10);
+      drops[i] = y*10 > canvas.height && Math.random() > 0.975 ? 0 : y+1;
+    });
+  }, 33);
+
+  let load = 0;
+  const loadInterval = setInterval(() => {
+    load++;
+    loadingText.innerText = `Loading ${load}%`;
+    if(load >= 100){
+      clearInterval(loadInterval);
+      loadingText.style.display = 'none';
+      welcomeText.style.display = 'block';
+      setTimeout(() => {
+        clearInterval(matrixInterval);
+        overlay.style.display = 'none';
+      }, 2000);
+    }
+  }, 30);
+
 </script>
 
 </body>
