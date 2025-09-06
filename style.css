@@ -1,60 +1,76 @@
+/* General body styles */
 body {
-  background:#111;
-  color:#0f0;
-  font-family:Consolas, monospace;
-  margin:0;
-  padding:0;
+  margin: 0;
+  font-family: monospace;
+  background-color: #111;
+  color: #0F0;
 }
 
-#gui-container {
-  position:fixed;
-  top:50px;
-  right:50px;
-  width:320px;
-  z-index:999999;
+/* Visual panel */
+#panel-visual {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 300px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background-color: #000;
+  color: #0F0;
+  padding: 10px;
+  border: 2px solid #0F0;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,255,0,0.7);
+  z-index: 999999;
 }
 
-button {
-  font-family:Consolas, monospace;
-  margin:2px 0;
-  padding:6px;
-  background:#0f0f0f;
-  color:#00ff00;
-  border:1px solid #00ff00;
-  cursor:pointer;
-  width:100%;
+/* Utilities panel */
+#panel-utils {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 300px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background-color: #000;
+  color: #0F0;
+  padding: 10px;
+  border: 2px solid #0F0;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,255,0,0.7);
+  z-index: 999999;
 }
 
-.panel {
-  margin-top:8px;
+/* Buttons for both panels */
+#panel-visual button,
+#panel-utils button {
+  display: block;
+  width: 100%;
+  margin: 4px 0;
+  padding: 6px;
+  background: transparent;
+  color: #0F0;
+  border: 2px solid #0F0;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 0.9rem;
+  transition: background 0.2s, color 0.2s;
 }
 
-#boot-overlay {
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:black;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  z-index:1000000;
-  pointer-events:none;
-  color:#00ff00;
+#panel-visual button:hover,
+#panel-utils button:hover {
+  background: #0F0;
+  color: #000;
 }
 
-#boot-loading {
-  font-size:20px;
-  margin-bottom:10px;
-  text-shadow:0 0 5px #0f0;
-  z-index:1000001;
+/* Scrollbars for overflow */
+#panel-visual::-webkit-scrollbar,
+#panel-utils::-webkit-scrollbar {
+  width: 8px;
 }
 
-#boot-welcome {
-  font-size:24px;
-  font-weight:bold;
-  text-shadow:0 0 10px #0f0;
-  z-index:1000001;
+#panel-visual::-webkit-scrollbar-thumb,
+#panel-utils::-webkit-scrollbar-thumb {
+  background-color: #0F0;
+  border-radius: 4px;
 }
