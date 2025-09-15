@@ -573,6 +573,7 @@ function addMessage(user, text, timestamp, currentUser, file, fileType) {
     msgDiv.appendChild(textSpan);
 }
 
+
     messagesDiv.appendChild(msgDiv);
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
