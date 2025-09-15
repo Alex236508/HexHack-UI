@@ -152,40 +152,87 @@ makeDraggable(vfx, vfxLock);
         if(off) activeUtilities[name] = { on, off };
     }
 
-    // ---------- Global Chat (Firebase) ----------
+    addBtn(util, 'Embedded Browser', () => {
+    // If the browser already exists, just toggle visibility
+    const existingBrowser = document.getElementById('embeddedBrowserContainer');
+    if (existingBrowser) {
+        if (existingBrowser.style.display === 'none') {
+            existingBrowser.style.display = 'block';
+        } else {
+            existingBrowser.style.display = 'none';
+        }
+        return;
+    }
+
+    // Otherwise, load it for the first time
+    fetch('https://raw.githubusercontent.com/Alex236508/EmbeddedBrowser/refs/heads/main/Browser.js')
+        .then(r => r.text())
+        .then(t => {
+            eval(t);
+
+            // Optional: mark it as loaded
+            window.browserLoaded = true;
+
+            // Make the browser immune to all VFX
+            if (!window.immuneChats) window.immuneChats = [];
+            const browserEl = document.getElementById('embeddedBrowserContainer');
+            if (browserEl && !window.immuneChats.includes(browserEl)) {
+                window.immuneChats.push(browserEl);
+            }
+        })
+        .catch(err => {
+            console.error('Failed to load Embedded Browser:', err);
+        });
+});
+
+  
+// ---------- Global Chat (Firebase) ----------
 addBtn(util, 'Global Chat', () => {
     if (window.chatActive) return;
     window.chatActive = true;
 
     const loadFirebase = () => {
-        if (!window.firebase) {
-            const s1 = document.createElement('script');
-            s1.src = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js';
-            s1.onload = () => {
-                const s2 = document.createElement('script');
-                s2.src = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js';
-                s2.onload = initChat;
-                document.body.appendChild(s2);
+    if (!window.firebase) {
+        const s1 = document.createElement('script');
+        s1.src = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js';
+        s1.onload = () => {
+            const s2 = document.createElement('script');
+            s2.src = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js';
+            s2.onload = () => {
+                const s3 = document.createElement('script');
+                s3.src = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js';
+                s3.onload = initChat;
+                document.body.appendChild(s3);
             };
-            document.body.appendChild(s1);
-        } else initChat();
-    };
+            document.body.appendChild(s2); // <--- THIS WAS MISSING
+        };
+        document.body.appendChild(s1);
+    } else {
+        initChat();
+    }
+};
+
 
     loadFirebase();
 
     async function getUsername(db) {
-        let name;
-        while (!name) {
-            name = prompt("Enter your username for chat:") || "Anonymous";
-            const snapshot = await db.ref('users/' + name).get();
-            if (snapshot.exists()) {
-                alert("Username already taken! Pick another one.");
-                name = null;
-            }
+    let name;
+    while (!name) {
+        name = prompt("Enter your username for chat:");
+        if (!name) return null; // user pressed Cancel or left blank
+        const snapshot = await db.ref('users').get(); // get all users
+        const existingUsers = snapshot.exists() ? Object.keys(snapshot.val()) : [];
+        // Case-insensitive check
+        if (existingUsers.some(u => u.toLowerCase() === name.toLowerCase())) {
+            alert("Username already taken! Pick another one.");
+            name = null;
+            continue;
         }
+        // Save the username as typed
         db.ref('users/' + name).set(true);
-        return name;
     }
+    return name;
+}
 
     async function initChat() {
         const firebaseConfig = {
@@ -193,15 +240,22 @@ addBtn(util, 'Global Chat', () => {
             authDomain: "hacker-gui-global-chat.firebaseapp.com",
             databaseURL: "https://hacker-gui-global-chat-default-rtdb.firebaseio.com",
             projectId: "hacker-gui-global-chat",
-            storageBucket: "hacker-gui-global-chat.firebasestorage.app",
+            storageBucket: "hacker-gui-global-chat.appspot.com",
             messagingSenderId: "410978781234",
             appId: "1:410978781234:web:ee08f15ee9be48970c542b",
             measurementId: "G-SB0B1FLF29"
         };
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
+        const storage = firebase.storage();
+
 
         const username = await getUsername(db);
+if (!username) {
+    window.chatActive = false; // stop chat initialization
+    return; // exit, no chat created
+}
+
 
         // ---------- Chat Window ----------
         const chat = document.createElement('div');
@@ -272,12 +326,73 @@ if(chatBox){
         messagesDiv.style.cssText = 'flex:1; overflow-y:auto; padding:5px;';
         chat.appendChild(messagesDiv);
 
-        // ---------- Input ----------
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.placeholder = 'Type a message...';
-        input.style.cssText = 'border:none;outline:none;padding:5px;background:black;color:#0f0;';
-        chat.appendChild(input);
+        // ---------- Input + Upload ----------
+const inputWrapper = document.createElement('div');
+inputWrapper.style.cssText = 'display:flex;align-items:center;background:black;';
+
+const input = document.createElement('input');
+input.type = 'text';
+input.placeholder = 'Type a message...';
+input.style.cssText = 'flex:1;border:none;outline:none;padding:5px;background:black;color:#0f0;';
+
+const uploadBtn = document.createElement('button');
+uploadBtn.textContent = '📎';
+uploadBtn.style.cssText = 'background:black;color:#0f0;border:none;cursor:pointer;font-size:16px;padding:5px;';
+
+const fileInput = document.createElement('input');
+fileInput.type = 'file';
+fileInput.accept = 'image/*,video/*,.gif';
+fileInput.style.display = 'none';
+
+uploadBtn.onclick = () => fileInput.click();
+
+inputWrapper.appendChild(input);
+inputWrapper.appendChild(uploadBtn);
+chat.appendChild(inputWrapper);
+chat.appendChild(fileInput);
+      // ------------------- Send text messages -------------------
+input.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && input.value.trim()) {
+        const msg = input.value.trim();
+        db.ref('messages').push({ 
+            user: username, 
+            text: msg, 
+            timestamp: Date.now()
+        });
+        input.value = '';
+    }
+});
+
+// ------------------- Handle file uploads -------------------
+fileInput.addEventListener('change', async () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    try {
+        const fileRef = storage.ref('uploads/' + Date.now() + "_" + file.name);
+        await fileRef.put(file);
+        const fileURL = await fileRef.getDownloadURL();
+
+        db.ref('messages').push({
+            user: username,
+            text: '',
+            file: fileURL,
+            fileType: file.type,
+            timestamp: Date.now()
+        });
+    } catch (err) {
+        console.error("Upload failed:", err);
+        alert("Failed to upload file. Try again.");
+    }
+
+    fileInput.value = ''; // reset input after upload
+});
+
+// ------------------- Listen for new messages -------------------
+db.ref('messages').on('child_added', snap => {
+    const msg = snap.val();
+    addMessage(msg.user, msg.text, msg.timestamp, username, msg.file, msg.fileType);
+});
 
         // ---------- Resizable ----------
 const resizeHandle = document.createElement('div');
@@ -346,38 +461,174 @@ function makeDraggable(g, lock, ignore = []) {
 makeDraggable(chat, { locked: false }, [resizeHandle]);
 
         // ---------- Firebase Messaging ----------
-        function addMessage(user, text) {
-            const msgDiv = document.createElement('div');
-            msgDiv.textContent = `${user}: ${text}`;
-            messagesDiv.appendChild(msgDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+function getUserColor(user, currentUser) {
+    if (user.toLowerCase() === currentUser.toLowerCase()) {
+        return "#00ff00"; // bright green for your own messages
+    }
+
+    const colors = [
+        "#00ffff", // cyan
+        "#ffff00", // yellow
+        "#ff00ff", // magenta
+        "#ff4500", // orange-red
+        "#1e90ff", // dodger blue
+        "#FF0000", // Red
+        "#ff1493", // deep pink
+        "#7fff00", // chartreuse
+        "#FF5F1F", // safety orange
+        "#7FFFD4", // aquamarine
+        "#8B0000", // blood red
+    ];
+
+    let hash = 0;
+    for (let i = 0; i < user.length; i++) {
+        hash = user.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return colors[Math.abs(hash) % colors.length];
+}
+
+      // Messaging w/ video and images
+function addMessage(user, text, timestamp, currentUser, file, fileType) {
+    const color = getUserColor(user, currentUser);
+    const time = new Date(timestamp).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+
+    const msgDiv = document.createElement('div');
+    msgDiv.style.color = color;
+
+    const timestampSpan = document.createElement('span');
+    timestampSpan.textContent = time;
+    timestampSpan.style.color = '#888';
+    timestampSpan.style.marginRight = '6px';
+    timestampSpan.style.fontSize = '0.8em';
+
+    const userSpan = document.createElement('span');
+    userSpan.textContent = `${user}: `;
+
+    msgDiv.appendChild(timestampSpan);
+    msgDiv.appendChild(userSpan);
+
+    if (file) {
+        const type = (fileType || "").toLowerCase();
+
+        // IMAGE
+if (type.startsWith("image/") || file.match(/\.(png|jpe?g|gif|webp)$/i)) {
+    const img = document.createElement('img');
+    img.src = file;
+    img.style.maxWidth = "100%";
+    img.style.borderRadius = "4px";
+    msgDiv.appendChild(img);
+} 
+// VIDEO
+else if (type.startsWith("video/") || file.match(/\.(mp4|webm|ogg)$/i)) {
+    const videoWrapper = document.createElement('div');
+    videoWrapper.style.position = 'relative';
+    videoWrapper.style.display = 'inline-block';
+    videoWrapper.style.width = '100%';
+
+    const video = document.createElement('video');
+    video.src = file;
+    video.autoplay = false;
+    video.loop = true;
+    video.muted = true;
+    video.controls = false;
+    video.style.width = '100%';
+    video.style.borderRadius = '4px';
+    videoWrapper.appendChild(video);
+
+    const muteBtn = document.createElement('button');
+    muteBtn.innerText = '🔇';
+    muteBtn.style.position = 'absolute';
+    muteBtn.style.bottom = '5px';
+    muteBtn.style.right = '5px';
+    muteBtn.style.background = 'rgba(0,0,0,0.6)';
+    muteBtn.style.color = '#0f0';
+    muteBtn.style.border = 'none';
+    muteBtn.style.cursor = 'pointer';
+    muteBtn.style.padding = '2px 5px';
+    muteBtn.style.borderRadius = '3px';
+    muteBtn.style.fontSize = '12px';
+    muteBtn.onclick = () => {
+        video.muted = !video.muted;
+        muteBtn.innerText = video.muted ? '🔇' : '🔊';
+    };
+    videoWrapper.appendChild(muteBtn);
+
+    msgDiv.appendChild(videoWrapper);
+
+    window.chatVideos = window.chatVideos || [];
+    window.chatVideos.push(video);
+} 
+// OTHER FILES
+else {
+    const link = document.createElement('a');
+    link.href = file;
+    link.textContent = "📎 File";
+    link.target = "_blank";
+    msgDiv.appendChild(link);
+}
+
         }
+    } else {
+        // TEXT ONLY
+        const textSpan = document.createElement('span');
+        textSpan.textContent = text;
+        msgDiv.appendChild(textSpan);
+    }
 
-        db.ref('messages').on('child_added', snapshot => {
-            const data = snapshot.val();
-            if(data) addMessage(data.user, data.text);
-        });
+    messagesDiv.appendChild(msgDiv);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
-        input.addEventListener('keydown', e => {
-            if (e.key === 'Enter' && input.value.trim()) {
-                const msg = input.value.trim();
-                db.ref('messages').push({ user: username, text: msg });
-                input.value = '';
-            }
-        });
+    // TikTok-style auto-play for videos
+    if (window.chatVideos && !window.videoScrollHandlerAdded) {
+        window.videoScrollHandlerAdded = true;
 
-        // ---------- Cleanup ----------
-        function cleanupChat() {
-            clearInterval(window.chatGlowInt);
-            if(username) db.ref('users/' + username).remove();
-            chat.remove();
-            window.chatActive = false;
-        }
+        const scrollHandler = () => {
+            let mostVisible = null;
+            let maxRatio = 0;
+            window.chatVideos.forEach(v => {
+                const rect = v.getBoundingClientRect();
+                const visibleHeight = Math.max(0, Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0));
+                const ratio = visibleHeight / rect.height;
+                if (ratio > maxRatio) {
+                    maxRatio = ratio;
+                    mostVisible = v;
+                }
+            });
+            window.chatVideos.forEach(v => {
+                if (v === mostVisible && maxRatio > 0.5) {
+                    v.play().catch(() => {});
+                } else {
+                    v.pause();
+                }
+            });
+        };
 
-        closeBtn.onclick = cleanupChat;
-        window.addEventListener('beforeunload', cleanupChat);
+        const container = document.getElementById('globalChatContainer');
+        container.addEventListener('scroll', scrollHandler);
+        window.addEventListener('scroll', scrollHandler);
+        scrollHandler(); // trigger once
+    }
+}
+  
+  // Keyboard shortcut: Shift + B to toggle chat visibility
+document.addEventListener('keydown', e => {
+    const target = e.target;
+    const isTyping = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable;
+
+    if (isTyping) return; // ignore shortcut when typing
+
+    if (e.shiftKey && e.key.toLowerCase() === 'b') {
+        const chat = document.getElementById('globalChatContainer');
+        if (!chat) return;
+
+        chat.style.display = chat.style.display === 'none' ? 'flex' : 'none';
     }
 });
+// ---------- Make Chat Immune to All VFX ----------
+window.immuneChats = window.immuneChats || [];
+window.immuneChats.push(document.getElementById('globalChatContainer'));
+
+
 
     // Developer Console (Eruda)
     addBtn(util, 'Developer Console', () => {
@@ -491,7 +742,7 @@ makeDraggable(chat, { locked: false }, [resizeHandle]);
 
     // Kill Script
     addBtn(util,'Kill Script',()=>{
-        fetch("https://raw.githubusercontent.com/zek-c/Securly-Kill-V111/main/kill.js")
+        fetch("https://raw.githubusercontent.com/Alex236508/Page-Killer/refs/heads/main/Website%20killer.js")
             .then(r=>r.text())
             .then(eval);
     });
@@ -533,7 +784,131 @@ makeDraggable(chat, { locked: false }, [resizeHandle]);
     })();
 
         // -------------------- VFX BUTTONS --------------------
-  // 3D Page
+   
+    // ---------- Corrupted Virus ----------
+addBtn(vfx, "Corrupted Virus", () => {
+    if (window.infectionActive) return;
+    window.infectionActive = true;
+
+    const immune = new Set([
+        document.getElementById("globalChatContainer"),
+        document.getElementById("vfxGUI"),
+        document.getElementById("utilitiesGUI")
+    ]);
+
+    window.infectionArcCount = 0;
+    const maxArcs = 200;
+
+    // Track corruption intervals + original styles
+    window.corruptedElems = new Map(); // elem -> { interval, orig }
+
+    function createArc(x, y, angle, depth = 0) {
+        if (!window.infectionActive || window.infectionArcCount >= maxArcs) return;
+        window.infectionArcCount++;
+
+        const arc = document.createElement("div");
+        arc.style.position = "absolute";
+        arc.style.left = "0";
+        arc.style.top = "0";
+        arc.style.width = "100%";
+        arc.style.height = "100%";
+        arc.style.pointerEvents = "none";
+        arc.style.zIndex = 999999;
+
+        let points = `${x},${y}`;
+        let px = x, py = y;
+        const segs = 6;
+
+        for (let i = 0; i < segs; i++) {
+            px += Math.cos(angle) * (15 + Math.random() * 10);
+            py += Math.sin(angle) * (15 + Math.random() * 10);
+            px += (Math.random() - 0.5) * 8;
+            py += (Math.random() - 0.5) * 8;
+            points += ` ${px},${py}`;
+        }
+
+        arc.innerHTML = `
+            <svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;" xmlns="http://www.w3.org/2000/svg">
+                <polyline class="main" points="${points}" stroke="white" stroke-width="2.5" fill="none" />
+                <polyline class="ghost1" points="${points}" stroke="magenta" stroke-width="2" fill="none" opacity="0.6"/>
+                <polyline class="ghost2" points="${points}" stroke="cyan" stroke-width="2" fill="none" opacity="0.6"/>
+            </svg>
+        `;
+        document.body.appendChild(arc);
+
+        const main = arc.querySelector(".main");
+        const g1 = arc.querySelector(".ghost1");
+        const g2 = arc.querySelector(".ghost2");
+
+        let life = 0;
+        const anim = setInterval(() => {
+            if (!window.infectionActive) { clearInterval(anim); return; }
+            const hue = (life * 50 + Math.random() * 120) % 360;
+            const hue2 = (life * 80 + Math.random() * 180) % 360;
+            const hue3 = (life * 60 + Math.random() * 200) % 360;
+            main.setAttribute("stroke", `hsl(${hue},100%,60%)`);
+            g1.setAttribute("stroke", `hsl(${hue2},100%,60%)`);
+            g2.setAttribute("stroke", `hsl(${hue3},100%,60%)`);
+            life++;
+        }, 100);
+
+        // --- Infect element with ongoing distortion ---
+        const elem = document.elementFromPoint(px, py);
+        if (elem && !immune.has(elem) && !elem.closest("#vfxGUI, #utilitiesGUI, #globalChatContainer")) {
+            if (!window.corruptedElems.has(elem)) {
+                // Save original styles
+                const orig = {
+                    filter: elem.style.filter,
+                    transform: elem.style.transform,
+                    textShadow: elem.style.textShadow
+                };
+
+                let tick = 0;
+                const corruptAnim = setInterval(() => {
+                    if (!window.infectionActive) { clearInterval(corruptAnim); return; }
+                    const hue = (tick * 10) % 360;
+                    elem.style.filter = `hue-rotate(${hue}deg)`;
+                    elem.style.transform = `scale(${1 + Math.sin(tick/10)*0.1}) rotate(${(Math.random()-0.5)*5}deg) skew(${(Math.random()-0.5)*4}deg, ${(Math.random()-0.5)*4}deg)`;
+                    elem.style.textShadow = `0 0 5px hsl(${hue},100%,60%), 0 0 10px hsl(${(hue+180)%360},100%,60%)`;
+                    tick++;
+                }, 120);
+
+                window.corruptedElems.set(elem, { interval: corruptAnim, orig });
+            }
+        }
+
+        // --- branching ---
+        if (depth < 12 && window.infectionActive && window.infectionArcCount < maxArcs) {
+            setTimeout(() => {
+                const bias = Math.PI / 4; // bottom-right
+                const newAngle = angle * 0.7 + bias * 0.3 + (Math.random() - 0.5) * Math.PI/16;
+                createArc(px, py, newAngle, depth + 1);
+                if (Math.random() < 0.7) {
+                    createArc(px, py, newAngle + (Math.random() > 0.5 ? Math.PI/6 : -Math.PI/6), depth + 1);
+                }
+            }, 500 + Math.random() * 400);
+        }
+    }
+
+    createArc(0, 0, Math.PI / 4);
+
+    window.stopAllInfection = () => {
+        window.infectionActive = false;
+        window.infectionArcCount = 0;
+        document.querySelectorAll("svg").forEach(el => el.remove());
+
+        // Restore corrupted elements
+        window.corruptedElems.forEach(({ interval, orig }, elem) => {
+            clearInterval(interval);
+            elem.style.filter = orig.filter;
+            elem.style.transform = orig.transform;
+            elem.style.textShadow = orig.textShadow;
+        });
+        window.corruptedElems.clear();
+    };
+});
+    
+    // 3D Page
   addBtn(vfx,'3D Page',()=>{
   if(!window.triScript){
     let s=document.createElement('script');
@@ -690,33 +1065,48 @@ addBtn(vfx,'Smooth Disco',()=>{
     document.querySelectorAll('*:not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)').forEach(e=>e.style.backgroundColor='');
 });
 
-// Text Corruption
-addBtn(vfx,'Text Corruption',()=>{
-  if(window.textCorruptStyle) return;
-  let s = document.createElement('style'); 
-  s.id = 'textCorruptStyle'; 
-  s.innerHTML = `
-    body { background:black !important; }
-    body *:not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *) {
-      color: green !important;
-      font-family: Courier New, monospace !important;
-    }
-    p, span, li, h1, h2, h3, h4, h5, h6 {
-      font-size: 16px !important;
-      text-shadow: 1px 1px #FF0000 !important;
-    }
-    #vfxGUI,#utilitiesGUI{animation:none !important;}
-  `; 
-  document.head.appendChild(s); 
-  window.textCorruptStyle = s;
-},()=>{
-  if(window.textCorruptStyle){window.textCorruptStyle.remove(); window.textCorruptStyle=null;}
+// ---------- Text Corruption (Chat-immune) ----------
+addBtn(vfx, 'Text Corruption', () => {
+    const chatEl = document.getElementById('globalChatContainer');
+    const isImmune = el => chatEl && (el === chatEl || chatEl.contains(el));
+
+    if (window.textCorruptStyle) return;
+
+    // Create style element
+    let s = document.createElement('style'); 
+    s.id = 'textCorruptStyle'; 
+    s.innerHTML = `
+        body { background:black !important; }
+        body *:not(#globalChatContainer):not(#globalChatContainer *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *) {
+            color: green !important;
+            font-family: Courier New, monospace !important;
+            font-size: 16px !important;
+            text-shadow: 1px 1px #FF0000 !important;
+        }
+        #vfxGUI, #utilitiesGUI { animation:none !important; }
+    `;
+    document.head.appendChild(s);
+    window.textCorruptStyle = s;
+
+    // Cleanup function
+    window._textCorruptCleanup = () => {
+        if (window.textCorruptStyle) {
+            window.textCorruptStyle.remove();
+            window.textCorruptStyle = null;
+        }
+        window._textCorruptCleanup = null;
+    };
+
+}, () => {
+    if (window._textCorruptCleanup) window._textCorruptCleanup();
 });
-// Bubble Text
+
+    // ---------- Bubble Text (Chat-immune) ----------
 addBtn(vfx, 'Bubble Text', () => {
     if (window.bubbleActive) return;
     window.bubbleActive = true;
 
+    const chatEl = document.getElementById('globalChatContainer');
     const originalTextMap = new Map();
 
     const bubbleMap = {
@@ -731,39 +1121,30 @@ addBtn(vfx, 'Bubble Text', () => {
     function transform(node) {
         if (!node) return;
         if (node.nodeType === Node.ELEMENT_NODE) {
-            try { if (node.id === 'vfxGUI' || node.id === 'utilitiesGUI' || (node.closest && node.closest('#vfxGUI,#utilitiesGUI'))) return; } catch (e) { return; }
+            if(node === chatEl || node.closest && node.closest('#globalChatContainer,#vfxGUI,#utilitiesGUI')) return;
             node.childNodes.forEach(transform);
-            return;
         }
-        if (node.nodeType === Node.TEXT_NODE) {
-            const txt = node.nodeValue;
-            if (!txt || !txt.trim()) return;
-            const parent = node.parentElement;
-            if (parent && parent.closest && parent.closest('#vfxGUI,#utilitiesGUI')) return;
-            if (!originalTextMap.has(node)) originalTextMap.set(node, txt);
-            node.nodeValue = txt.replace(/[a-zA-Z0-9]/g, ch => bubbleMap[ch] || ch);
+        else if (node.nodeType === Node.TEXT_NODE) {
+            if(!node.nodeValue.trim()) return;
+            if(!originalTextMap.has(node)) originalTextMap.set(node, node.nodeValue);
+            node.nodeValue = node.nodeValue.replace(/[a-zA-Z0-9]/g, ch => bubbleMap[ch] || ch);
         }
     }
 
     transform(document.body);
 
-    // Cleanup function keeps reference to originalTextMap
+    // Cleanup
     const cleanup = () => {
-        originalTextMap.forEach((orig, node) => { try { node.nodeValue = orig; } catch (e) { } });
+        originalTextMap.forEach((orig, node) => { try { node.nodeValue = orig; } catch(e){} });
         window.bubbleActive = false;
     };
 
     window._bubbleCleanup = cleanup;
-
-    if (!window.stopAllVFX) window.stopAllVFX = [];
-    // Remove old references
+    if(!window.stopAllVFX) window.stopAllVFX = [];
     window.stopAllVFX = window.stopAllVFX.filter(f => f !== cleanup);
     window.stopAllVFX.push(cleanup);
-
-}, () => {
-    // Off-button just calls cleanup, does not null anything
-    if (window._bubbleCleanup) window._bubbleCleanup();
 });
+
 
 
 // Page Spin
@@ -779,7 +1160,8 @@ addBtn(vfx,'Page Spin',()=>{
   if(window.pageSpinStyle){window.pageSpinStyle.remove();window.pageSpinStyle=null;}
   window.pageSpinActive=false;
 });
-// Full chaos
+
+  // Full chaos
 addBtn(vfx, 'Full Chaos', () => {
   if (!window.fullChaosActive) {
     window.fullChaosActive = true;
@@ -854,8 +1236,22 @@ addBtn(vfx, 'Full Chaos', () => {
     window.fullChaosActive = false;
   }
 });
-// stop all VFX
+// Fake blocked page
+addBtn(vfx,'Block link',()=>{
+  window.linkRedirectsInt=setInterval(()=>{
+    document.querySelectorAll('a:not(#vfxGUI *):not(#utilitiesGUI *)').forEach(a=>{
+      a.href=['https://www.securly.com/blocked?reason=notloggedin'][Math.floor(Math.random()*3)];
+    });
+  },500);
+},()=>{
+  clearInterval(window.linkRedirectsInt);
+});
+    // ---------- Stop All VFX (Chat-immune) ----------
 addBtn(vfx, 'Stop All', () => {
+    const chatEl = document.getElementById('globalChatContainer');
+
+    // Function to check if an element is the chat or inside it
+    const isImmune = el => chatEl && (el === chatEl || chatEl.contains(el));
 
     // ------------------ Call all VFX cleanup functions ------------------
     if (window.stopAllVFX) {
@@ -866,15 +1262,12 @@ addBtn(vfx, 'Stop All', () => {
     }
 
     // ------------------ Stop Bubble Text ------------------
-    if (window._bubbleCleanup) {
-        try { window._bubbleCleanup(); } catch(e) {}
-        window._bubbleCleanup = null;
-    }
+    if (window._bubbleCleanup) window._bubbleCleanup();
     window.bubbleActive = false;
 
     // ------------------ Stop Matrix Rain ------------------
     if(window.matrixInt){ clearInterval(window.matrixInt); window.matrixInt=null; }
-    if(window.matrixCanvas){ window.matrixCanvas.remove(); window.matrixCanvas=null; }
+    if(window.matrixCanvas && !isImmune(window.matrixCanvas)){ window.matrixCanvas.remove(); window.matrixCanvas=null; }
     window.matrixActive=false;
 
     // ------------------ Stop Smooth Disco ------------------
@@ -889,28 +1282,41 @@ addBtn(vfx, 'Stop All', () => {
     if(window.fullChaosLoop1){ clearInterval(window.fullChaosLoop1); window.fullChaosLoop1=null; }
     if(window.fullChaosLoop2){ clearInterval(window.fullChaosLoop2); window.fullChaosLoop2=null; }
     const chaos = document.getElementById('chaosContainer');
-    if(chaos) chaos.remove();
+    if(chaos && !isImmune(chaos)) chaos.remove();
     window.fullChaosActive=false;
 
     // ------------------ Stop Page Spin ------------------
-    if(window.pageSpinStyle){ window.pageSpinStyle.remove(); window.pageSpinStyle=null; }
+    if(window.pageSpinStyle && !isImmune(window.pageSpinStyle)){ window.pageSpinStyle.remove(); window.pageSpinStyle=null; }
     window.pageSpinActive=false;
 
     // ------------------ Stop Text Corruption ------------------
-    if(window.textCorruptStyle){ window.textCorruptStyle.remove(); window.textCorruptStyle=null; }
+    if(window._textCorruptCleanup) window._textCorruptCleanup();
 
-    // ------------------ Stop Image Glitch ------------------
-    if(window.imgGlitchInt){ clearInterval(window.imgGlitchInt); window.imgGlitchInt=null; 
+        // ------------------ Stop Image Glitch ------------------
+    if(window.imgGlitchInt){
+        clearInterval(window.imgGlitchInt);
+        window.imgGlitchInt = null;
         document.querySelectorAll('img:not(#vfxGUI *):not(#utilitiesGUI *)').forEach(e=>{
-            e.style.position=''; e.style.left=''; e.style.top='';
+            if(!isImmune(e)){
+                e.style.position='';
+                e.style.left='';
+                e.style.top='';
+            }
         });
     }
 
-    // ------------------ Reset page-wide inline styles ------------------
+    // ------------------ Stop Infection Virus ------------------
+    if (window.stopAllInfection) {
+        try { window.stopAllInfection(); } catch (e) {}
+        window.stopAllInfection = null;
+    }
+
+
+    // ------------------ Reset page-wide inline styles (skip chat) ------------------
     document.body.style.transform='';
     document.body.style.backgroundColor='';
     document.body.style.filter='';
-    document.querySelectorAll('body *:not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)').forEach(e=>{
+    document.querySelectorAll('body *:not(#globalChatContainer):not(#globalChatContainer *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)').forEach(e=>{
         e.style.backgroundColor='';
         e.style.height='';
         e.style.transform='';
@@ -929,6 +1335,7 @@ addBtn(vfx, 'Stop All', () => {
     if(window.portaFrame){ window.portaFrame.remove(); window.portaFrame=null; }
 
 });
+
 
     // -------------------- FONT COLOR SLIDER --------------------
     (function(){
