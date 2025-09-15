@@ -535,7 +535,6 @@ function addMessage(user, text, timestamp, currentUser, file, fileType) {
         video.style.borderRadius = '4px';
         videoWrapper.appendChild(video);
 
-        // Mute button
         const muteBtn = document.createElement('button');
         muteBtn.innerText = '🔇';
         muteBtn.style.position = 'absolute';
@@ -555,8 +554,6 @@ function addMessage(user, text, timestamp, currentUser, file, fileType) {
         videoWrapper.appendChild(muteBtn);
 
         msgDiv.appendChild(videoWrapper);
-
-        // Track video for TikTok-style auto-play
         window.chatVideos = window.chatVideos || [];
         window.chatVideos.push(video);
 
@@ -568,13 +565,13 @@ function addMessage(user, text, timestamp, currentUser, file, fileType) {
         link.target = "_blank";
         msgDiv.appendChild(link);
     }
+
 } else {
     // TEXT ONLY
     const textSpan = document.createElement('span');
     textSpan.textContent = text;
     msgDiv.appendChild(textSpan);
 }
-
 
     messagesDiv.appendChild(msgDiv);
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
