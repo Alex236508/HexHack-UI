@@ -516,7 +516,8 @@ function addMessage(user, text, timestamp, currentUser, file, fileType) {
     img.style.maxWidth = "100%";
     img.style.borderRadius = "4px";
     msgDiv.appendChild(img);
-} else if (type.startsWith("video/") || file.match(/\.(mp4|webm|ogg)$/i)) {
+} 
+else if (type.startsWith("video/") || file.match(/\.(mp4|webm|ogg)$/i)) {
     const videoWrapper = document.createElement('div');
     videoWrapper.style.position = 'relative';
     videoWrapper.style.display = 'inline-block';
@@ -554,7 +555,8 @@ function addMessage(user, text, timestamp, currentUser, file, fileType) {
 
     window.chatVideos = window.chatVideos || [];
     window.chatVideos.push(video);
-} else {
+} 
+else {
     const link = document.createElement('a');
     link.href = file;
     link.textContent = "📎 File";
