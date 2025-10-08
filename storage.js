@@ -1,8 +1,8 @@
 (function(){
   if(window.hackerLoaded) return;
   window.hackerLoaded = true;
-
-  // ---------- BOOTUP ----------
+  
+// ---------- BOOTUP ----------
   let overlay = document.createElement('div');
   overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:black;z-index:1000000;display:flex;align-items:center;justify-content:center;flex-direction:column;color:#00ff00;font-family:Consolas,monospace;pointer-events:none;';
   let canvas = document.createElement('canvas');
@@ -55,43 +55,35 @@
       },500);
     }
   },40);
+  
 
-  // ---------- MAIN FUNCTION TO SPAWN GUIs ----------
   function spawnGUIs() {
     // -------------------- UTILITIES GUI --------------------
     const util = document.createElement('div');
   util.id = 'utilitiesGUI';
   util.style.cssText = `
     position:fixed;top:50px;left:50px;width:280px;
-    background:#1b1b1b;color:#00ff00;font-family:Consolas,monospace;
+    background:#000000;color:#00ff00;font-family:Consolas,monospace;
     padding:10px;border:2px solid #00ff00;border-radius:8px;
-    box-shadow:0 0 15px rgba(0,255,0,0.5);z-index:999999;
+    box-shadow:0 0 15px rgba(0,255,0,0.5);z-index:9999999;
     user-select:none;cursor:move;
   `;
   util.innerHTML = '<div style="text-align:center;margin-bottom:8px;"><b>Utilities</b></div>';
   document.body.appendChild(util);
+   
     // -------------------- VFX GUI --------------------
     const vfx = document.createElement('div');
   vfx.id = 'vfxGUI';
   vfx.style.cssText = `
     position:fixed;top:50px;right:50px;width:320px;
-    background:#1b1b1b;color:#00ff00;font-family:Consolas,monospace;
+    background:#000000;color:#00ff00;font-family:Consolas,monospace;
     padding:10px;border:2px solid #00ff00;border-radius:8px;
-    box-shadow:0 0 15px rgba(0,255,0,0.5);z-index:999999;
+    box-shadow:0 0 15px rgba(0,255,0,0.5);z-index:9999999;
     user-select:none;cursor:move;
   `;
-  vfx.innerHTML = '<div style="text-align:center;margin-bottom:8px;"><b>Hacker GUI</b></div>';
+  vfx.innerHTML = '<div style="text-align:center;margin-bottom:8px;"><b>Page Effects</b></div>';
   document.body.appendChild(vfx);
-
-    // -------------------- BUTTON HELPER --------------------
-     function addBtn(container,name,on,off){
-  const b=document.createElement('button');
-  b.innerText=name;
-  b.style.cssText='width:100%;margin:2px 0;background:#252525;color:#00ff00;border:none;padding:5px;border-radius:5px;cursor:pointer;font-family:Consolas,monospace;';
-  b.onclick=on;
-  container.appendChild(b);
-  }
-
+    
     // -------------------- ADD LOCK ICON --------------------
      function addLockIcon(gui){
     const lock = document.createElement('div');
@@ -137,6 +129,69 @@ function makeDraggable(g, lock){
 
 makeDraggable(util, utilLock);
 makeDraggable(vfx, vfxLock);
+    
+// ---------- Tab Title & Favicon Controls ----------
+const vfxContainer = document.getElementById('vfxGUI');
+if (vfxContainer) {
+    const controlsWrapper = document.createElement('div');
+    controlsWrapper.style.cssText = `
+        position:absolute; bottom:5px; right:5px;
+        display:flex; gap:6px; align-items:center;
+        background:rgba(0,0,0,0.5); padding:4px; border-radius:4px;
+        z-index:10000001;
+    `;
+
+    // Hidden file input for favicon
+    const faviconInput = document.createElement('input');
+    faviconInput.type = 'file';
+    faviconInput.accept = 'image/*';
+    faviconInput.style.display = 'none';
+    faviconInput.addEventListener('change', () => {
+        const file = faviconInput.files[0];
+        if (!file) return;
+        const url = URL.createObjectURL(file);
+
+        // Find or create favicon <link>
+        let link = document.querySelector("link[rel*='icon']");
+        if (!link) {
+            link = document.createElement('link');
+            link.rel = 'icon';
+            document.head.appendChild(link);
+        }
+        link.href = url;
+    });
+
+    // Visible folder button
+    const faviconBtn = document.createElement('button');
+    faviconBtn.textContent = '📁'; // folder emoji
+    faviconBtn.style.cssText = `
+        font-size:16px; 
+        padding:2px 5px; 
+        cursor:pointer; 
+        background:transparent; 
+        border:none; 
+        color:#0f0;
+    `;
+    faviconBtn.onclick = () => faviconInput.click();
+
+    // Tab title input
+    const titleInput = document.createElement('input');
+    titleInput.type = 'text';
+    titleInput.placeholder = 'Tab title';
+    titleInput.style.cssText = `
+        width:90px; font-size:11px; padding:2px;
+        background:black; color:#0f0; border:none; outline:none;
+    `;
+    titleInput.addEventListener('input', () => {
+        document.title = titleInput.value;
+    });
+
+    // Add everything
+    controlsWrapper.appendChild(faviconBtn);
+    controlsWrapper.appendChild(faviconInput);
+    controlsWrapper.appendChild(titleInput);
+    vfxContainer.appendChild(controlsWrapper);
+}
 
     // ---------- UTILITIES BUTTONS ----------
 (function(){
@@ -146,7 +201,7 @@ makeDraggable(vfx, vfxLock);
     function addBtn(container, name, on, off) {
         const b = document.createElement('button');
         b.innerText = name;
-        b.style.cssText = 'width:100%;margin:2px 0;background:#252525;color:#00ff00;border:none;padding:5px;border-radius:5px;cursor:pointer;font-family:Consolas,monospace;';
+        b.style.cssText = 'width:100%;margin:2px 0;background:#060f00;color:#00ff00;border:none;padding:5px;border-radius:5px;cursor:pointer;font-family:Consolas,monospace;';
         b.onclick = on;
         container.appendChild(b);
         if(off) activeUtilities[name] = { on, off };
@@ -184,449 +239,26 @@ makeDraggable(vfx, vfxLock);
             console.error('Failed to load Embedded Browser:', err);
         });
 });
-
   
-// ---------- Global Chat (Firebase) ----------
-addBtn(util, 'Global Chat', () => {
-    if (window.chatActive) return;
-    window.chatActive = true;
-
-    const loadFirebase = () => {
-    if (!window.firebase) {
-        const s1 = document.createElement('script');
-        s1.src = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js';
-        s1.onload = () => {
-            const s2 = document.createElement('script');
-            s2.src = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js';
-            s2.onload = () => {
-                const s3 = document.createElement('script');
-                s3.src = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js';
-                s3.onload = initChat;
-                document.body.appendChild(s3);
-            };
-            document.body.appendChild(s2); // <--- THIS WAS MISSING
-        };
-        document.body.appendChild(s1);
-    } else {
-        initChat();
-    }
-};
-
-
-    loadFirebase();
-
-    async function getUsername(db) {
-    let name;
-    while (!name) {
-        name = prompt("Enter your username for chat:");
-        if (!name) return null; // user pressed Cancel or left blank
-        const snapshot = await db.ref('users').get(); // get all users
-        const existingUsers = snapshot.exists() ? Object.keys(snapshot.val()) : [];
-        // Case-insensitive check
-        if (existingUsers.some(u => u.toLowerCase() === name.toLowerCase())) {
-            alert("Username already taken! Pick another one.");
-            name = null;
-            continue;
-        }
-        // Save the username as typed
-        db.ref('users/' + name).set(true);
-    }
-    return name;
-}
-
-    async function initChat() {
-        const firebaseConfig = {
-            apiKey: "AIzaSyDlmPq4bMKdOFHMdfevEa3ctd4-3WQ4u7k",
-            authDomain: "hacker-gui-global-chat.firebaseapp.com",
-            databaseURL: "https://hacker-gui-global-chat-default-rtdb.firebaseio.com",
-            projectId: "hacker-gui-global-chat",
-            storageBucket: "hacker-gui-global-chat.appspot.com",
-            messagingSenderId: "410978781234",
-            appId: "1:410978781234:web:ee08f15ee9be48970c542b",
-            measurementId: "G-SB0B1FLF29"
-        };
-        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-        const storage = firebase.storage();
-
-
-        const username = await getUsername(db);
-if (!username) {
-    window.chatActive = false; // stop chat initialization
-    return; // exit, no chat created
-}
-
-
-        // ---------- Chat Window ----------
-        const chat = document.createElement('div');
-        chat.id = 'globalChatContainer';
-        chat.style.cssText = `
-            position:fixed; bottom:50px; right:50px;
-            width:300px; height:400px;
-            background:rgba(0,0,0,0.90);
-            color:#0f0; font-family:monospace;
-            border-radius:8px; z-index:10000000; display:flex; flex-direction:column;
-            user-select:none; overflow:hidden;
-        `;
-        document.body.appendChild(chat);
-
-        // Rainbow Pulsing Glow Border
-const chatBox = document.getElementById('globalChatContainer');
-if(chatBox){
-    const oldStyle = document.getElementById('rainbowGlowStyle');
-    if(oldStyle) oldStyle.remove();
-
-    const style = document.createElement('style');
-    style.id = 'rainbowGlowStyle';
-    style.innerHTML = `
-        #globalChatContainer {
-            position: relative;
-            border-radius: 8px;
-            border: 4px solid;
-            padding: 2px;
-            background-clip: padding-box;
-            animation: rainbowBorder 6s linear infinite, rainbowGlow 6s ease-in-out infinite alternate;
-            border-image-slice: 1;
-        }
-
-        @keyframes rainbowBorder {
-            0%   { border-image-source: linear-gradient(90deg, red, orange, yellow, green, blue, purple); }
-            20%  { border-image-source: linear-gradient(90deg, orange, yellow, green, blue, purple, red); }
-            40%  { border-image-source: linear-gradient(90deg, yellow, green, blue, purple, red, orange); }
-            60%  { border-image-source: linear-gradient(90deg, green, blue, purple, red, orange, yellow); }
-            80%  { border-image-source: linear-gradient(90deg, blue, purple, red, orange, yellow, green); }
-            100% { border-image-source: linear-gradient(90deg, red, orange, yellow, green, blue, purple); }
-        }
-
-        @keyframes rainbowGlow {
-            0%   { box-shadow: 0 0 10px red, 0 0 20px red; }
-            16%  { box-shadow: 0 0 15px orange, 0 0 30px orange; }
-            33%  { box-shadow: 0 0 20px yellow, 0 0 40px yellow; }
-            50%  { box-shadow: 0 0 25px green, 0 0 50px green; }
-            66%  { box-shadow: 0 0 30px blue, 0 0 60px blue; }
-            83%  { box-shadow: 0 0 25px purple, 0 0 50px purple; }
-            100% { box-shadow: 0 0 10px red, 0 0 20px red; }
-        }
-    `;
-    document.head.appendChild(style);
-}
-
-
-        // ---------- Close Button ----------
-        const closeBtn = document.createElement('div');
-        closeBtn.innerText = '✖';
-        closeBtn.style.cssText = `
-            position:absolute; top:5px; right:5px; cursor:pointer;
-            font-weight:bold; font-size:16px; z-index:10000002;
-        `;
-        chat.appendChild(closeBtn);
-
-        // ---------- Messages ----------
-        const messagesDiv = document.createElement('div');
-        messagesDiv.style.cssText = 'flex:1; overflow-y:auto; padding:5px;';
-        chat.appendChild(messagesDiv);
-
-        // ---------- Input + Upload ----------
-const inputWrapper = document.createElement('div');
-inputWrapper.style.cssText = 'display:flex;align-items:center;background:black;';
-
-const input = document.createElement('input');
-input.type = 'text';
-input.placeholder = 'Type a message...';
-input.style.cssText = 'flex:1;border:none;outline:none;padding:5px;background:black;color:#0f0;';
-
-const uploadBtn = document.createElement('button');
-uploadBtn.textContent = '📎';
-uploadBtn.style.cssText = 'background:black;color:#0f0;border:none;cursor:pointer;font-size:16px;padding:5px;';
-
-const fileInput = document.createElement('input');
-fileInput.type = 'file';
-fileInput.accept = 'image/*,video/*,.gif';
-fileInput.style.display = 'none';
-
-uploadBtn.onclick = () => fileInput.click();
-
-inputWrapper.appendChild(input);
-inputWrapper.appendChild(uploadBtn);
-chat.appendChild(inputWrapper);
-chat.appendChild(fileInput);
-      // ------------------- Send text messages -------------------
-input.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && input.value.trim()) {
-        const msg = input.value.trim();
-        db.ref('messages').push({ 
-            user: username, 
-            text: msg, 
-            timestamp: Date.now()
-        });
-        input.value = '';
-    }
-});
-
-// ------------------- Handle file uploads -------------------
-fileInput.addEventListener('change', async () => {
-    const file = fileInput.files[0];
-    if (!file) return;
-
-    try {
-        const fileRef = storage.ref('uploads/' + Date.now() + "_" + file.name);
-        await fileRef.put(file);
-        const fileURL = await fileRef.getDownloadURL();
-
-        db.ref('messages').push({
-            user: username,
-            text: '',
-            file: fileURL,
-            fileType: file.type,
-            timestamp: Date.now()
-        });
-    } catch (err) {
-        console.error("Upload failed:", err);
-        alert("Failed to upload file. Try again.");
-    }
-
-    fileInput.value = ''; // reset input after upload
-});
-
-// ------------------- Listen for new messages -------------------
-db.ref('messages').on('child_added', snap => {
-    const msg = snap.val();
-    addMessage(msg.user, msg.text, msg.timestamp, username, msg.file, msg.fileType);
-});
-
-        // ---------- Resizable ----------
-const resizeHandle = document.createElement('div');
-resizeHandle.style.cssText = `
-    width:10px; height:10px; background:#0f0;
-    position:absolute; bottom:2px; right:2px; cursor:se-resize; z-index:10000003;
-`;
-chat.appendChild(resizeHandle);
-
-resizeHandle.addEventListener('mousedown', e => {
-    e.stopPropagation(); // stop drag
-    e.preventDefault();
-
-    const startWidth = chat.offsetWidth;
-    const startHeight = chat.offsetHeight;
-    const startX = e.clientX;
-    const startY = e.clientY;
-
-    function onMouseMove(e) {
-        chat.style.width = startWidth + (e.clientX - startX) + 'px';
-        chat.style.height = startHeight + (e.clientY - startY) + 'px';
-    }
-
-    function onMouseUp() {
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
-    }
-
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-});
-
-// ---------- Draggable ----------
-function makeDraggable(g, lock, ignore = []) {
-    g.style.position = 'fixed';
-    g.addEventListener('mousedown', e => {
-        if (lock.locked) return;
-        // Ignore if starting on resize handle or any ignored elements
-        if (ignore.some(el => el.contains(e.target))) return;
-
-        let ox = e.clientX - g.getBoundingClientRect().left;
-        let oy = e.clientY - g.getBoundingClientRect().top;
-
-        function move(e) {
-            let x = e.clientX - ox;
-            let y = e.clientY - oy;
-            x = Math.max(0, Math.min(window.innerWidth - g.offsetWidth, x));
-            y = Math.max(0, Math.min(window.innerHeight - g.offsetHeight, y));
-            g.style.left = x + 'px';
-            g.style.top = y + 'px';
-            g.style.right = 'auto';
-            g.style.bottom = 'auto';
-        }
-
-        function up() {
-            document.removeEventListener('mousemove', move);
-            document.removeEventListener('mouseup', up);
-        }
-
-        document.addEventListener('mousemove', move);
-        document.addEventListener('mouseup', up);
-    });
-}
-
-// Use the drag function, ignoring the resize handle
-makeDraggable(chat, { locked: false }, [resizeHandle]);
-
-        // ---------- Firebase Messaging ----------
-function getUserColor(user, currentUser) {
-    if (user.toLowerCase() === currentUser.toLowerCase()) {
-        return "#00ff00"; // bright green for your own messages
-    }
-
-    const colors = [
-        "#00ffff", // cyan
-        "#ffff00", // yellow
-        "#ff00ff", // magenta
-        "#ff4500", // orange-red
-        "#1e90ff", // dodger blue
-        "#FF0000", // Red
-        "#ff1493", // deep pink
-        "#7fff00", // chartreuse
-        "#FF5F1F", // safety orange
-        "#7FFFD4", // aquamarine
-        "#8B0000", // blood red
-    ];
-
-    let hash = 0;
-    for (let i = 0; i < user.length; i++) {
-        hash = user.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return colors[Math.abs(hash) % colors.length];
-}
-
-      // Messaging w/ video and images
-function addMessage(user, text, timestamp, currentUser, file, fileType) {
-    const color = getUserColor(user, currentUser);
-    const time = new Date(timestamp).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-
-    const msgDiv = document.createElement('div');
-    msgDiv.style.color = color;
-
-    const timestampSpan = document.createElement('span');
-    timestampSpan.textContent = time;
-    timestampSpan.style.color = '#888';
-    timestampSpan.style.marginRight = '6px';
-    timestampSpan.style.fontSize = '0.8em';
-
-    const userSpan = document.createElement('span');
-    userSpan.textContent = `${user}: `;
-
-    msgDiv.appendChild(timestampSpan);
-    msgDiv.appendChild(userSpan);
-
-    if (file) {
-    const type = (fileType || "").toLowerCase();
-
-    // IMAGE
-    if (type.startsWith("image/") || /\.(png|jpe?g|gif|webp)$/i.test(file)) {
-    const img = document.createElement('img');
-    img.src = file;
-    img.style.maxWidth = "100%";
-    img.style.borderRadius = "4px";
-    msgDiv.appendChild(img);
-} 
-else if (type.startsWith("video/") || /\.(mp4|webm|ogg)$/i.test(file)) {
-    const videoWrapper = document.createElement('div');
-    videoWrapper.style.position = 'relative';
-    videoWrapper.style.display = 'inline-block';
-    videoWrapper.style.width = '100%';
-
-    const video = document.createElement('video');
-    video.src = file;
-    video.autoplay = false;
-    video.loop = true;
-    video.muted = true;
-    video.controls = false;
-    video.style.width = '100%';
-    video.style.borderRadius = '4px';
-    videoWrapper.appendChild(video);
-
-    const muteBtn = document.createElement('button');
-    muteBtn.innerText = '🔇';
-    muteBtn.style.position = 'absolute';
-    muteBtn.style.bottom = '5px';
-    muteBtn.style.right = '5px';
-    muteBtn.style.background = 'rgba(0,0,0,0.6)';
-    muteBtn.style.color = '#0f0';
-    muteBtn.style.border = 'none';
-    muteBtn.style.cursor = 'pointer';
-    muteBtn.style.padding = '2px 5px';
-    muteBtn.style.borderRadius = '3px';
-    muteBtn.style.fontSize = '12px';
-    muteBtn.onclick = () => {
-        video.muted = !video.muted;
-        muteBtn.innerText = video.muted ? '🔇' : '🔊';
-    };
-    videoWrapper.appendChild(muteBtn);
-
-    msgDiv.appendChild(videoWrapper);
-    window.chatVideos = window.chatVideos || [];
-    window.chatVideos.push(video);
-} 
-else {
-    const link = document.createElement('a');
-    link.href = file;
-    link.textContent = "📎 File";
-    link.target = "_blank";
-    msgDiv.appendChild(link);
-}
-
-
-} else {
-    // TEXT ONLY
-    const textSpan = document.createElement('span');
-    textSpan.textContent = text;
-    msgDiv.appendChild(textSpan);
-}
-
-
-    messagesDiv.appendChild(msgDiv);
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-
-    // TikTok-style auto-play for videos
-    if (window.chatVideos && !window.videoScrollHandlerAdded) {
-        window.videoScrollHandlerAdded = true;
-
-        const scrollHandler = () => {
-            let mostVisible = null;
-            let maxRatio = 0;
-            window.chatVideos.forEach(v => {
-                const rect = v.getBoundingClientRect();
-                const visibleHeight = Math.max(0, Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0));
-                const ratio = visibleHeight / rect.height;
-                if (ratio > maxRatio) {
-                    maxRatio = ratio;
-                    mostVisible = v;
-                }
-            });
-            window.chatVideos.forEach(v => {
-                if (v === mostVisible && maxRatio > 0.5) {
-                    v.play().catch(() => {});
-                } else {
-                    v.pause();
-                }
-            });
-        };
-
-        const container = document.getElementById('globalChatContainer');
-        container.addEventListener('scroll', scrollHandler);
-        window.addEventListener('scroll', scrollHandler);
-        scrollHandler(); // trigger once
-    }
-}
   
-  // Keyboard shortcut: Shift + B to toggle chat visibility
-document.addEventListener('keydown', e => {
-    const target = e.target;
-    const isTyping = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable;
-
-    if (isTyping) return; // ignore shortcut when typing
-
-    if (e.shiftKey && e.key.toLowerCase() === 'b') {
-        const chat = document.getElementById('globalChatContainer');
-        if (!chat) return;
-
-        chat.style.display = chat.style.display === 'none' ? 'flex' : 'none';
+  addBtn(util, 'iframe launcher', () => {
+    const url = prompt("Enter URL");
+    if (url) {
+        const w = window.open("about:blank", "_blank");
+        w.document.write(`
+            <!DOCTYPE html>
+            <html>
+                <head>
+                    <title>nothing here</title>
+                </head>
+                <body style="margin:0">
+                    <iframe src="${url}" style="border:none;width:100vw;height:100vh;"></iframe>
+                </body>
+            </html>
+        `);
+        w.document.close();
     }
 });
-// ---------- Make Chat Immune to All VFX ----------
-window.immuneChats = window.immuneChats || [];
-window.immuneChats.push(document.getElementById('globalChatContainer'));
-
-
 
     // Developer Console (Eruda)
     addBtn(util, 'Developer Console', () => {
@@ -658,8 +290,8 @@ window.immuneChats.push(document.getElementById('globalChatContainer'));
 });
 
 
-    // Page Dark Theme
-    addBtn(util,'Page Dark Theme',()=>{
+    // Invert Page
+  addBtn(util,'Invert Page',()=>{
         document.body.style.filter = 'invert(1)';
     },()=>{
         document.body.style.filter = '';
@@ -703,7 +335,7 @@ window.immuneChats.push(document.getElementById('globalChatContainer'));
     });
 
     // IP Finder
-    addBtn(util,'IP Finder',()=>{
+    addBtn(util,'IP Scanner',()=>{
         let ip = prompt("Enter IP:");
         if(ip){
             ['https://talosintelligence.com/reputation_center/lookup?search=',
@@ -738,8 +370,8 @@ window.immuneChats.push(document.getElementById('globalChatContainer'));
         if(window.portaFrame){ window.portaFrame.remove(); window.portaFrame=null; }
     });
 
-    // Kill Script
-    addBtn(util,'Kill Script',()=>{
+    // Break Page
+    addBtn(util,'Page Killer',()=>{
         fetch("https://raw.githubusercontent.com/Alex236508/Page-Killer/refs/heads/main/Website%20killer.js")
             .then(r=>r.text())
             .then(eval);
@@ -764,7 +396,7 @@ window.immuneChats.push(document.getElementById('globalChatContainer'));
         const section = document.createElement('div');
         section.style.marginTop = '10px';
         section.style.padding = '8px';
-        section.style.background = '#252525';
+        section.style.background = '#001f00';
         section.style.borderRadius = '10px';
         section.style.color = '#00ff00';
         section.innerHTML = `<b>Font Size</b><br>`;
@@ -781,8 +413,15 @@ window.immuneChats.push(document.getElementById('globalChatContainer'));
         util.appendChild(section);
     })();
 
-        // -------------------- VFX BUTTONS --------------------
-   
+        
+// -------------------- VFX Buttons --------------------
+     function addBtn(container,name,on,off){
+  const b=document.createElement('button');
+  b.innerText=name;
+  b.style.cssText='width:100%;margin:2px 0;background:#060f00;color:#00ff00;border:none;padding:5px;border-radius:5px;cursor:pointer;font-family:Consolas,monospace;';
+  b.onclick=on;
+  container.appendChild(b);
+  }
     // ---------- Corrupted Virus ----------
 addBtn(vfx, "Corrupted Virus", () => {
     if (window.infectionActive) return;
@@ -905,18 +544,358 @@ addBtn(vfx, "Corrupted Virus", () => {
         window.corruptedElems.clear();
     };
 });
+
+     // ---------- Disintegrate Element ----------
+let disintegrateHandler = null;
+
+addBtn(vfx, "Disintegrate Element", () => {
+  let active = vfx.dataset.disintegrateActive === "true";
+
+  function disintegrateElement(el) {
+    if (!el) return;
+
+    const rect = el.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+
+    // Remove element instantly (no fade)
+    el.remove();
+
+    // Character pool
+    const chars = "123456789010abcdefghijklmnopqrstuvwxyz";
+
+    // Create particles
+    const numParticles = Math.floor(width * height / 150);
+    for (let i = 0; i < numParticles; i++) {
+      const particle = document.createElement("div");
+      particle.textContent = chars[Math.floor(Math.random() * chars.length)];
+      particle.style.position = "fixed";
+      particle.style.zIndex = "999999"; 
+      particle.style.left = rect.left + Math.random() * width + "px";
+      particle.style.top = rect.top + Math.random() * height + "px";
+      particle.style.fontSize = "12px";
+      particle.style.fontFamily = "monospace";
+      particle.style.color = "red"; 
+      particle.style.pointerEvents = "none";
+      particle.style.opacity = "1";
+      particle.style.transition = "transform 3s ease-out, opacity 3s ease-out";
+      document.body.appendChild(particle);
+
+      // Float upward
+      const xMove = (Math.random() - 0.5) * 120;
+      const yMove = -150 - Math.random() * 250;
+
+      requestAnimationFrame(() => {
+        particle.style.transform = `translate(${xMove}px, ${yMove}px) rotate(${Math.random() * 360}deg)`;
+        particle.style.opacity = "0";
+      });
+
+      // Remove particle after 3s
+      setTimeout(() => particle.remove(), 3000);
+    }
+  }
+
+  // Toggle mode
+  if (active) {
+    document.removeEventListener("click", disintegrateHandler, true);
+    disintegrateHandler = null;
+    vfx.dataset.disintegrateActive = "false";
+    alert("Disintegration mode deactivated.");
+  } else {
+    disintegrateHandler = function (e) {
+      if (e.target.closest("#vfxGUI")) return; // protect GUI
+      e.preventDefault();
+      e.stopPropagation();
+      disintegrateElement(e.target);
+    };
+
+    document.addEventListener("click", disintegrateHandler, true);
+    vfx.dataset.disintegrateActive = "true";
+    alert("Disintegration mode activated. Click any element to delete it.");
+  }
+});
+
+    // Invert Media (Toggle)
+addBtn(vfx, 'Invert Media', () => {
+    if (window.invertimgActive) {
+        // --- Deactivate ---
+        if (window.invertimgStyle) window.invertimgStyle.remove();
+        window.invertimgStyle = null;
+        window.invertimgActive = false;
+        return;
+    }
+    // --- Activate ---
+    window.invertimgActive = true;
+    window.invertimgStyle = document.createElement("style");
+    window.invertimgStyle.textContent = "img,video,embed,object{filter:invert(100%) !important;}";
+    document.body.appendChild(window.invertimgStyle);
+});
+
+
+// Censor Media (Toggle)
+addBtn(vfx, 'Censor Media', () => {
+    if (window.censorActive) {
+        // --- Deactivate ---
+        if (window.af) cancelAnimationFrame(window.af);
+        if (window.censorStyle) window.censorStyle.remove();
+        if (window.censors) for (var c of window.censors) c.remove();
+        if (window.sensed) for (var e of window.sensed) e.parentElement.classList.remove("censor-parent");
+        window.censors = [];
+        window.sensed = [];
+        window.censorActive = false;
+        return;
+    }
+
+    // --- Activate ---
+    window.censorActive = true;
+    window.censorStyle = document.createElement("style");
+    window.censorStyle.textContent = `
+        .censor { opacity: 1 !important; image-rendering: pixelated !important; }
+        .censor + img, .censor + video { visibility: hidden !important; }
+        .censor-parent:hover .censor { display: none !important; }
+        .censor-parent:hover .censor + img, 
+        .censor-parent:hover .censor + video { visibility: visible !important; }
+    `;
+    document.body.appendChild(window.censorStyle);
+
+    window.sensed = [];
+    window.censors = [];
+    let quality = 1.5;
+
+    function onScreen(r) {
+        return r.right > 0 && r.bottom > 0 && r.left < innerWidth && r.top < innerHeight;
+    }
+
+    function copyStyle(donor, recipient, sizeOnly) {
+        var donorStyle = getComputedStyle(donor);
+        var keys = Object.keys(donorStyle);
+        if (sizeOnly) keys = ["width", "height"];
+        for (var key of keys) recipient.style[key] = donorStyle[key];
+    }
+
+    function updateCensor(e, canvas) {
+        var rect = e.getBoundingClientRect();
+        if (onScreen(rect)) {
+            var equalizer = Math.log2(Math.max(rect.width * rect.height, 2));
+            canvas.width = rect.width * quality / equalizer;
+            canvas.height = rect.height * quality / equalizer;
+            if (window.af % 120 == 0) copyStyle(e, canvas, true);
+            var context = canvas.getContext("2d");
+            context.drawImage(e, 0, 0, canvas.width, canvas.height);
+            e.parentElement.classList.add("censor-parent");
+        }
+    }
+
+    function createCensor(e) {
+        var rect = e.getBoundingClientRect();
+        if (onScreen(rect)) {
+            var canvas = document.createElement("canvas");
+            canvas.className = "censor";
+            var equalizer = Math.log2(Math.max(rect.width * rect.height, 2));
+            canvas.width = rect.width * quality / equalizer;
+            canvas.height = rect.height * quality / equalizer;
+            copyStyle(e, canvas);
+            var context = canvas.getContext("2d");
+            context.drawImage(e, 0, 0, canvas.width, canvas.height);
+            e.parentElement.insertBefore(canvas, e);
+            e.parentElement.classList.add("censor-parent");
+            return canvas;
+        }
+    }
+
+    function sense() {
+        var es = document.querySelectorAll("img,video");
+        for (var e of es) {
+            var i = window.sensed.indexOf(e);
+            if (i >= 0) {
+                if (e.tagName == "VIDEO" && !e.paused) updateCensor(e, window.censors[i]);
+            } else {
+                if (e.tagName == "VIDEO" || e.complete) {
+                    var c = createCensor(e);
+                    if (c) {
+                        window.censors.push(c);
+                        window.sensed.push(e);
+                    }
+                }
+            }
+        }
+        window.af = requestAnimationFrame(sense);
+    }
+
+    sense();
+});
+    
+    // Invert Area
+addBtn(vfx, 'Invert Area', () => {
+    // If active, turn off
+    if (window.invertAreaActive) {
+        if (window.invertAreaShield) window.invertAreaShield.remove();
+        window.removeEventListener("mousedown", window.invertAreaHold);
+        window.removeEventListener("touchstart", window.invertAreaHold);
+        window.invertAreaActive = false;
+        return;
+    }
+
+    // --- Activate ---
+    window.invertAreaActive = true;
+
+    let s, b, m0, m1;
+
+    function shield() {
+        s = document.createElement("div");
+        s.style.position = "fixed";
+        s.style.left = 0;
+        s.style.top = 0;
+        s.style.width = "100%";
+        s.style.height = "100%";
+        s.style.zIndex = 99999999; // high layer
+        s.style.cursor = "crosshair";
+        document.body.appendChild(s);
+        window.invertAreaShield = s;
+    }
+
+    function box() {
+        b = document.createElement("div");
+        b.style.position = "absolute";
+        b.style.left = m0.clientX + "px";
+        b.style.top = m0.clientY + "px";
+        b.style.width = 0;
+        b.style.height = 0;
+        b.style.outline = "2px dashed red";
+        b.style.boxShadow = "inset 0 0 25px 2px white";
+        b.style.mixBlendMode = "difference";
+        s.appendChild(b);
+    }
+
+    function invert(e) {
+        if (!e) return;
+        b.remove();
+        s.remove();
+        window.invertAreaShield = null;
+        e.style.filter = e.style.filter === "invert(1)" ? "" : "invert(1)";
+    }
+
+    function selection(f) {
+        var x0 = Math.min(m0.clientX, m1.clientX);
+        var x1 = Math.max(m0.clientX, m1.clientX);
+        var y0 = Math.min(m0.clientY, m1.clientY);
+        var y1 = Math.max(m0.clientY, m1.clientY);
+        var dx = Math.max(1, (x1 - x0) / 10);
+        var dy = Math.max(1, (y1 - y0) / 10);
+        var elementsFromPoints = [];
+
+        for (var x = x0; x <= x1; x += dx) {
+            for (var y = y0; y <= y1; y += dy) {
+                elementsFromPoints.push(document.elementsFromPoint(x, y));
+            }
+        }
+
+        elementsFromPoints.sort((a, b) => a.length - b.length);
+        var intersection = elementsFromPoints[0].filter(
+            (e) => e !== b && e !== s && elementsFromPoints.every(efp => efp.includes(e))
+        );
+
+        f(intersection[0]);
+    }
+
+    function pointer(e) {
+        if (e.touches) {
+            if (e.type === "touchmove") e.preventDefault();
+            return e.touches[0] || e.changedTouches[0];
+        }
+        return e;
+    }
+
+    function release(e) {
+        window.removeEventListener("mousemove", drag);
+        window.removeEventListener("touchmove", drag);
+        window.removeEventListener("mouseup", release);
+        window.removeEventListener("touchend", release);
+        m1 = pointer(e);
+        selection(invert);
+    }
+
+    function drag(e) {
+        var m = pointer(e);
+        b.style.left = Math.min(m0.clientX, m.clientX) + "px";
+        b.style.top = Math.min(m0.clientY, m.clientY) + "px";
+        b.style.width = Math.abs(m.clientX - m0.clientX) + "px";
+        b.style.height = Math.abs(m.clientY - m0.clientY) + "px";
+    }
+
+    function hold(e) {
+        window.removeEventListener("mousedown", hold);
+        window.removeEventListener("touchstart", hold);
+        window.addEventListener("mousemove", drag);
+        window.addEventListener("touchmove", drag, { passive: false });
+        window.addEventListener("mouseup", release);
+        window.addEventListener("touchend", release);
+        m0 = pointer(e);
+        box();
+    }
+
+    function startInvertArea() {
+        shield();
+        window.invertAreaHold = hold;
+        window.addEventListener("mousedown", hold);
+        window.addEventListener("touchstart", hold);
+    }
+
+    startInvertArea();
+});
+   
+    // ------------------ Disorient Page ------------------
+/*addBtn(vfx, 'Disorient Page', () => {
+  if (!window.disorientActive) {
+    window.disorientActive = true;
+    window.originalTransforms = [];
+
+    
+    const prefixes = ['', '-ms-', '-webkit-', '-o-', '-moz-'];
+    const elements = Array.from(document.querySelectorAll('div, p, span, img, a, body'));
+
+    elements.forEach(el => {
+      const style = window.getComputedStyle(el);
+      const current = style.transform || '';
+      window.originalTransforms.push({ el, transform: current });
+      const deg = (Math.floor(Math.random() * 5) - 45);
+      prefixes.forEach(prefix => {
+        el.style[prefix + 'transform'] = `${current} rotate(${deg}deg)`;
+      });
+    });
+  } else {
+    // Reset everything
+    window.disorientActive = false;
+    if (window.originalTransforms) {
+      window.originalTransforms.forEach(({ el, transform }) => {
+        const prefixes = ['', '-ms-', '-webkit-', '-o-', '-moz-'];
+        prefixes.forEach(prefix => {
+          el.style[prefix + 'transform'] = transform;
+        });
+      });
+      window.originalTransforms = null;
+    }
+  }
+}); */
+
     
     // 3D Page
-  addBtn(vfx,'3D Page',()=>{
-  if(!window.triScript){
+addBtn(vfx,'3D Page',()=>{
     let s=document.createElement('script');
-    s.src='https://rawgit.com/Krazete/bookmarklets/master/tri.js';
+    s.src='https://rawgit.com/Krazete/bookmarklets/master/tri.js?cacheBust=' + Date.now();
     document.body.appendChild(s);
-    window.triScript=s;
-  }
+    window.triScript = s;
 },()=>{
-  if(window.triScript){window.triScript.remove();window.triScript=null;}
+    if(window.triScript){
+        window.triScript.remove();
+        window.triScript = null;
+    }
+    // reset transforms to normal
+    document.body.style.transform = '';
+    document.body.style.perspective = '';
 });
+
+    
 // Explode Page
 addBtn(vfx,'Explode Page',()=>{
   if(window.explodeActive) return;
@@ -1026,44 +1005,59 @@ addBtn(vfx,'Matrix Rain',()=>{
 // Glitch
 addBtn(vfx,'Glitch',()=>{
     if(window.glitchActive) return;
-    window.glitchActive=true;
-    window.glitchInt=setInterval(()=>{
-        document.querySelectorAll('*:not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)').forEach(e=>{
-            e.style.backgroundColor=['red','orange','yellow','green','blue','purple','pink'][Math.floor(Math.random()*7)];
+    window.glitchActive = true;
+    window.glitchInt = setInterval(()=>{
+        document.querySelectorAll('*:not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)')
+        .forEach(e=>{
+            e.style.backgroundColor = ['red','orange','yellow','green','blue','purple','pink'][Math.floor(Math.random()*7)];
         });
     },25);
 },()=>{
     if(window.glitchInt){
         clearInterval(window.glitchInt);
-        window.glitchInt=null;
+        window.glitchInt = null;
     }
-    window.glitchActive=false; // reset the flag
-    document.querySelectorAll('*:not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)').forEach(e=>e.style.backgroundColor='');
+    window.glitchActive = false;
+
+    
+    document.querySelectorAll('*:not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)')
+    .forEach(e=>{
+        e.style.backgroundColor = '';
+    });
 });
+
 
 
 // Smooth Disco
 addBtn(vfx,'Smooth Disco',()=>{
     if(window.discoSmoothActive) return;
-    window.discoSmoothActive=true;
-    let colors="red orange yellow green blue purple pink".split(" "),i=0;
-    window.discoSmoothInt=setInterval(()=>{
-        i>=colors.length?i=0:i++;
-        document.querySelectorAll('*:not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)').forEach(e=>{
-            e.style.transition="background-color 1s";
-            e.style.backgroundColor=colors[i];
+    window.discoSmoothActive = true;
+    let colors = "red orange yellow green blue purple pink".split(" "), i = 0;
+    window.discoSmoothInt = setInterval(()=>{
+        i = (i + 1) % colors.length;
+        document.querySelectorAll('*:not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)')
+        .forEach(e=>{
+            e.style.transition = "background-color 1s";
+            e.style.backgroundColor = colors[i];
         });
     },1000);
 },()=>{
     if(window.discoSmoothInt){
         clearInterval(window.discoSmoothInt);
-        window.discoSmoothInt=null;
+        window.discoSmoothInt = null;
     }
-    window.discoSmoothActive=false; // reset the flag
-    document.querySelectorAll('*:not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)').forEach(e=>e.style.backgroundColor='');
+    window.discoSmoothActive = false;
+
+
+    document.querySelectorAll('*:not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)')
+    .forEach(e=>{
+        e.style.transition = "";          
+        e.style.backgroundColor = "";     
+    });
 });
 
-// ---------- Text Corruption (Chat-immune) ----------
+
+// ---------- Text Corruption ----------
 addBtn(vfx, 'Text Corruption', () => {
     const chatEl = document.getElementById('globalChatContainer');
     const isImmune = el => chatEl && (el === chatEl || chatEl.contains(el));
@@ -1099,7 +1093,7 @@ addBtn(vfx, 'Text Corruption', () => {
     if (window._textCorruptCleanup) window._textCorruptCleanup();
 });
 
-    // ---------- Bubble Text (Chat-immune) ----------
+    // ---------- Bubble Text ----------
 addBtn(vfx, 'Bubble Text', () => {
     if (window.bubbleActive) return;
     window.bubbleActive = true;
@@ -1234,6 +1228,7 @@ addBtn(vfx, 'Full Chaos', () => {
     window.fullChaosActive = false;
   }
 });
+
 // Fake blocked page
 addBtn(vfx,'Block link',()=>{
   window.linkRedirectsInt=setInterval(()=>{
@@ -1244,37 +1239,88 @@ addBtn(vfx,'Block link',()=>{
 },()=>{
   clearInterval(window.linkRedirectsInt);
 });
-    // ---------- Stop All VFX (Chat-immune) ----------
+    // ---------- Stop All VFX ----------
 addBtn(vfx, 'Stop All', () => {
-    const chatEl = document.getElementById('globalChatContainer');
 
-    // Function to check if an element is the chat or inside it
-    const isImmune = el => chatEl && (el === chatEl || chatEl.contains(el));
-
-    // ------------------ Call all VFX cleanup functions ------------------
     if (window.stopAllVFX) {
         window.stopAllVFX.forEach(fn => { 
             try { fn(); } catch(e) {} 
         });
         window.stopAllVFX = [];
     }
+// ------------------ Stop Invert Media ------------------
+if (window.invertimgStyle) { window.invertimgStyle.remove(); window.invertimgStyle = null; }
+window.invertimgActive = false;
 
+// ------------------ Stop Censor Media ------------------
+if (window.af) cancelAnimationFrame(window.af);
+if (window.censorStyle) window.censorStyle.remove();
+if (window.censors) for (var c of window.censors) c.remove();
+if (window.sensed) for (var e of window.sensed) e.parentElement.classList.remove("censor-parent");
+window.censors = [];
+window.sensed = [];
+window.censorActive = false;
+
+ // ------------------ Stop Invert area ------------------
+if (window.invertAreaShield) window.invertAreaShield.remove();
+window.removeEventListener("mousedown", window.invertAreaHold);
+window.removeEventListener("touchstart", window.invertAreaHold);
+window.invertAreaActive = false;
+
+  // ------------------ Stop disorientation ------------------
+if (window.disorientActive) {
+  window.disorientActive = false;
+  if (window.originalTransforms) {
+    window.originalTransforms.forEach(({ el, transform }) => {
+      ['', '-ms-', '-webkit-', '-o-', '-moz-'].forEach(prefix => {
+        el.style[prefix + 'transform'] = transform;
+      });
+    });
+    window.originalTransforms = null;
+  }
+}
+  
     // ------------------ Stop Bubble Text ------------------
     if (window._bubbleCleanup) window._bubbleCleanup();
     window.bubbleActive = false;
 
     // ------------------ Stop Matrix Rain ------------------
-    if(window.matrixInt){ clearInterval(window.matrixInt); window.matrixInt=null; }
-    if(window.matrixCanvas && !isImmune(window.matrixCanvas)){ window.matrixCanvas.remove(); window.matrixCanvas=null; }
-    window.matrixActive=false;
+if (window.matrixInt) {
+    clearInterval(window.matrixInt);
+    window.matrixInt = null;
+}
+if (window.matrixCanvas) {
+    window.matrixCanvas.remove();
+    window.matrixCanvas = null;
+}
+window.matrixActive = false;
 
-    // ------------------ Stop Smooth Disco ------------------
-    if(window.discoSmoothInt){ clearInterval(window.discoSmoothInt); window.discoSmoothInt=null; }
-    window.discoSmoothActive=false;
 
-    // ------------------ Stop Glitch ------------------
-    if(window.glitchInt){ clearInterval(window.glitchInt); window.glitchInt=null; }
-    window.glitchActive=false;
+   // ------------------ Stop Glitch ------------------
+if(window.glitchInt){ 
+    clearInterval(window.glitchInt); 
+    window.glitchInt = null; 
+}
+window.glitchActive = false;
+
+document.querySelectorAll('*:not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)')
+.forEach(e=>{
+    e.style.backgroundColor = '';
+});
+
+// ------------------ Stop Smooth Disco ------------------
+if(window.discoSmoothInt){ 
+    clearInterval(window.discoSmoothInt); 
+    window.discoSmoothInt = null; 
+}
+window.discoSmoothActive = false;
+
+document.querySelectorAll('*:not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)')
+.forEach(e=>{
+    e.style.transition = '';
+    e.style.backgroundColor = '';
+});
+
 
     // ------------------ Stop Full Chaos ------------------
     if(window.fullChaosLoop1){ clearInterval(window.fullChaosLoop1); window.fullChaosLoop1=null; }
@@ -1284,8 +1330,12 @@ addBtn(vfx, 'Stop All', () => {
     window.fullChaosActive=false;
 
     // ------------------ Stop Page Spin ------------------
-    if(window.pageSpinStyle && !isImmune(window.pageSpinStyle)){ window.pageSpinStyle.remove(); window.pageSpinStyle=null; }
-    window.pageSpinActive=false;
+if (window.pageSpinStyle) {
+    window.pageSpinStyle.remove();
+    window.pageSpinStyle = null;
+}
+window.pageSpinActive = false;
+
 
     // ------------------ Stop Text Corruption ------------------
     if(window._textCorruptCleanup) window._textCorruptCleanup();
@@ -1340,7 +1390,7 @@ addBtn(vfx, 'Stop All', () => {
         const section = document.createElement('div');
         section.style.marginTop = '10px';
         section.style.padding = '8px';
-        section.style.background = '#252525';
+        section.style.background = '#001f00';
         section.style.borderRadius = '10px';
         section.style.color = '#00ff00';
         section.innerHTML = `<b>Text Color</b><br>`;
