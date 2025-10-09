@@ -540,16 +540,8 @@ addBtn(vfx, "Corrupted Virus", () => {
     if (window.infectionActive) return;
     window.infectionActive = true;
 
-    const immune = new Set([
-        document.getElementById("globalChatContainer"),
-        document.getElementById("vfxGUI"),
-        document.getElementById("utilitiesGUI")
-    ]);
-
     window.infectionArcCount = 0;
     const maxArcs = 200;
-
-    // Track corruption intervals + original styles
     window.corruptedElems = new Map(); // elem -> { interval, orig }
 
     function createArc(x, y, angle, depth = 0) {
@@ -604,7 +596,7 @@ addBtn(vfx, "Corrupted Virus", () => {
 
         // --- Infect element with ongoing distortion ---
         const elem = document.elementFromPoint(px, py);
-        if (elem && !immune.has(elem) && !elem.closest("#vfxGUI, #utilitiesGUI, #globalChatContainer")) {
+        if (elem && !isImmune(elem)) { // ✅ replaces your old immune.has + closest check
             if (!window.corruptedElems.has(elem)) {
                 // Save original styles
                 const orig = {
@@ -616,10 +608,11 @@ addBtn(vfx, "Corrupted Virus", () => {
                 let tick = 0;
                 const corruptAnim = setInterval(() => {
                     if (!window.infectionActive) { clearInterval(corruptAnim); return; }
+                    if (isImmune(elem)) return; // ✅ prevents GUI elements from ever getting hit mid-animation
                     const hue = (tick * 10) % 360;
                     elem.style.filter = `hue-rotate(${hue}deg)`;
-                    elem.style.transform = `scale(${1 + Math.sin(tick/10)*0.1}) rotate(${(Math.random()-0.5)*5}deg) skew(${(Math.random()-0.5)*4}deg, ${(Math.random()-0.5)*4}deg)`;
-                    elem.style.textShadow = `0 0 5px hsl(${hue},100%,60%), 0 0 10px hsl(${(hue+180)%360},100%,60%)`;
+                    elem.style.transform = `scale(${1 + Math.sin(tick / 10) * 0.1}) rotate(${(Math.random() - 0.5) * 5}deg) skew(${(Math.random() - 0.5) * 4}deg, ${(Math.random() - 0.5) * 4}deg)`;
+                    elem.style.textShadow = `0 0 5px hsl(${hue},100%,60%), 0 0 10px hsl(${(hue + 180) % 360},100%,60%)`;
                     tick++;
                 }, 120);
 
@@ -631,10 +624,10 @@ addBtn(vfx, "Corrupted Virus", () => {
         if (depth < 12 && window.infectionActive && window.infectionArcCount < maxArcs) {
             setTimeout(() => {
                 const bias = Math.PI / 4; // bottom-right
-                const newAngle = angle * 0.7 + bias * 0.3 + (Math.random() - 0.5) * Math.PI/16;
+                const newAngle = angle * 0.7 + bias * 0.3 + (Math.random() - 0.5) * Math.PI / 16;
                 createArc(px, py, newAngle, depth + 1);
                 if (Math.random() < 0.7) {
-                    createArc(px, py, newAngle + (Math.random() > 0.5 ? Math.PI/6 : -Math.PI/6), depth + 1);
+                    createArc(px, py, newAngle + (Math.random() > 0.5 ? Math.PI / 6 : -Math.PI / 6), depth + 1);
                 }
             }, 500 + Math.random() * 400);
         }
@@ -1355,140 +1348,121 @@ addBtn(vfx,'Block link',()=>{
     // ---------- Stop All VFX ----------
 addBtn(vfx, 'Stop All', () => {
 
-    if (window.stopAllVFX) {
-        window.stopAllVFX.forEach(fn => { 
-            try { fn(); } catch(e) {} 
-        });
-        window.stopAllVFX = [];
-    }
-// ------------------ Stop Invert Media ------------------
-if (window.invertimgStyle) { window.invertimgStyle.remove(); window.invertimgStyle = null; }
-window.invertimgActive = false;
+  const isImmune = el => el.closest('#vfxGUI, #utilitiesGUI');
 
-// ------------------ Stop Censor Media ------------------
-if (window.af) cancelAnimationFrame(window.af);
-if (window.censorStyle) window.censorStyle.remove();
-if (window.censors) for (var c of window.censors) c.remove();
-if (window.sensed) for (var e of window.sensed) e.parentElement.classList.remove("censor-parent");
-window.censors = [];
-window.sensed = [];
-window.censorActive = false;
-
- // ------------------ Stop Invert area ------------------
-if (window.invertAreaShield) window.invertAreaShield.remove();
-window.removeEventListener("mousedown", window.invertAreaHold);
-window.removeEventListener("touchstart", window.invertAreaHold);
-window.invertAreaActive = false;
-
-  // ------------------ Stop disorientation ------------------
-if (window.disorientActive) {
-  window.disorientActive = false;
-  if (window.originalTransforms) {
-    window.originalTransforms.forEach(({ el, transform }) => {
-      ['', '-ms-', '-webkit-', '-o-', '-moz-'].forEach(prefix => {
-        el.style[prefix + 'transform'] = transform;
-      });
+  if (window.stopAllVFX) {
+    window.stopAllVFX.forEach(fn => { 
+      try { fn(); } catch(e) {} 
     });
-    window.originalTransforms = null;
+    window.stopAllVFX = [];
   }
-}
-  
-    // ------------------ Stop Bubble Text ------------------
-    if (window._bubbleCleanup) window._bubbleCleanup();
-    window.bubbleActive = false;
 
-    // ------------------ Stop Matrix Rain ------------------
-if (window.matrixInt) {
-    clearInterval(window.matrixInt);
-    window.matrixInt = null;
-}
-if (window.matrixCanvas) {
-    window.matrixCanvas.remove();
-    window.matrixCanvas = null;
-}
-window.matrixActive = false;
+  // ------------------ Stop Invert Media ------------------
+  if (window.invertimgStyle) window.invertimgStyle.remove(), window.invertimgStyle = null;
+  window.invertimgActive = false;
 
+  // ------------------ Stop Censor Media ------------------
+  if (window.af) cancelAnimationFrame(window.af);
+  if (window.censorStyle) window.censorStyle.remove();
+  if (window.censors) window.censors.forEach(c => !isImmune(c) && c.remove());
+  if (window.sensed) window.sensed.forEach(e => !isImmune(e) && e.parentElement.classList.remove("censor-parent"));
+  window.censors = [];
+  window.sensed = [];
+  window.censorActive = false;
 
-   // ------------------ Stop Glitch ------------------
-if(window.glitchInt){ 
-    clearInterval(window.glitchInt); 
-    window.glitchInt = null; 
-}
-window.glitchActive = false;
+  // ------------------ Stop Invert Area ------------------
+  if (window.invertAreaShield && !isImmune(window.invertAreaShield)) window.invertAreaShield.remove();
+  window.removeEventListener("mousedown", window.invertAreaHold);
+  window.removeEventListener("touchstart", window.invertAreaHold);
+  window.invertAreaActive = false;
 
-document.querySelectorAll('*:not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)')
-.forEach(e=>{
-    e.style.backgroundColor = '';
-});
-
-// ------------------ Stop Smooth Disco ------------------
-if(window.discoSmoothInt){ 
-    clearInterval(window.discoSmoothInt); 
-    window.discoSmoothInt = null; 
-}
-window.discoSmoothActive = false;
-
-document.querySelectorAll('*:not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)')
-.forEach(e=>{
-    e.style.transition = '';
-    e.style.backgroundColor = '';
-});
-
-
-    // ------------------ Stop Full Chaos ------------------
-    if(window.fullChaosLoop1){ clearInterval(window.fullChaosLoop1); window.fullChaosLoop1=null; }
-    if(window.fullChaosLoop2){ clearInterval(window.fullChaosLoop2); window.fullChaosLoop2=null; }
-    const chaos = document.getElementById('chaosContainer');
-    if(chaos && !isImmune(chaos)) chaos.remove();
-    window.fullChaosActive=false;
-
-    // ------------------ Stop Page Spin ------------------
-if (window.pageSpinStyle) {
-    window.pageSpinStyle.remove();
-    window.pageSpinStyle = null;
-}
-window.pageSpinActive = false;
-
-
-    // ------------------ Stop Text Corruption ------------------
-    if(window._textCorruptCleanup) window._textCorruptCleanup();
-
-        // ------------------ Stop Image Glitch ------------------
-    if(window.imgGlitchInt){
-        clearInterval(window.imgGlitchInt);
-        window.imgGlitchInt = null;
-        document.querySelectorAll('img:not(#vfxGUI *):not(#utilitiesGUI *)').forEach(e=>{
-            if(!isImmune(e)){
-                e.style.position='';
-                e.style.left='';
-                e.style.top='';
-            }
-        });
+  // ------------------ Stop Disorientation ------------------
+  if (window.disorientActive) {
+    window.disorientActive = false;
+    if (window.originalTransforms) {
+      window.originalTransforms.forEach(({ el, transform }) => {
+        if (!isImmune(el)) {
+          ['', '-ms-', '-webkit-', '-o-', '-moz-'].forEach(prefix => {
+            el.style[prefix + 'transform'] = transform;
+          });
+        }
+      });
+      window.originalTransforms = null;
     }
+  }
 
-    // ------------------ Stop Infection Virus ------------------
-    if (window.stopAllInfection) {
-        try { window.stopAllInfection(); } catch (e) {}
-        window.stopAllInfection = null;
-    }
+  // ------------------ Stop Bubble Text ------------------
+  if (window._bubbleCleanup) window._bubbleCleanup();
+  window.bubbleActive = false;
 
+  // ------------------ Stop Matrix Rain ------------------
+  if (window.matrixInt) clearInterval(window.matrixInt), window.matrixInt = null;
+  if (window.matrixCanvas && !isImmune(window.matrixCanvas)) window.matrixCanvas.remove();
+  window.matrixCanvas = null;
+  window.matrixActive = false;
 
-    // ------------------ Reset page-wide inline styles (skip chat) ------------------
-    document.body.style.transform='';
-    document.body.style.backgroundColor='';
-    document.body.style.filter='';
-    document.querySelectorAll('body *:not(#globalChatContainer):not(#globalChatContainer *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)').forEach(e=>{
-        e.style.backgroundColor='';
-        e.style.height='';
-        e.style.transform='';
-        e.style.transition='';
-        e.style.color='';
-        e.style.fontSize='';
-        e.style.position='';
-        e.style.left='';
-        e.style.top='';
-        e.style.textShadow='';
+  // ------------------ Stop Glitch ------------------
+  if (window.glitchInt) clearInterval(window.glitchInt), window.glitchInt = null;
+  window.glitchActive = false;
+
+  // ------------------ Stop Smooth Disco ------------------
+  if (window.discoSmoothInt) clearInterval(window.discoSmoothInt), window.discoSmoothInt = null;
+  window.discoSmoothActive = false;
+
+  // ------------------ Stop Full Chaos ------------------
+  if (window.fullChaosLoop1) clearInterval(window.fullChaosLoop1), window.fullChaosLoop1 = null;
+  if (window.fullChaosLoop2) clearInterval(window.fullChaosLoop2), window.fullChaosLoop2 = null;
+  const chaos = document.getElementById('chaosContainer');
+  if (chaos && !isImmune(chaos)) chaos.remove();
+  window.fullChaosActive = false;
+
+  // ------------------ Stop Page Spin ------------------
+  if (window.pageSpinStyle) window.pageSpinStyle.remove(), window.pageSpinStyle = null;
+  window.pageSpinActive = false;
+
+  // ------------------ Stop Text Corruption ------------------
+  if (window._textCorruptCleanup) window._textCorruptCleanup();
+
+  // ------------------ Stop Image Glitch ------------------
+  if (window.imgGlitchInt) {
+    clearInterval(window.imgGlitchInt);
+    window.imgGlitchInt = null;
+    document.querySelectorAll('img').forEach(e => {
+      if (!isImmune(e)) {
+        e.style.position = '';
+        e.style.left = '';
+        e.style.top = '';
+      }
     });
+  }
+
+  // ------------------ Stop Infection Virus ------------------
+  if (window.stopAllInfection) {
+    try { window.stopAllInfection(); } catch (e) {}
+    window.stopAllInfection = null;
+  }
+
+  // ------------------ Reset page-wide inline styles (skip GUI) ------------------
+  document.body.style.transform = '';
+  document.body.style.backgroundColor = '';
+  document.body.style.filter = '';
+
+  document.querySelectorAll('body *').forEach(e => {
+    if (!isImmune(e)) {
+      e.style.backgroundColor = '';
+      e.style.height = '';
+      e.style.transform = '';
+      e.style.transition = '';
+      e.style.color = '';
+      e.style.fontSize = '';
+      e.style.position = '';
+      e.style.left = '';
+      e.style.top = '';
+      e.style.textShadow = '';
+    }
+  });
+});
+
 
     // ------------------ Reset Utilities ------------------
     if(window.stats){ window.stats.dom.remove(); window.stats=null; }
