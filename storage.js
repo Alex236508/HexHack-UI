@@ -58,9 +58,9 @@
   
 
   function spawnGUIs() {
-    // -------------------- CLEAN TWO-PAGE GUI --------------------
+    // -------------------- CLEAN TWO-PAGE GUI (NEON BORDER BUTTONS) --------------------
 (function() {
-  
+  // Main container
   const gui = document.createElement('div');
   gui.id = 'mainGUI';
   gui.style.cssText = `
@@ -81,7 +81,7 @@
   `;
   document.body.appendChild(gui);
 
-  
+  // Inner slider to hold both pages
   const slider = document.createElement('div');
   slider.style.cssText = `
     display: flex;
@@ -90,7 +90,7 @@
   `;
   gui.appendChild(slider);
 
-  
+  // Button style (injected once globally)
   const btnStyle = document.createElement('style');
   btnStyle.textContent = `
     .guiBtn {
@@ -159,7 +159,7 @@
   `;
   slider.appendChild(vfx);
 
-  
+  // Navigation arrows
   const nav = document.createElement('div');
   nav.style.cssText = `
     position: absolute;
@@ -174,7 +174,7 @@
   `;
   gui.appendChild(nav);
 
-  // Dragging
+  // Drag behavior
   let offsetX, offsetY, dragging = false;
   gui.addEventListener('mousedown', e => {
     if (e.target.tagName === 'BUTTON') return;
@@ -209,7 +209,7 @@
     resizeToContent();
   };
 
-  // Make the button areas accessible globally for addBtn()
+  /
   window.util = util.querySelector('.btnGrid');
   window.vfx = vfx.querySelector('.btnGrid');
 
