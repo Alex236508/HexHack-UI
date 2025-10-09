@@ -58,7 +58,7 @@
   
 
   function spawnGUIs() {
-    // -------------------- CLEAN TWO-PAGE GUI (NEON BORDER BUTTONS) --------------------
+    // -------------------- Multi Page GUI --------------------
 (function() {
   // Main container
   const gui = document.createElement('div');
@@ -209,7 +209,6 @@
     resizeToContent();
   };
 
-  /
   window.util = util.querySelector('.btnGrid');
   window.vfx = vfx.querySelector('.btnGrid');
 
