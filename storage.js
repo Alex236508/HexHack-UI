@@ -1461,7 +1461,6 @@ addBtn(vfx, 'Stop All', () => {
       e.style.textShadow = '';
     }
   });
-});
 
 
     // ------------------ Reset Utilities ------------------
