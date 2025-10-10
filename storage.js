@@ -1480,7 +1480,7 @@ document.querySelectorAll('body *').forEach(e => {
         picker.type = 'color';
         picker.value = '#00ff00';
         picker.oninput = () => {
-            document.querySelectorAll('body *:not(#vfxGUI *):not(#utilitiesGUI *)').forEach(el => el.style.color = picker.value);
+            document.querySelectorAll('body *:not(#mainGUI *):not(#vfxGUI *):not(#utilitiesGUI *)').forEach(el => el.style.color = picker.value);
         };
         section.appendChild(picker);
         vfx.appendChild(section);
