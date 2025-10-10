@@ -520,7 +520,7 @@ if (vfxContainer) {
         slider.value = '16';
         slider.style.width = '100%';
         slider.oninput = () => {
-            document.querySelectorAll('body *:not(#mainGUI *):not(#vfxGUI *):not(#utilitiesGUI *)').forEach(el => el.style.fontSize = slider.value + 'px');
+            document.querySelectorAll('body *:not(#vfxGUI *):not(#utilitiesGUI *)').forEach(el => el.style.fontSize = slider.value + 'px');
         };
         section.appendChild(slider);
         util.appendChild(section);
@@ -1485,7 +1485,7 @@ addBtn(vfx, 'Stop All', () => {
         picker.type = 'color';
         picker.value = '#00ff00';
         picker.oninput = () => {
-            document.querySelectorAll('body *:not(#mainGUI *):not(#vfxGUI *):not(#utilitiesGUI *)').forEach(el => el.style.color = picker.value);
+            document.querySelectorAll('body *:not(#vfxGUI *):not(#utilitiesGUI *)').forEach(el => el.style.color = picker.value);
         };
         section.appendChild(picker);
         vfx.appendChild(section);
