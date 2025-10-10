@@ -1486,26 +1486,24 @@ document.querySelectorAll('body *').forEach(e => {
         vfx.appendChild(section);
     })();
 
-    // -------------------- SHIFT+H hide/show --------------------
-(function(){
-  if (window._shiftHHandlerInstalled) return;
-  window._shiftHHandlerInstalled = true;
+    // -------------------- SHIFT+H TO HIDE --------------------
+document.addEventListener('keydown', (e) => {
+ 
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
 
-  document.addEventListener('keydown', function(e) {
-    const tgt = e.target;
-    if (tgt && (tgt.tagName === 'INPUT' || tgt.tagName === 'TEXTAREA' || tgt.isContentEditable)) return;
+  if (e.shiftKey && e.key.toLowerCase() === 'h') {
+    const main = document.getElementById('mainGUI');
+    const vfx  = document.getElementById('vfxGUI');
+    const util = document.getElementById('utilitiesGUI');
 
-    if (e.shiftKey && e.key && e.key.toLowerCase() === 'h') {
-      const main = document.getElementById('mainGUI');
-      if (main) {
-        main.style.display = (main.style.display === 'none') ? '' : 'none';
-        return;
-      }
-
-      const utilEl = document.getElementById('utilitiesGUI');
-      const vfxEl  = document.getElementById('vfxGUI');
-      if (utilEl) utilEl.style.display = (utilEl.style.display === 'none') ? '' : 'none';
-      if (vfxEl)  vfxEl.style.display  = (vfxEl.style.display === 'none') ? '' : 'none';
+    
+    if (main) {
+      main.style.display = (main.style.display === 'none') ? 'block' : 'none';
+    } else {
+      
+      if (vfx)  vfx.style.display  = (vfx.style.display  === 'none') ? 'block' : 'none';
+      if (util) util.style.display = (util.style.display === 'none') ? 'block' : 'none';
     }
-  });
+  }
+});
 })();
