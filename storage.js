@@ -1404,11 +1404,13 @@ addBtn(vfx, 'Stop All', () => {
 
   // ------------------ Stop Glitch ------------------
   if (window.glitchInt) clearInterval(window.glitchInt), window.glitchInt = null;
-  window.glitchActive = false;
+  window.glitchActive = false; 
+  e.style.backgroundColor = '';
 
   // ------------------ Stop Smooth Disco ------------------
   if (window.discoSmoothInt) clearInterval(window.discoSmoothInt), window.discoSmoothInt = null;
   window.discoSmoothActive = false;
+  e.style.backgroundColor = '';
 
   // ------------------ Stop Full Chaos ------------------
   if (window.fullChaosLoop1) clearInterval(window.fullChaosLoop1), window.fullChaosLoop1 = null;
