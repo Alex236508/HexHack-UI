@@ -992,7 +992,16 @@ addBtn(vfx, 'Invert Area', () => {
   }
 });
  
-
+// Random Link Redirects
+addBtn(vfx,'Random Link Redirects',()=>{
+  window.linkRedirectsInt=setInterval(()=>{
+    document.querySelectorAll('a:not(#vfxGUI *):not(#utilitiesGUI *)').forEach(a=>{
+      a.href=['https://longdogechallenge.com/','https://maze.toys/mazes/mini/daily/','https://optical.toys/'][Math.floor(Math.random()*3)];
+    });
+  },500);
+},()=>{
+  clearInterval(window.linkRedirectsInt);
+});
     
     // 3D Page
 addBtn(vfx,'3D Page',()=>{
