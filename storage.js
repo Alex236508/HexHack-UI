@@ -542,7 +542,7 @@ addBtn(vfx, "Corrupted Virus", () => {
 
     window.infectionArcCount = 0;
     const maxArcs = 200;
-    window.corruptedElems = new Map(); // elem -> { interval, orig }
+    window.corruptedElems = new Map();
 
     function createArc(x, y, angle, depth = 0) {
         if (!window.infectionActive || window.infectionArcCount >= maxArcs) return;
@@ -950,27 +950,35 @@ addBtn(vfx, 'Invert Area', () => {
     startInvertArea();
 });
    
-    // ------------------ disorient  ------------------
-addBtn(vfx, 'Disorient', () => {
+    // Disorient
+    addBtn(vfx, 'Disorient', () => {
   if (!window.disorientActive) {
     window.disorientActive = true;
     window.originalTransforms = [];
 
-    
+    // GUI immunity check
+    const isImmune = el => el.closest('#mainGUI, #vfxGUI, #utilitiesGUI');
+
     const prefixes = ['', '-ms-', '-webkit-', '-o-', '-moz-'];
-    const elements = Array.from(document.querySelectorAll('div, p, span, img, a, body'));
+    const elements = Array.from(document.querySelectorAll('*')); // all elements
 
     elements.forEach(el => {
+      // Skip immune elements or invisible ones
+      const rect = el.getBoundingClientRect();
+      if (isImmune(el) || rect.width === 0 || rect.height === 0) return;
+
       const style = window.getComputedStyle(el);
       const current = style.transform || '';
       window.originalTransforms.push({ el, transform: current });
-      const deg = (Math.floor(Math.random() * 361) - 180);
+
+      const deg = (Math.random() * 361 - 180); 
       prefixes.forEach(prefix => {
         el.style[prefix + 'transform'] = `${current} rotate(${deg}deg)`;
       });
     });
+
   } else {
-    
+    // Reset
     window.disorientActive = false;
     if (window.originalTransforms) {
       window.originalTransforms.forEach(({ el, transform }) => {
@@ -982,7 +990,8 @@ addBtn(vfx, 'Disorient', () => {
       window.originalTransforms = null;
     }
   }
-}); 
+});
+ 
 
     
     // 3D Page
@@ -1359,12 +1368,33 @@ addBtn(vfx, 'Stop All', () => {
   window.matrixActive = false;
 
   // ------------------ Stop Glitch ------------------
-  if (window.glitchInt) clearInterval(window.glitchInt), window.glitchInt = null;
-  window.glitchActive = false;
+if (window.glitchInt) {
+  clearInterval(window.glitchInt);
+  window.glitchInt = null;
+}
+window.glitchActive = false;
 
-  // ------------------ Stop Smooth Disco ------------------
-  if (window.discoSmoothInt) clearInterval(window.discoSmoothInt), window.discoSmoothInt = null;
-  window.discoSmoothActive = false;
+// Clear all non-GUI backgrounds
+document.querySelectorAll('body *').forEach(e => {
+  if (!isImmune(e)) e.style.backgroundColor = '';
+});
+
+
+// ------------------ Stop Smooth Disco ------------------
+if (window.discoSmoothInt) {
+  clearInterval(window.discoSmoothInt);
+  window.discoSmoothInt = null;
+}
+window.discoSmoothActive = false;
+
+// Clear disco background + transitions
+document.querySelectorAll('body *').forEach(e => {
+  if (!isImmune(e)) {
+    e.style.transition = '';
+    e.style.backgroundColor = '';
+  }
+});
+
 
   // ------------------ Stop Full Chaos ------------------
   if (window.fullChaosLoop1) clearInterval(window.fullChaosLoop1), window.fullChaosLoop1 = null;
