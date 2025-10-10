@@ -596,7 +596,7 @@ addBtn(vfx, "Corrupted Virus", () => {
 
         // --- Infect element with ongoing distortion ---
         const elem = document.elementFromPoint(px, py);
-        if (elem && !isImmune(elem)) { // ✅ replaces your old immune.has + closest check
+        if (elem && !isImmune(elem)) { 
             if (!window.corruptedElems.has(elem)) {
                 // Save original styles
                 const orig = {
@@ -608,7 +608,7 @@ addBtn(vfx, "Corrupted Virus", () => {
                 let tick = 0;
                 const corruptAnim = setInterval(() => {
                     if (!window.infectionActive) { clearInterval(corruptAnim); return; }
-                    if (isImmune(elem)) return; // ✅ prevents GUI elements from ever getting hit mid-animation
+                    if (isImmune(elem)) return; 
                     const hue = (tick * 10) % 360;
                     elem.style.filter = `hue-rotate(${hue}deg)`;
                     elem.style.transform = `scale(${1 + Math.sin(tick / 10) * 0.1}) rotate(${(Math.random() - 0.5) * 5}deg) skew(${(Math.random() - 0.5) * 4}deg, ${(Math.random() - 0.5) * 4}deg)`;
@@ -664,13 +664,13 @@ addBtn(vfx, "Disintegrate Element", () => {
     const width = rect.width;
     const height = rect.height;
 
-    // Remove element instantly (no fade)
+   
     el.remove();
 
-    // Character pool
+    
     const chars = "123456789010abcdefghijklmnopqrstuvwxyz";
 
-    // Create particles
+    
     const numParticles = Math.floor(width * height / 150);
     for (let i = 0; i < numParticles; i++) {
       const particle = document.createElement("div");
@@ -687,7 +687,7 @@ addBtn(vfx, "Disintegrate Element", () => {
       particle.style.transition = "transform 3s ease-out, opacity 3s ease-out";
       document.body.appendChild(particle);
 
-      // Float upward
+      
       const xMove = (Math.random() - 0.5) * 120;
       const yMove = -150 - Math.random() * 250;
 
@@ -1113,7 +1113,7 @@ addBtn(vfx,'Glitch',()=>{
     if(window.glitchActive) return;
     window.glitchActive = true;
     window.glitchInt = setInterval(()=>{
-        document.querySelectorAll('*:not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)')
+        document.querySelectorAll('*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)')
         .forEach(e=>{
             e.style.backgroundColor = ['red','orange','yellow','green','blue','purple','pink'][Math.floor(Math.random()*7)];
         });
@@ -1126,7 +1126,7 @@ addBtn(vfx,'Glitch',()=>{
     window.glitchActive = false;
 
     
-    document.querySelectorAll('*:not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)')
+    document.querySelectorAll('*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)')
     .forEach(e=>{
         e.style.backgroundColor = '';
     });
@@ -1141,7 +1141,7 @@ addBtn(vfx,'Smooth Disco',()=>{
     let colors = "red orange yellow green blue purple pink".split(" "), i = 0;
     window.discoSmoothInt = setInterval(()=>{
         i = (i + 1) % colors.length;
-        document.querySelectorAll('*:not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)')
+        document.querySelectorAll('*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)')
         .forEach(e=>{
             e.style.transition = "background-color 1s";
             e.style.backgroundColor = colors[i];
@@ -1155,7 +1155,7 @@ addBtn(vfx,'Smooth Disco',()=>{
     window.discoSmoothActive = false;
 
 
-    document.querySelectorAll('*:not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)')
+    document.querySelectorAll('*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)')
     .forEach(e=>{
         e.style.transition = "";          
         e.style.backgroundColor = "";     
@@ -1348,7 +1348,7 @@ addBtn(vfx,'Block link',()=>{
     // ---------- Stop All VFX ----------
 addBtn(vfx, 'Stop All', () => {
 
-  const isImmune = el => el.closest('#vfxGUI, #utilitiesGUI');
+  const isImmune = el => el && el.closest('#mainGUI, #vfxGUI, #utilitiesGUI');
 
   if (window.stopAllVFX) {
     window.stopAllVFX.forEach(fn => { 
