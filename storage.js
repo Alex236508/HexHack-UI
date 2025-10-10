@@ -950,8 +950,8 @@ addBtn(vfx, 'Invert Area', () => {
     startInvertArea();
 });
    
-    // ------------------ Disorient Page ------------------
-/*addBtn(vfx, 'Disorient Page', () => {
+    // ------------------ Flip stuff  ------------------
+addBtn(vfx, 'Flip', () => {
   if (!window.disorientActive) {
     window.disorientActive = true;
     window.originalTransforms = [];
@@ -964,13 +964,13 @@ addBtn(vfx, 'Invert Area', () => {
       const style = window.getComputedStyle(el);
       const current = style.transform || '';
       window.originalTransforms.push({ el, transform: current });
-      const deg = (Math.floor(Math.random() * 5) - 45);
+      const deg = (Math.floor(Math.random() * 361) - 180);
       prefixes.forEach(prefix => {
         el.style[prefix + 'transform'] = `${current} rotate(${deg}deg)`;
       });
     });
   } else {
-    // Reset everything
+    
     window.disorientActive = false;
     if (window.originalTransforms) {
       window.originalTransforms.forEach(({ el, transform }) => {
@@ -982,7 +982,7 @@ addBtn(vfx, 'Invert Area', () => {
       window.originalTransforms = null;
     }
   }
-}); */
+}); 
 
     
     // 3D Page
