@@ -1486,14 +1486,26 @@ document.querySelectorAll('body *').forEach(e => {
         vfx.appendChild(section);
     })();
 
-    // -------------------- SHIFT+H TO HIDE --------------------
-    document.addEventListener('keydown', (e) => {
-    if (e.shiftKey && e.key.toLowerCase() === 'h') {
-      util.style.display = (util.style.display === 'none') ? 'block' : 'none';
-      vfx.style.display = (vfx.style.display === 'none') ? 'block' : 'none';
+    // -------------------- SHIFT+H hide/show --------------------
+(function(){
+  if (window._shiftHHandlerInstalled) return;
+  window._shiftHHandlerInstalled = true;
+
+  document.addEventListener('keydown', function(e) {
+    const tgt = e.target;
+    if (tgt && (tgt.tagName === 'INPUT' || tgt.tagName === 'TEXTAREA' || tgt.isContentEditable)) return;
+
+    if (e.shiftKey && e.key && e.key.toLowerCase() === 'h') {
+      const main = document.getElementById('mainGUI');
+      if (main) {
+        main.style.display = (main.style.display === 'none') ? '' : 'none';
+        return;
+      }
+
+      const utilEl = document.getElementById('utilitiesGUI');
+      const vfxEl  = document.getElementById('vfxGUI');
+      if (utilEl) utilEl.style.display = (utilEl.style.display === 'none') ? '' : 'none';
+      if (vfxEl)  vfxEl.style.display  = (vfxEl.style.display === 'none') ? '' : 'none';
     }
   });
-
-  } 
-
 })();
