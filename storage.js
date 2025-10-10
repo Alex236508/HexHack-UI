@@ -1017,7 +1017,7 @@ addBtn(vfx,'Explode Page',()=>{
     else{
       clearInterval(window.explodeInt);
       o.remove();
-      document.querySelectorAll('body *:not(#vfxGUI *):not(#utilitiesGUI *)').forEach(e=>{
+      document.querySelectorAll('body *:not(#mainGUI *):not(#vfxGUI *):not(#utilitiesGUI *)').forEach(e=>{
         e.style.transition='transform 1s ease-out';
         let x=(Math.random()-0.5)*1000,
             y=(Math.random()-0.5)*1000,
@@ -1025,7 +1025,7 @@ addBtn(vfx,'Explode Page',()=>{
         e.style.transform=`translate3d(${x}px,${y}px,${z}px) rotate(${Math.random()*720-360}deg)`;
       });
       setTimeout(()=>{
-        document.querySelectorAll('body *:not(#vfxGUI *):not(#utilitiesGUI *)').forEach(e=>{
+        document.querySelectorAll('body *:not(#mainGUI *):not(#vfxGUI *):not(#utilitiesGUI *)').forEach(e=>{
           e.style.transform='';
           e.style.transition='';
         });
@@ -1037,11 +1037,12 @@ addBtn(vfx,'Explode Page',()=>{
   clearInterval(window.explodeInt);
   window.explodeInt=null;
   window.explodeActive=false;
-  document.querySelectorAll('body *:not(#vfxGUI *):not(#utilitiesGUI *)').forEach(e=>{
+  document.querySelectorAll('body *:not(#mainGUI *):not(#vfxGUI *):not(#utilitiesGUI *)').forEach(e=>{
     e.style.transform='';
     e.style.transition='';
   });
 });
+    
 // Image Glitch
 addBtn(vfx,'Image Glitch',()=>{
   if(window.imgGlitchInt) return;
@@ -1251,7 +1252,7 @@ addBtn(vfx,'Page Spin',()=>{
   window.pageSpinActive=true;
   let s=document.createElement('style');
   s.id='pageSpinStyle';
-  s.innerHTML='@keyframes roll{100%{transform:rotate(129600deg);}} body > *:not(#vfxGUI):not(#utilitiesGUI){animation:roll 140s linear 360;} body > *:not(#vfxGUI):not(#utilitiesGUI) *{animation:roll 140s linear 360;}';
+  s.innerHTML='@keyframes roll{100%{transform:rotate(129600deg);}} body > *:not(#mainGUI):not(#vfxGUI):not(#utilitiesGUI){animation:roll 140s linear 360;} body > *:not(#vfxGUI):not(#utilitiesGUI) *{animation:roll 140s linear 360;}';
   document.head.appendChild(s);
   window.pageSpinStyle=s;
 },()=>{
