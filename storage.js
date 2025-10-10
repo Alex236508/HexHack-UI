@@ -950,8 +950,8 @@ addBtn(vfx, 'Invert Area', () => {
     startInvertArea();
 });
    
-    // ------------------ Flip stuff  ------------------
-addBtn(vfx, 'Flip', () => {
+    // ------------------ disorient  ------------------
+addBtn(vfx, 'Disorient', () => {
   if (!window.disorientActive) {
     window.disorientActive = true;
     window.originalTransforms = [];
@@ -1063,50 +1063,6 @@ addBtn(vfx,'Image Glitch',()=>{
       e.style.top='';
     });
   }
-});
-// Random Link Redirects
-addBtn(vfx,'Random Link Redirects',()=>{
-  window.linkRedirectsInt=setInterval(()=>{
-    document.querySelectorAll('a:not(#vfxGUI *):not(#utilitiesGUI *)').forEach(a=>{
-      a.href=['https://longdogechallenge.com/','https://puginarug.com/','https://onesquareminesweeper.com/'][Math.floor(Math.random()*3)];
-    });
-  },500);
-},()=>{
-  clearInterval(window.linkRedirectsInt);
-});
-// Matrix Rain
-addBtn(vfx,'Matrix Rain',()=>{
-  if(window.matrixActive) return;
-  window.matrixActive=true;
-  if(!window.matrixCanvas){
-    let c=document.createElement('canvas');
-    c.width=window.innerWidth;
-    c.height=window.innerHeight;
-    c.style.cssText='position:fixed;top:0;left:0;z-index:99999;pointer-events:none';
-    document.body.appendChild(c);
-    window.matrixCanvas=c;
-    let ctx=c.getContext('2d');
-    let chars='1010';
-    let cols=Math.floor(window.innerWidth/10);
-    let drops=[];
-    for(let i=0;i<cols;i++) drops[i]=Math.floor(Math.random()*c.height);
-    window.matrixInt=setInterval(()=>{
-      ctx.fillStyle='rgba(0,0,0,0.05)';
-      ctx.fillRect(0,0,c.width,c.height);
-      ctx.fillStyle='#0F0';
-      ctx.font='10px monospace';
-      for(let i=0;i<cols;i++){
-        ctx.fillText(chars[Math.floor(Math.random()*chars.length)],i*10,drops[i]*10);
-        if(drops[i]*10>c.height && Math.random()>0.975) drops[i]=0;
-        drops[i]++;
-      }
-    },33);
-  }
-},()=>{
-  clearInterval(window.matrixInt);
-  window.matrixInt=null;
-  if(window.matrixCanvas){window.matrixCanvas.remove();window.matrixCanvas=null;}
-  window.matrixActive=false;
 });
 
 // Glitch
