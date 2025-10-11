@@ -1486,22 +1486,13 @@ document.querySelectorAll('body *').forEach(e => {
         vfx.appendChild(section);
     })();
 
-    // -------------------- SHIFT+H TO HIDE --------------------
+      // -------------------- SHIFT+H TO HIDE --------------------
   document.addEventListener('keydown', (e) => {
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
-
     if (e.shiftKey && e.key.toLowerCase() === 'h') {
-      const main = document.getElementById('mainGUI');
-      const vfx  = document.getElementById('vfxGUI');
-      const util = document.getElementById('utilitiesGUI');
-
-      if (main) {
-        main.style.display = (main.style.display === 'none') ? 'block' : 'none';
-      } else {
-        if (vfx)  vfx.style.display  = (vfx.style.display  === 'none') ? 'block' : 'none';
-        if (util) util.style.display = (util.style.display === 'none') ? 'block' : 'none';
+      const gui = document.getElementById('mainGUI');
+      if (gui) {
+        gui.style.display = (gui.style.display === 'none') ? 'block' : 'none';
       }
     }
-  }); // <— closes addEventListener
-
-})(); // <— closes IIFE
+  });
+})(); // <— keep this last line as-is
