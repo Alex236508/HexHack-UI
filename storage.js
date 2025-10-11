@@ -91,31 +91,63 @@
   gui.appendChild(slider);
 
   // Button style (injected once globally)
-  const btnStyle = document.createElement('style');
-  btnStyle.textContent = `
-    .guiBtn {
-      background: transparent;
-      border: 2px solid #00ff00;
-      color: #00ff00;
-      font-family: Consolas, monospace;
-      font-size: 13px;
-      padding: 6px;
-      border-radius: 6px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.25s ease;
-    }
-    .guiBtn:hover {
-      background: rgba(0,255,0,0.1);
-      box-shadow: 0 0 10px #00ff00;
-      transform: scale(1.05);
-    }
-    .guiBtn:active {
-      background: rgba(0,255,0,0.25);
-      transform: scale(0.98);
-    }
-  `;
-  document.head.appendChild(btnStyle);
+const btnStyle = document.createElement('style');
+btnStyle.textContent = `
+ 
+  .guiBtn {
+    background: #0a0a0a;
+    border: 1px solid #00ff00;
+    color: #00ff00;
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    padding: 8px;
+    border-radius: 0;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    width: 100%;
+  }
+
+  .guiBtn:hover {
+    background: rgba(0,255,0,0.05);
+    box-shadow: inset 0 0 6px #00ff00, 0 0 8px #00ff00;
+    transform: scale(1.02);
+  }
+
+  .guiBtn:active {
+    background: rgba(0,255,0,0.15);
+    transform: scale(0.97);
+  }
+
+  
+  .btnGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 2px solid #00ff00;
+    border-radius: 8px;
+    background: #000;
+    box-shadow: 0 0 12px rgba(0,255,0,0.25);
+    overflow: hidden;
+  }
+
+  
+  .btnGrid .guiBtn {
+    border-right: 1px solid #00ff00;
+    border-bottom: 1px solid #00ff00;
+  }
+
+  
+  .btnGrid .guiBtn:nth-child(2n) {
+    border-right: none;
+  }
+
+  
+  .btnGrid .guiBtn:nth-last-child(-n+2) {
+    border-bottom: none;
+  }
+`;
+document.head.appendChild(btnStyle);
+
 
   // Utilities Page
   const util = document.createElement('div');
