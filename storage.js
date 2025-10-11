@@ -1485,14 +1485,14 @@ document.querySelectorAll('body *').forEach(e => {
         section.appendChild(picker);
         vfx.appendChild(section);
     })();
-
-      // -------------------- SHIFT+H TO HIDE --------------------
-  document.addEventListener('keydown', (e) => {
-    if (e.shiftKey && e.key.toLowerCase() === 'h') {
-      const gui = document.getElementById('mainGUI');
-      if (gui) {
-        gui.style.display = (gui.style.display === 'none') ? 'block' : 'none';
-      }
+ // -------------------- SHIFT+H TO HIDE -------------------- 
+   document.addEventListener('keydown', (e) => {
+  if (e.shiftKey && e.key.toLowerCase() === 'h') {
+    const gui = document.getElementById('mainGUI');
+    if (gui) {
+      gui.style.display = (gui.style.display === 'none') ? 'block' : 'none';
     }
-  });
-})(); // <— keep this last line as-is
+    }
+   });
+    }
+    })();
