@@ -149,7 +149,7 @@ btnStyle.textContent = `
 document.head.appendChild(btnStyle);
 
 
-  // -------------------- UTILITIES PAGE --------------------
+  // Create Utilities Page
 const util = document.createElement('div');
 util.id = 'utilitiesGUI';
 util.style.cssText = `
@@ -157,34 +157,15 @@ util.style.cssText = `
   padding: 10px;
   box-sizing: border-box;
 `;
-
-// Page Title
-const utilTitle = document.createElement('div');
-utilTitle.textContent = 'Utilities';
-utilTitle.style.cssText = `
-  text-align: center;
-  font-weight: bold;
-  margin-bottom: 10px;
+util.innerHTML = `
+  <div style="text-align:center;font-weight:bold;margin-bottom:10px;">
+    Utilities
+  </div>
+  <div class="btnGrid"></div>
 `;
-util.appendChild(utilTitle);
-
-// Outer bordered grid for Utilities
-const utilGrid = document.createElement('div');
-utilGrid.classList.add('utilGrid');
-utilGrid.style.cssText = `
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border: 2px solid #00ff00;
-  border-radius: 8px;
-  overflow: hidden;
-  background: transparent;
-  min-height: 320px; /* gap if not full */
-`;
-util.appendChild(utilGrid);
 slider.appendChild(util);
 
-
-// -------------------- VFX PAGE --------------------
+// Create VFX Page
 const vfx = document.createElement('div');
 vfx.id = 'vfxGUI';
 vfx.style.cssText = `
@@ -192,75 +173,65 @@ vfx.style.cssText = `
   padding: 10px;
   box-sizing: border-box;
 `;
-
-// Page Title
-const vfxTitle = document.createElement('div');
-vfxTitle.textContent = 'Page Effects';
-vfxTitle.style.cssText = `
-  text-align: center;
-  font-weight: bold;
-  margin-bottom: 10px;
+vfx.innerHTML = `
+  <div style="text-align:center;font-weight:bold;margin-bottom:10px;">
+    Page Effects
+  </div>
+  <div class="btnGrid"></div>
 `;
-vfx.appendChild(vfxTitle);
-
-// Outer bordered grid for VFX
-const vfxGrid = document.createElement('div');
-vfxGrid.classList.add('vfxGrid');
-vfxGrid.style.cssText = `
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border: 2px solid #00ff00;
-  border-radius: 8px;
-  overflow: hidden;
-  background: transparent;
-  min-height: 380px;
-`;
-vfx.appendChild(vfxGrid);
 slider.appendChild(vfx);
 
-
-// -------------------- BUTTON STYLE --------------------
-const gridBtnStyle = document.createElement('style');
-gridBtnStyle.textContent = `
-  .guiBtn {
-    background: transparent !important;
-    border: 1px solid #00ff00 !important;
-    color: #00ff00 !important;
+// --- Grid & Button Styling ---
+const style = document.createElement('style');
+style.textContent = `
+  .btnGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 2px solid #00ff00;
+    border-radius: 8px;
+    overflow: hidden;
+    background: transparent;
+  }
+  .btnGrid .guiBtn {
+    background: #000;
+    border: 1px solid #00ff00;
+    color: #00ff00;
     font-family: Consolas, monospace;
     font-size: 13px;
-    padding: 10px;
+    padding: 8px;
     cursor: pointer;
-    transition: all 0.25s ease;
-    text-align: center;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
   }
-  .guiBtn:hover {
+  .btnGrid .guiBtn:hover {
     background: rgba(0,255,0,0.1);
-    box-shadow: 0 0 10px #00ff00;
-    transform: scale(1.05);
+    transform: scale(1.03);
+    box-shadow: 0 0 8px #00ff00;
   }
-  .guiBtn:active {
+  .btnGrid .guiBtn:active {
     background: rgba(0,255,0,0.25);
     transform: scale(0.98);
   }
+  /* Add green dividers */
+  .btnGrid .guiBtn:nth-child(odd) {
+    border-right: 1px solid #00ff00;
+  }
+  .btnGrid .guiBtn:nth-child(n+3) {
+    border-top: 1px solid #00ff00;
+  }
 `;
-document.head.appendChild(gridBtnStyle);
+document.head.appendChild(style);
 
-
-// -------------------- UNIFIED addBtn --------------------
+// --- Add Button Helper ---
 window.addBtn = (parent, name, callback) => {
   const btn = document.createElement('button');
   btn.className = 'guiBtn';
   btn.textContent = name;
   btn.onclick = callback;
 
-  // Automatically detect which grid to append to
-  if (parent.id === 'vfxGUI') {
-    vfxGrid.appendChild(btn);
-  } else if (parent.id === 'utilitiesGUI') {
-    utilGrid.appendChild(btn);
-  } else {
-    parent.appendChild(btn);
-  }
+  const grid = parent.querySelector('.btnGrid');
+  if (grid) grid.appendChild(btn);
+  else parent.appendChild(btn);
 };
 
   // Navigation arrows
