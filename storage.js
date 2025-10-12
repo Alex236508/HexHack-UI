@@ -149,47 +149,119 @@ btnStyle.textContent = `
 document.head.appendChild(btnStyle);
 
 
-  // Utilities Page
-  const util = document.createElement('div');
-  util.id = 'utilitiesGUI';
-  util.style.cssText = `
-    width: 50%;
-    padding: 10px;
-    box-sizing: border-box;
-  `;
-  util.innerHTML = `
-    <div style="text-align:center;font-weight:bold;margin-bottom:10px;">Utilities</div>
-    <div class="btnGrid" style="
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      justify-items: stretch;
-      align-items: stretch;
-      min-height: 300px;
-    "></div>
-  `;
-  slider.appendChild(util);
+  // -------------------- UTILITIES PAGE --------------------
+const util = document.createElement('div');
+util.id = 'utilitiesGUI';
+util.style.cssText = `
+  width: 50%;
+  padding: 10px;
+  box-sizing: border-box;
+`;
 
-  // VFX Page
-  const vfx = document.createElement('div');
-  vfx.id = 'vfxGUI';
-  vfx.style.cssText = `
-    width: 50%;
+// Page Title
+const utilTitle = document.createElement('div');
+utilTitle.textContent = 'Utilities';
+utilTitle.style.cssText = `
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 10px;
+`;
+util.appendChild(utilTitle);
+
+// Outer bordered grid for Utilities
+const utilGrid = document.createElement('div');
+utilGrid.classList.add('utilGrid');
+utilGrid.style.cssText = `
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 2px solid #00ff00;
+  border-radius: 8px;
+  overflow: hidden;
+  background: transparent;
+  min-height: 320px; /* gap if not full */
+`;
+util.appendChild(utilGrid);
+slider.appendChild(util);
+
+
+// -------------------- VFX PAGE --------------------
+const vfx = document.createElement('div');
+vfx.id = 'vfxGUI';
+vfx.style.cssText = `
+  width: 50%;
+  padding: 10px;
+  box-sizing: border-box;
+`;
+
+// Page Title
+const vfxTitle = document.createElement('div');
+vfxTitle.textContent = 'Page Effects';
+vfxTitle.style.cssText = `
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 10px;
+`;
+vfx.appendChild(vfxTitle);
+
+// Outer bordered grid for VFX
+const vfxGrid = document.createElement('div');
+vfxGrid.classList.add('vfxGrid');
+vfxGrid.style.cssText = `
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 2px solid #00ff00;
+  border-radius: 8px;
+  overflow: hidden;
+  background: transparent;
+  min-height: 380px;
+`;
+vfx.appendChild(vfxGrid);
+slider.appendChild(vfx);
+
+
+// -------------------- BUTTON STYLE --------------------
+const gridBtnStyle = document.createElement('style');
+gridBtnStyle.textContent = `
+  .guiBtn {
+    background: transparent !important;
+    border: 1px solid #00ff00 !important;
+    color: #00ff00 !important;
+    font-family: Consolas, monospace;
+    font-size: 13px;
     padding: 10px;
-    box-sizing: border-box;
-  `;
-  vfx.innerHTML = `
-    <div style="text-align:center;font-weight:bold;margin-bottom:10px;">Page Effects</div>
-    <div class="btnGrid" style="
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      justify-items: stretch;
-      align-items: stretch;
-      min-height: 380px;
-    "></div>
-  `;
-  slider.appendChild(vfx);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-align: center;
+  }
+  .guiBtn:hover {
+    background: rgba(0,255,0,0.1);
+    box-shadow: 0 0 10px #00ff00;
+    transform: scale(1.05);
+  }
+  .guiBtn:active {
+    background: rgba(0,255,0,0.25);
+    transform: scale(0.98);
+  }
+`;
+document.head.appendChild(gridBtnStyle);
+
+
+// -------------------- UNIFIED addBtn --------------------
+window.addBtn = (parent, name, callback) => {
+  const btn = document.createElement('button');
+  btn.className = 'guiBtn';
+  btn.textContent = name;
+  btn.onclick = callback;
+
+  // Automatically detect which grid to append to
+  if (parent.id === 'vfxGUI') {
+    vfxGrid.appendChild(btn);
+  } else if (parent.id === 'utilitiesGUI') {
+    utilGrid.appendChild(btn);
+  } else {
+    parent.appendChild(btn);
+  }
+};
 
   // Navigation arrows
   const nav = document.createElement('div');
