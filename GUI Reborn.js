@@ -1,4 +1,3 @@
-so this is what i currently have
 (function(){
   if(window.hackerLoaded) return;
   window.hackerLoaded = true;
