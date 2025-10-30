@@ -1,4 +1,4 @@
-### go to [for bookmarklet](https://bookmarklets.org/maker/) 👍
+### [bookmarklet](https://bookmarklets.org/maker/) 👍
 
 ## Notes:
 
