@@ -29,15 +29,3 @@ javascript:(function(){
       .then(inject)
       .catch(function(e){alert('Load failed: '+e);});
 })();
-
-
-
-
-
-## Notes:
-
-#### Shift+h to hide
-
-#### Shift + f to hide topbar on embedded browser
-
-#### Shift + s to hide embedded browser
