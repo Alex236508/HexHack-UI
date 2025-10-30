@@ -149,11 +149,11 @@
             document.head.appendChild(btnStyle);
             // Master Title
             const masterTitle = document.createElement('div');
-            masterTitle.innerText = "TEACHERS NIGHTMARE V2";
+            masterTitle.innerText = "HexHack-UI Reborn";
             masterTitle.style.cssText = `
   text-align: center;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 16px;
   color: #00ff00;
   background: rgba(0, 255, 0, 0.15);
   padding: 8px;
@@ -398,22 +398,20 @@ if (!document.getElementById('hgui-grid-btn-styles')) {
     const s = document.createElement('style');
     s.id = 'hgui-grid-btn-styles';
     s.textContent = `
-    /* Container panel */
     .hgui-panel {
         display: grid;
-        grid-template-columns: 1fr 1fr; /* 2 buttons per row */
-        gap: 0;                         
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
         background: #000000;
-        border: 2px solid #00ff00;     
+        border: 2px solid #00ff00;
         padding: 0;
-        overflow: visible;              /* allow shadows to show outside container */
+        overflow: visible;
     }
 
-    /* Individual buttons */
     .hgui-btn {
-        background: #000000;           /* default black */
+        background: #000000;
         color: #00ff00;
-        border: 1px solid #00ff00;     
+        border: 1px solid #00ff00;
         margin: 0;
         padding: 8px;
         font-family: Consolas, monospace;
@@ -427,6 +425,7 @@ if (!document.getElementById('hgui-grid-btn-styles')) {
         user-select: none;
         position: relative;
         z-index: 0;
+        overflow: visible;
     }
 
     .hgui-btn.btn--in {
@@ -434,34 +433,82 @@ if (!document.getElementById('hgui-grid-btn-styles')) {
         transform: translateY(0) scale(1);
     }
 
-    /* Hover: glow + lift + distinct background */
     .hgui-btn:hover {
         transform: translateY(-1px) scale(1.01);
         border-color: #00ff00;
         box-shadow: 0 0 8px #00ff00, 0 0 16px #00ff00, 0 0 24px #00ff00;
-        background: #001f00;           /* distinct hover background */
-        z-index: 10;                   /* hover above neighbors */
+        background: #060f00;
+        z-index: 10;
     }
 
     .hgui-btn:active {
         transform: translateY(1px) scale(0.995);
         box-shadow: none;
     }
+
+    .hgui-particle {
+        position: absolute;
+        width: 3px;
+        height: 3px;
+        background: #00ff00;
+        border-radius: 50%;
+        pointer-events: none;
+        opacity: 0.9;
+        z-index: 20;
+        transition: transform 2s linear, opacity 2s linear;
+    }
     `;
     document.head.appendChild(s);
 }
 
-// ---------- Animated addBtn helper ----------
+// ---------- addBtn helper ----------
 function addBtn(container, name, on, off) {
     const b = document.createElement('button');
     b.className = 'hgui-btn';
     b.innerText = name;
-    b.addEventListener('click', on);
     container.appendChild(b);
 
     requestAnimationFrame(() => {
         b.classList.add('btn--in');
     });
+
+    let particleInterval;
+
+    // Start emitting particles on hover
+    b.addEventListener('mouseenter', () => {
+        particleInterval = setInterval(() => {
+            const p = document.createElement('div');
+            p.className = 'hgui-particle';
+            b.appendChild(p);
+
+            // Random start position inside the button
+            const rect = b.getBoundingClientRect();
+            const x0 = Math.random() * rect.width;
+            const y0 = Math.random() * rect.height;
+            p.style.left = `${x0}px`;
+            p.style.top = `${y0}px`;
+
+            // Random direction and distance
+            const angle = Math.random() * Math.PI * 2;
+            const distance = 20 + Math.random() * 10;
+
+            // Trigger transition
+            requestAnimationFrame(() => {
+                p.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`;
+                p.style.opacity = '0';
+            });
+
+            // Remove particle after transition
+            setTimeout(() => p.remove(), 2000);
+        }, 150); // emit particle every 150ms
+    });
+
+    // Stop emitting when mouse leaves
+    b.addEventListener('mouseleave', () => {
+        clearInterval(particleInterval);
+    });
+
+    b.addEventListener('click', on);
 
     if (off) {
         if (!window._hgui_activeUtilities) window._hgui_activeUtilities = {};
@@ -666,15 +713,18 @@ function addBtn(container, name, on, off) {
                 alert(`Title: ${document.title}\nURL: ${window.location.href}\nImages: ${document.images.length}\nLinks: ${document.links.length}\nScripts: ${document.scripts.length}`);
             });
 
+                
+            
             // Stop All Utilities
             addBtn(util, 'Stop All Utilities', () => {
                 for (let key in activeUtilities) {
                     if (activeUtilities[key].off) activeUtilities[key].off();
-                }
+				}
             });
 
         })();
-            
+			
+        
         // -------------------- FONT SIZE SLIDER --------------------
         (function() {
             const section = document.createElement('div');
@@ -704,22 +754,20 @@ if (!document.getElementById('hgui-grid-btn-styles')) {
     const s = document.createElement('style');
     s.id = 'hgui-grid-btn-styles';
     s.textContent = `
-    /* Container panel */
     .hgui-panel {
         display: grid;
-        grid-template-columns: 1fr 1fr; /* 2 buttons per row */
-        gap: 0;                         
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
         background: #000000;
-        border: 2px solid #00ff00;     
+        border: 2px solid #00ff00;
         padding: 0;
-        overflow: visible;              /* allow shadows to show outside container */
+        overflow: visible;
     }
 
-    /* Individual buttons */
     .hgui-btn {
-        background: #000000;           /* default black */
+        background: #000000;
         color: #00ff00;
-        border: 1px solid #00ff00;     
+        border: 1px solid #00ff00;
         margin: 0;
         padding: 8px;
         font-family: Consolas, monospace;
@@ -733,6 +781,7 @@ if (!document.getElementById('hgui-grid-btn-styles')) {
         user-select: none;
         position: relative;
         z-index: 0;
+        overflow: visible;
     }
 
     .hgui-btn.btn--in {
@@ -740,34 +789,82 @@ if (!document.getElementById('hgui-grid-btn-styles')) {
         transform: translateY(0) scale(1);
     }
 
-    /* Hover: glow + lift + distinct background */
     .hgui-btn:hover {
         transform: translateY(-1px) scale(1.01);
         border-color: #00ff00;
         box-shadow: 0 0 8px #00ff00, 0 0 16px #00ff00, 0 0 24px #00ff00;
-        background: #001f00;           /* distinct hover background */
-        z-index: 10;                   /* hover above neighbors */
+        background: #060f00;
+        z-index: 10;
     }
 
     .hgui-btn:active {
         transform: translateY(1px) scale(0.995);
         box-shadow: none;
     }
+
+    .hgui-particle {
+        position: absolute;
+        width: 3px;
+        height: 3px;
+        background: #00ff00;
+        border-radius: 50%;
+        pointer-events: none;
+        opacity: 0.9;
+        z-index: 20;
+        transition: transform 2s linear, opacity 2s linear;
+    }
     `;
     document.head.appendChild(s);
 }
 
-// ---------- Animated addBtn helper ----------
+// ---------- addBtn helper ----------
 function addBtn(container, name, on, off) {
     const b = document.createElement('button');
     b.className = 'hgui-btn';
     b.innerText = name;
-    b.addEventListener('click', on);
     container.appendChild(b);
 
     requestAnimationFrame(() => {
         b.classList.add('btn--in');
     });
+
+    let particleInterval;
+
+    // Start emitting particles on hover
+    b.addEventListener('mouseenter', () => {
+        particleInterval = setInterval(() => {
+            const p = document.createElement('div');
+            p.className = 'hgui-particle';
+            b.appendChild(p);
+
+            // Random start position inside the button
+            const rect = b.getBoundingClientRect();
+            const x0 = Math.random() * rect.width;
+            const y0 = Math.random() * rect.height;
+            p.style.left = `${x0}px`;
+            p.style.top = `${y0}px`;
+
+            // Random direction and distance
+            const angle = Math.random() * Math.PI * 2;
+            const distance = 20 + Math.random() * 10;
+
+            // Trigger transition
+            requestAnimationFrame(() => {
+                p.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`;
+                p.style.opacity = '0';
+            });
+
+            // Remove particle after transition
+            setTimeout(() => p.remove(), 2000);
+        }, 150); // emit particle every 150ms
+    });
+
+    // Stop emitting when mouse leaves
+    b.addEventListener('mouseleave', () => {
+        clearInterval(particleInterval);
+    });
+
+    b.addEventListener('click', on);
 
     if (off) {
         if (!window._hgui_activeUtilities) window._hgui_activeUtilities = {};
