@@ -1,9 +1,9 @@
-# go to https://bookmarklets.org/maker/ for bookmarklet 👍
+### go to [for bookmarklet](https://bookmarklets.org/maker/) 👍
 
 ## Notes:
 
-### Shift+h to hide
+#### Shift+h to hide
 
-### Shift + f to hide topbar on embedded browser
+#### Shift + f to hide topbar on embedded browser
 
-### Shift + s to hide embedded browser
+#### Shift + s to hide embedded browser
