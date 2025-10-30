@@ -1,9 +1,8 @@
 ## How to Use
 
 1. **Copy the code below**.
-2. Create a new bookmark in your browser (right-click the bookmarks bar → “Add Page” or “Add Bookmark”).
-3. Paste the code into the **URL** field of the bookmark.
-4. Click the bookmark whenever you want to launch HackerGUI Reborn.
+2. right click bookmarks bar → Paste.
+3. Click the bookmark whenever you want to launch HexHack-UI.
 
 <details>
 <summary>📋 Bookmarklet Code (click to expand)</summary>
