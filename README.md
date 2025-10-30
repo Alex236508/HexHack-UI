@@ -1,8 +1,4 @@
-## Bookmarklet
-
-Easily run HackerGUI Reborn by creating a bookmarklet in your browser.
-
-### How to Use
+## How to Use
 
 1. **Copy the code below**.
 2. Create a new bookmark in your browser (right-click the bookmarks bar → “Add Page” or “Add Bookmark”).
