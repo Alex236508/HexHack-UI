@@ -9,7 +9,7 @@
 
 ```javascript
 javascript:(function(){
-    var u='[https://raw.githubusercontent.com/Alex236508/HexHack-UI/refs/heads/main/UI.js]';
+    var u='https://raw.githubusercontent.com/Alex236508/HexHack-UI/refs/heads/main/UI.js';
     function inject(code){
         var b=new Blob([code],{type:'application/javascript'});
         var url=URL.createObjectURL(b);
