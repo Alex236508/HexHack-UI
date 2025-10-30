@@ -393,18 +393,82 @@
         (function() {
             const activeUtilities = {};
 
-            // Helper to add a button
-            function addBtn(container, name, on, off) {
-                const b = document.createElement('button');
-                b.innerText = name;
-                b.style.cssText = 'width:100%;margin:2px 0;background:#060f00;color:#00ff00;border:none;padding:5px;border-radius:5px;cursor:pointer;font-family:Consolas,monospace;';
-                b.onclick = on;
-                container.appendChild(b);
-                if (off) activeUtilities[name] = {
-                    on,
-                    off
-                };
-            }
+            // ---------- BUTTON CSS ----------
+if (!document.getElementById('hgui-grid-btn-styles')) {
+    const s = document.createElement('style');
+    s.id = 'hgui-grid-btn-styles';
+    s.textContent = `
+    /* Container panel */
+    .hgui-panel {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* 2 buttons per row */
+        gap: 0;                         
+        background: #000000;
+        border: 2px solid #00ff00;     
+        padding: 0;
+        overflow: visible;              /* allow shadows to show outside container */
+    }
+
+    /* Individual buttons */
+    .hgui-btn {
+        background: #000000;           /* default black */
+        color: #00ff00;
+        border: 1px solid #00ff00;     
+        margin: 0;
+        padding: 8px;
+        font-family: Consolas, monospace;
+        font-size: 13px;
+        text-align: center;
+        cursor: pointer;
+        transition: transform 220ms ease, opacity 220ms ease, box-shadow 300ms ease, border-color 300ms ease, background 300ms ease;
+        opacity: 0;
+        transform: translateY(8px) scale(0.995);
+        outline: none;
+        user-select: none;
+        position: relative;
+        z-index: 0;
+    }
+
+    .hgui-btn.btn--in {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    /* Hover: glow + lift + distinct background */
+    .hgui-btn:hover {
+        transform: translateY(-1px) scale(1.01);
+        border-color: #00ff00;
+        box-shadow: 0 0 8px #00ff00, 0 0 16px #00ff00, 0 0 24px #00ff00;
+        background: #001f00;           /* distinct hover background */
+        z-index: 10;                   /* hover above neighbors */
+    }
+
+    .hgui-btn:active {
+        transform: translateY(1px) scale(0.995);
+        box-shadow: none;
+    }
+    `;
+    document.head.appendChild(s);
+}
+
+// ---------- Animated addBtn helper ----------
+function addBtn(container, name, on, off) {
+    const b = document.createElement('button');
+    b.className = 'hgui-btn';
+    b.innerText = name;
+    b.addEventListener('click', on);
+    container.appendChild(b);
+
+    requestAnimationFrame(() => {
+        b.classList.add('btn--in');
+    });
+
+    if (off) {
+        if (!window._hgui_activeUtilities) window._hgui_activeUtilities = {};
+        window._hgui_activeUtilities[name] = { on, off };
+    }
+}
+
 
             addBtn(util, 'Embedded Browser', () => {
                 // If the browser already exists, just toggle visibility
@@ -610,7 +674,7 @@
             });
 
         })();
-
+            
         // -------------------- FONT SIZE SLIDER --------------------
         (function() {
             const section = document.createElement('div');
@@ -635,13 +699,82 @@
 
 
         // -------------------- VFX Buttons --------------------
-        function addBtn(container, name, on, off) {
-            const b = document.createElement('button');
-            b.innerText = name;
-            b.style.cssText = 'width:100%;margin:2px 0;background:#060f00;color:#00ff00;border:none;padding:5px;border-radius:5px;cursor:pointer;font-family:Consolas,monospace;';
-            b.onclick = on;
-            container.appendChild(b);
-        }
+        // ---------- BUTTON CSS ----------
+if (!document.getElementById('hgui-grid-btn-styles')) {
+    const s = document.createElement('style');
+    s.id = 'hgui-grid-btn-styles';
+    s.textContent = `
+    /* Container panel */
+    .hgui-panel {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* 2 buttons per row */
+        gap: 0;                         
+        background: #000000;
+        border: 2px solid #00ff00;     
+        padding: 0;
+        overflow: visible;              /* allow shadows to show outside container */
+    }
+
+    /* Individual buttons */
+    .hgui-btn {
+        background: #000000;           /* default black */
+        color: #00ff00;
+        border: 1px solid #00ff00;     
+        margin: 0;
+        padding: 8px;
+        font-family: Consolas, monospace;
+        font-size: 13px;
+        text-align: center;
+        cursor: pointer;
+        transition: transform 220ms ease, opacity 220ms ease, box-shadow 300ms ease, border-color 300ms ease, background 300ms ease;
+        opacity: 0;
+        transform: translateY(8px) scale(0.995);
+        outline: none;
+        user-select: none;
+        position: relative;
+        z-index: 0;
+    }
+
+    .hgui-btn.btn--in {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    /* Hover: glow + lift + distinct background */
+    .hgui-btn:hover {
+        transform: translateY(-1px) scale(1.01);
+        border-color: #00ff00;
+        box-shadow: 0 0 8px #00ff00, 0 0 16px #00ff00, 0 0 24px #00ff00;
+        background: #001f00;           /* distinct hover background */
+        z-index: 10;                   /* hover above neighbors */
+    }
+
+    .hgui-btn:active {
+        transform: translateY(1px) scale(0.995);
+        box-shadow: none;
+    }
+    `;
+    document.head.appendChild(s);
+}
+
+// ---------- Animated addBtn helper ----------
+function addBtn(container, name, on, off) {
+    const b = document.createElement('button');
+    b.className = 'hgui-btn';
+    b.innerText = name;
+    b.addEventListener('click', on);
+    container.appendChild(b);
+
+    requestAnimationFrame(() => {
+        b.classList.add('btn--in');
+    });
+
+    if (off) {
+        if (!window._hgui_activeUtilities) window._hgui_activeUtilities = {};
+        window._hgui_activeUtilities[name] = { on, off };
+    }
+}
+
         // ---------- Corrupted Virus ----------
         addBtn(vfx, "Corrupted Virus", () => {
             if (window.infectionActive) return;
