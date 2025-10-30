@@ -1,4 +1,4 @@
-## HackerGUI Reborn Bookmarklet
+## Bookmarklet
 
 Easily run HackerGUI Reborn by creating a bookmarklet in your browser.
 
