@@ -1,1 +1,1 @@
-#go to https://bookmarklets.org/maker/ for bookmarklet 👍
+go to https://bookmarklets.org/maker/ for bookmarklet 👍
