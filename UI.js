@@ -437,7 +437,7 @@ if (!document.getElementById('hgui-grid-btn-styles')) {
         transform: translateY(-1px) scale(1.01);
         border-color: #00ff00;
         box-shadow: 0 0 8px #00ff00, 0 0 16px #00ff00, 0 0 24px #00ff00;
-        background: #060f00;
+        background: #001f00;
         z-index: 10;
     }
 
@@ -793,7 +793,7 @@ if (!document.getElementById('hgui-grid-btn-styles')) {
         transform: translateY(-1px) scale(1.01);
         border-color: #00ff00;
         box-shadow: 0 0 8px #00ff00, 0 0 16px #00ff00, 0 0 24px #00ff00;
-        background: #060f00;
+        background: #001f00;
         z-index: 10;
     }
 
