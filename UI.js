@@ -261,7 +261,7 @@
             const nav = document.createElement('div');
             nav.style.cssText = `
     position: absolute;
-    bottom: 8px;
+    bottom: -5px;
     left: 0;
     width: 100%;
     text-align: center;
