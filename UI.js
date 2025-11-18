@@ -149,7 +149,7 @@
             document.head.appendChild(btnStyle);
             // Master Title
             const masterTitle = document.createElement('div');
-            masterTitle.innerText = "HexHack-UI Reborn";
+            masterTitle.innerText = "</> — HexHack-UI Reborn — </>";
             masterTitle.style.cssText = `
   text-align: center;
   font-weight: bold;
