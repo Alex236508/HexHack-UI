@@ -153,7 +153,7 @@
             masterTitle.style.cssText = `
   text-align: center;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 14px;
   color: #00ff00;
   background: rgba(0, 255, 0, 0.15);
   padding: 8px;
