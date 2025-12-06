@@ -1689,63 +1689,82 @@ function addBtn(container, name, on, off) {
             }
         });
 
-        // Glitch
-        addBtn(vfx, 'Glitch', () => {
-            if (window.glitchActive) return;
-            window.glitchActive = true;
-            window.glitchInt = setInterval(() => {
-                document.querySelectorAll('*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)')
-                    .forEach(e => {
-                        e.style.backgroundColor = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink'][Math.floor(Math.random() * 7)];
-                    });
-            }, 25);
-        }, () => {
-            if (window.glitchInt) {
-                clearInterval(window.glitchInt);
-                window.glitchInt = null;
-            }
-            window.glitchActive = false;
+// ---------- Utility functions ----------
+function isImmune(el) {
+    return window.immuneChats && window.immuneChats.includes(el);
+}
+
+// Save original backgrounds for all elements matching selector
+function saveOriginalBackgrounds(selector) {
+    document.querySelectorAll(selector).forEach(e => {
+        if (!isImmune(e) && e.dataset.originalBg === undefined) {
+            e.dataset.originalBg = getComputedStyle(e).backgroundColor;
+        }
+    });
+}
+
+// Restore original backgrounds for all elements matching selector
+function restoreOriginalBackgrounds(selector) {
+    document.querySelectorAll(selector).forEach(e => {
+        if (!isImmune(e) && e.dataset.originalBg !== undefined) {
+            e.style.backgroundColor = e.dataset.originalBg;
+            e.style.transition = '';
+        }
+    });
+}
+
+// ---------- Targets for effects ----------
+const targets = '*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)';
 
 
-            document.querySelectorAll('*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)')
-                .forEach(e => {
-                    e.style.backgroundColor = '';
-                });
+// Glitch
+addBtn(vfx, 'Glitch', () => {
+    if (window.glitchActive) return;
+    window.glitchActive = true;
+
+    saveOriginalBackgrounds(targets);
+
+    window.glitchInt = setInterval(() => {
+        document.querySelectorAll(targets).forEach(e => {
+            e.style.backgroundColor = ['red','orange','yellow','green','blue','purple','pink'][Math.floor(Math.random()*7)];
         });
+    }, 25);
+}, () => {
+    if (window.glitchInt) {
+        clearInterval(window.glitchInt);
+        window.glitchInt = null;
+    }
+    window.glitchActive = false;
 
+    restoreOriginalBackgrounds(targets);
+});
 
+// Smooth Disco
+addBtn(vfx, 'Smooth Disco', () => {
+    if (window.discoSmoothActive) return;
+    window.discoSmoothActive = true;
 
-        // Smooth Disco
-        addBtn(vfx, 'Smooth Disco', () => {
-            if (window.discoSmoothActive) return;
-            window.discoSmoothActive = true;
-            let colors = "red orange yellow green blue purple pink".split(" "),
-                i = 0;
-            window.discoSmoothInt = setInterval(() => {
-                i = (i + 1) % colors.length;
-                document.querySelectorAll('*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)')
-                    .forEach(e => {
-                        e.style.transition = "background-color 1s";
-                        e.style.backgroundColor = colors[i];
-                    });
-            }, 1000);
-        }, () => {
-            if (window.discoSmoothInt) {
-                clearInterval(window.discoSmoothInt);
-                window.discoSmoothInt = null;
-            }
-            window.discoSmoothActive = false;
+    saveOriginalBackgrounds(targets);
 
-
-            document.querySelectorAll('*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)')
-                .forEach(e => {
-                    e.style.transition = "";
-                    e.style.backgroundColor = "";
-                });
+    let colors = "red orange yellow green blue purple pink".split(" "), i = 0;
+    window.discoSmoothInt = setInterval(() => {
+        i = (i + 1) % colors.length;
+        document.querySelectorAll(targets).forEach(e => {
+            e.style.transition = "background-color 1s";
+            e.style.backgroundColor = colors[i];
         });
+    }, 1000);
+}, () => {
+    if (window.discoSmoothInt) {
+        clearInterval(window.discoSmoothInt);
+        window.discoSmoothInt = null;
+    }
+    window.discoSmoothActive = false;
 
+    restoreOriginalBackgrounds(targets);
+});
 
-        // ---------- Text Corruption ----------
+		// ---------- Text Corruption ----------
         addBtn(vfx, 'Text Corruption', () => {
             const chatEl = document.getElementById('globalChatContainer');
             const isImmune = el => chatEl && (el === chatEl || chatEl.contains(el));
@@ -2051,34 +2070,54 @@ function addBtn(container, name, on, off) {
             window.matrixCanvas = null;
             window.matrixActive = false;
 
-            // ------------------ Stop Glitch ------------------
-            if (window.glitchInt) {
-                clearInterval(window.glitchInt);
-                window.glitchInt = null;
-            }
-            window.glitchActive = false;
+            // Store original backgrounds before starting effects (only once)
+document.querySelectorAll('body *').forEach(e => {
+    if (!isImmune(e) && e.dataset.originalBg === undefined) {
+        e.dataset.originalBg = getComputedStyle(e).backgroundColor;
+    }
+});
 
-            // Clear all non-GUI backgrounds
-            document.querySelectorAll('body *').forEach(e => {
-                if (!isImmune(e)) e.style.backgroundColor = '';
-            });
+// Store original background colors (do this once before effects start)
+function saveOriginalBackgrounds() {
+    document.querySelectorAll('body *').forEach(e => {
+        if (!isImmune(e) && e.dataset.originalBg === undefined) {
+            // Save the computed color now
+            e.dataset.originalBg = getComputedStyle(e).backgroundColor;
+        }
+    });
+}
 
+// Call this BEFORE starting glitch or disco
+saveOriginalBackgrounds();
 
-            // ------------------ Stop Smooth Disco ------------------
-            if (window.discoSmoothInt) {
-                clearInterval(window.discoSmoothInt);
-                window.discoSmoothInt = null;
-            }
-            window.discoSmoothActive = false;
+// ---------- Stop Glitch ----------
+if (window.glitchInt) {
+    clearInterval(window.glitchInt);
+    window.glitchInt = null;
+}
+window.glitchActive = false;
 
-            // Clear disco background + transitions
-            document.querySelectorAll('body *').forEach(e => {
-                if (!isImmune(e)) {
-                    e.style.transition = '';
-                    e.style.backgroundColor = '';
-                }
-            });
+// Restore original backgrounds
+document.querySelectorAll('body *').forEach(e => {
+    if (!isImmune(e) && e.dataset.originalBg !== undefined) {
+        e.style.backgroundColor = e.dataset.originalBg;
+    }
+});
 
+// ---------- Stop Smooth Disco ----------
+if (window.discoSmoothInt) {
+    clearInterval(window.discoSmoothInt);
+    window.discoSmoothInt = null;
+}
+window.discoSmoothActive = false;
+
+// Restore original backgrounds and remove transitions
+document.querySelectorAll('body *').forEach(e => {
+    if (!isImmune(e) && e.dataset.originalBg !== undefined) {
+        e.style.transition = '';
+        e.style.backgroundColor = e.dataset.originalBg;
+    }
+});
 
             // ------------------ Stop Full Chaos ------------------
             if (window.fullChaosLoop1) clearInterval(window.fullChaosLoop1), window.fullChaosLoop1 = null;
