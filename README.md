@@ -5,7 +5,7 @@
 3. Click the bookmark whenever you want to launch HexHack-UI.
 
 <details>
-<summary> Bookmarklet Code</summary>
+<summary> Code</summary>
 
 ```javascript
 javascript:(function(){
