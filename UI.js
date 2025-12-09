@@ -147,10 +147,10 @@
   }
 `;
             document.head.appendChild(btnStyle);
+            // Master Title
             const masterTitle = document.createElement('div');
-masterTitle.id = 'masterTitle'; // Add an ID so we can exclude it
-masterTitle.innerText = "</> ⸺ HexHack–UI Reborn ⸺ </>";
-masterTitle.style.cssText = `
+            masterTitle.innerText = "</> ⸺ HexHack–UI Reborn ⸺ </>";
+            masterTitle.style.cssText = `
   text-align: center;
   font-weight: bold;
   font-size: 14px;
@@ -162,8 +162,7 @@ masterTitle.style.cssText = `
   text-shadow: 0 0 8px #00ff00;
   font-family: "Lucida Console", "Courier New", monospace;
 `;
-gui.appendChild(masterTitle);
-
+            gui.appendChild(masterTitle);
 
             slider.style.cssText = `
   display: flex;
@@ -174,37 +173,36 @@ gui.appendChild(masterTitle);
 
 
             // Create Utilities Page
-const util = document.createElement('div');
-util.id = 'utilitiesGUI';
-util.style.cssText = `
+            const util = document.createElement('div');
+            util.id = 'utilitiesGUI';
+            util.style.cssText = `
   width: 50%;
   padding: 10px;
   box-sizing: border-box;
 `;
-util.innerHTML = `
-  <div class="guiHeader" style="text-align:center;font-weight:bold;margin-bottom:10px;">
+            util.innerHTML = `
+  <div style="text-align:center;font-weight:bold;margin-bottom:10px;">
     Utilities
   </div>
   <div class="btnGrid"></div>
 `;
-slider.appendChild(util);
+            slider.appendChild(util);
 
-// Create VFX Page
-const vfx = document.createElement('div');
-vfx.id = 'vfxGUI';
-vfx.style.cssText = `
+            // Create VFX Page
+            const vfx = document.createElement('div');
+            vfx.id = 'vfxGUI';
+            vfx.style.cssText = `
   width: 50%;
   padding: 10px;
   box-sizing: border-box;
 `;
-vfx.innerHTML = `
-  <div class="guiHeader" style="text-align:center;font-weight:bold;margin-bottom:10px;">
+            vfx.innerHTML = `
+  <div style="text-align:center;font-weight:bold;margin-bottom:10px;">
     Page Effects
   </div>
   <div class="btnGrid"></div>
 `;
-slider.appendChild(vfx);
-
+            slider.appendChild(vfx);
 
             // --- Grid & Button Styling ---
             const style = document.createElement('style');
@@ -1551,52 +1549,53 @@ function addBtn(container, name, on, off) {
             startInvertArea();
         });
 
+        // Disorient
         addBtn(vfx, 'Disorient', () => {
-    if (!window.disorientActive) {
-        window.disorientActive = true;
-        window.originalTransforms = [];
+            if (!window.disorientActive) {
+                window.disorientActive = true;
+                window.originalTransforms = [];
 
-        const prefixes = ['', '-ms-', '-webkit-', '-o-', '-moz-'];
+                // GUI immunity check
+                const isImmune = el => el.closest('#mainGUI, #vfxGUI, #utilitiesGUI');
 
-        // Only affect page elements outside GUI
-        const elements = Array.from(document.querySelectorAll(pageElements));
-
-        elements.forEach(pageEl => {
-            const rect = pageEl.getBoundingClientRect();
-            if (rect.width === 0 || rect.height === 0) return;
-
-            const style = window.getComputedStyle(pageEl);
-            const current = style.transform !== 'none' ? style.transform : '';
-            const currentPos = style.position;
-
-            window.originalTransforms.push({ el: pageEl, transform: current, position: currentPos });
-
-            if (currentPos === 'static') pageEl.style.position = 'relative';
-
-            const deg = (Math.random() * 60 - 30); // rotate -30 to +30 deg
-            const x = (Math.random() * 20 - 10);   // move -10px to +10px
-            const y = (Math.random() * 20 - 10);   // move -10px to +10px
-
-            prefixes.forEach(prefix => {
-                pageEl.style[prefix + 'transform'] = `${current} translate(${x}px, ${y}px) rotate(${deg}deg)`;
-            });
-        });
-
-    } else {
-        // Reset
-        window.disorientActive = false;
-        if (window.originalTransforms) {
-            window.originalTransforms.forEach(({ el, transform, position }) => {
                 const prefixes = ['', '-ms-', '-webkit-', '-o-', '-moz-'];
-                prefixes.forEach(prefix => {
-                    el.style[prefix + 'transform'] = transform;
+                const elements = Array.from(document.querySelectorAll('*')); // all elements
+
+                elements.forEach(el => {
+                    // Skip immune elements or invisible ones
+                    const rect = el.getBoundingClientRect();
+                    if (isImmune(el) || rect.width === 0 || rect.height === 0) return;
+
+                    const style = window.getComputedStyle(el);
+                    const current = style.transform || '';
+                    window.originalTransforms.push({
+                        el,
+                        transform: current
+                    });
+
+                    const deg = (Math.random() * 361 - 180);
+                    prefixes.forEach(prefix => {
+                        el.style[prefix + 'transform'] = `${current} rotate(${deg}deg)`;
+                    });
                 });
-                el.style.position = position;
-            });
-            window.originalTransforms = null;
-        }
-    }
-});
+
+            } else {
+                // Reset
+                window.disorientActive = false;
+                if (window.originalTransforms) {
+                    window.originalTransforms.forEach(({
+                        el,
+                        transform
+                    }) => {
+                        const prefixes = ['', '-ms-', '-webkit-', '-o-', '-moz-'];
+                        prefixes.forEach(prefix => {
+                            el.style[prefix + 'transform'] = transform;
+                        });
+                    });
+                    window.originalTransforms = null;
+                }
+            }
+        });
 
         // Random Link Redirects
         addBtn(vfx, 'Random Link Redirects', () => {
@@ -1690,82 +1689,63 @@ function addBtn(container, name, on, off) {
             }
         });
 
-// ---------- Utility functions ----------
-function isImmune(el) {
-    return window.immuneChats && window.immuneChats.includes(el);
-}
-
-// Save original backgrounds for all elements matching selector
-function saveOriginalBackgrounds(selector) {
-    document.querySelectorAll(selector).forEach(e => {
-        if (!isImmune(e) && e.dataset.originalBg === undefined) {
-            e.dataset.originalBg = getComputedStyle(e).backgroundColor;
-        }
-    });
-}
-
-// Restore original backgrounds for all elements matching selector
-function restoreOriginalBackgrounds(selector) {
-    document.querySelectorAll(selector).forEach(e => {
-        if (!isImmune(e) && e.dataset.originalBg !== undefined) {
-            e.style.backgroundColor = e.dataset.originalBg;
-            e.style.transition = '';
-        }
-    });
-}
-
-// ---------- Targets for effects ----------
-const pageElements = '*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *):not(.guiHeader):not(#masterTitle)';
+        // Glitch
+        addBtn(vfx, 'Glitch', () => {
+            if (window.glitchActive) return;
+            window.glitchActive = true;
+            window.glitchInt = setInterval(() => {
+                document.querySelectorAll('*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)')
+                    .forEach(e => {
+                        e.style.backgroundColor = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink'][Math.floor(Math.random() * 7)];
+                    });
+            }, 25);
+        }, () => {
+            if (window.glitchInt) {
+                clearInterval(window.glitchInt);
+                window.glitchInt = null;
+            }
+            window.glitchActive = false;
 
 
-// Glitch
-addBtn(vfx, 'Glitch', () => {
-    if (window.glitchActive) return;
-    window.glitchActive = true;
-
-    saveOriginalBackgrounds(targets);
-
-    window.glitchInt = setInterval(() => {
-        document.querySelectorAll(targets).forEach(e => {
-            e.style.backgroundColor = ['red','orange','yellow','green','blue','purple','pink'][Math.floor(Math.random()*7)];
+            document.querySelectorAll('*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)')
+                .forEach(e => {
+                    e.style.backgroundColor = '';
+                });
         });
-    }, 25);
-}, () => {
-    if (window.glitchInt) {
-        clearInterval(window.glitchInt);
-        window.glitchInt = null;
-    }
-    window.glitchActive = false;
 
-    restoreOriginalBackgrounds(targets);
-});
 
-// Smooth Disco
-addBtn(vfx, 'Smooth Disco', () => {
-    if (window.discoSmoothActive) return;
-    window.discoSmoothActive = true;
 
-    saveOriginalBackgrounds(targets);
+        // Smooth Disco
+        addBtn(vfx, 'Smooth Disco', () => {
+            if (window.discoSmoothActive) return;
+            window.discoSmoothActive = true;
+            let colors = "red orange yellow green blue purple pink".split(" "),
+                i = 0;
+            window.discoSmoothInt = setInterval(() => {
+                i = (i + 1) % colors.length;
+                document.querySelectorAll('*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)')
+                    .forEach(e => {
+                        e.style.transition = "background-color 1s";
+                        e.style.backgroundColor = colors[i];
+                    });
+            }, 1000);
+        }, () => {
+            if (window.discoSmoothInt) {
+                clearInterval(window.discoSmoothInt);
+                window.discoSmoothInt = null;
+            }
+            window.discoSmoothActive = false;
 
-    let colors = "red orange yellow green blue purple pink".split(" "), i = 0;
-    window.discoSmoothInt = setInterval(() => {
-        i = (i + 1) % colors.length;
-        document.querySelectorAll(targets).forEach(e => {
-            e.style.transition = "background-color 1s";
-            e.style.backgroundColor = colors[i];
+
+            document.querySelectorAll('*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)')
+                .forEach(e => {
+                    e.style.transition = "";
+                    e.style.backgroundColor = "";
+                });
         });
-    }, 1000);
-}, () => {
-    if (window.discoSmoothInt) {
-        clearInterval(window.discoSmoothInt);
-        window.discoSmoothInt = null;
-    }
-    window.discoSmoothActive = false;
 
-    restoreOriginalBackgrounds(targets);
-});
 
-		// ---------- Text Corruption ----------
+        // ---------- Text Corruption ----------
         addBtn(vfx, 'Text Corruption', () => {
             const chatEl = document.getElementById('globalChatContainer');
             const isImmune = el => chatEl && (el === chatEl || chatEl.contains(el));
@@ -2071,54 +2051,34 @@ addBtn(vfx, 'Smooth Disco', () => {
             window.matrixCanvas = null;
             window.matrixActive = false;
 
-            // Store original backgrounds before starting effects (only once)
-document.querySelectorAll('body *').forEach(e => {
-    if (!isImmune(e) && e.dataset.originalBg === undefined) {
-        e.dataset.originalBg = getComputedStyle(e).backgroundColor;
-    }
-});
+            // ------------------ Stop Glitch ------------------
+            if (window.glitchInt) {
+                clearInterval(window.glitchInt);
+                window.glitchInt = null;
+            }
+            window.glitchActive = false;
 
-// Store original background colors (do this once before effects start)
-function saveOriginalBackgrounds() {
-    document.querySelectorAll('body *').forEach(e => {
-        if (!isImmune(e) && e.dataset.originalBg === undefined) {
-            // Save the computed color now
-            e.dataset.originalBg = getComputedStyle(e).backgroundColor;
-        }
-    });
-}
+            // Clear all non-GUI backgrounds
+            document.querySelectorAll('body *').forEach(e => {
+                if (!isImmune(e)) e.style.backgroundColor = '';
+            });
 
-// Call this BEFORE starting glitch or disco
-saveOriginalBackgrounds();
 
-// ---------- Stop Glitch ----------
-if (window.glitchInt) {
-    clearInterval(window.glitchInt);
-    window.glitchInt = null;
-}
-window.glitchActive = false;
+            // ------------------ Stop Smooth Disco ------------------
+            if (window.discoSmoothInt) {
+                clearInterval(window.discoSmoothInt);
+                window.discoSmoothInt = null;
+            }
+            window.discoSmoothActive = false;
 
-// Restore original backgrounds
-document.querySelectorAll('body *').forEach(e => {
-    if (!isImmune(e) && e.dataset.originalBg !== undefined) {
-        e.style.backgroundColor = e.dataset.originalBg;
-    }
-});
+            // Clear disco background + transitions
+            document.querySelectorAll('body *').forEach(e => {
+                if (!isImmune(e)) {
+                    e.style.transition = '';
+                    e.style.backgroundColor = '';
+                }
+            });
 
-// ---------- Stop Smooth Disco ----------
-if (window.discoSmoothInt) {
-    clearInterval(window.discoSmoothInt);
-    window.discoSmoothInt = null;
-}
-window.discoSmoothActive = false;
-
-// Restore original backgrounds and remove transitions
-document.querySelectorAll('body *').forEach(e => {
-    if (!isImmune(e) && e.dataset.originalBg !== undefined) {
-        e.style.transition = '';
-        e.style.backgroundColor = e.dataset.originalBg;
-    }
-});
 
             // ------------------ Stop Full Chaos ------------------
             if (window.fullChaosLoop1) clearInterval(window.fullChaosLoop1), window.fullChaosLoop1 = null;
