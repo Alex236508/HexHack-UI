@@ -1979,17 +1979,7 @@ function addBtn(container, name, on, off) {
                 window.fullChaosActive = false;
             }
         });
-
-        // Fake blocked page
-        addBtn(vfx, 'Block link', () => {
-            window.linkRedirectsInt = setInterval(() => {
-                document.querySelectorAll('a:not(#vfxGUI *):not(#utilitiesGUI *)').forEach(a => {
-                    a.href = ['https://www.securly.com/blocked?reason=notloggedin'][Math.floor(Math.random() * 3)];
-                });
-            }, 500);
-        }, () => {
-            clearInterval(window.linkRedirectsInt);
-        });
+		
         // ---------- Stop All VFX ----------
         addBtn(vfx, 'Stop All', () => {
 
