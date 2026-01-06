@@ -518,7 +518,6 @@ function addBtn(container, name, on, off) {
 
 
             addBtn(util, 'Embedded Browser', () => {
-                // If the browser already exists, just toggle visibility
                 const existingBrowser = document.getElementById('embeddedBrowserContainer');
                 if (existingBrowser) {
                     if (existingBrowser.style.display === 'none') {
@@ -529,7 +528,6 @@ function addBtn(container, name, on, off) {
                     return;
                 }
 
-                // Otherwise, load it for the first time
                 javascript:(function(){
     var e=document.getElementById("rusic-container");
     if(e) e.remove();
@@ -577,7 +575,7 @@ h.style.cssText = `
     cursor: move;
     color: white;
     font-family: sans-serif;
-    padding-left: 30px; /* leave space for X */
+    padding-left: 30px; 
     line-height: 30px;
     user-select: none;
     position: relative;
@@ -600,7 +598,6 @@ cl.style.cssText = `
 `;
 cl.onclick = function() { c.remove(); };
 
-/* insert close button before header text */
 h.insertBefore(cl, h.firstChild);
 
 
@@ -777,7 +774,7 @@ resizeObserver.observe(c);
             });
 
 
-            addBtn(util, 'iframe launcher', () => {
+            addBtn(util, 'iFrame launcher', () => {
                 const url = prompt("Enter URL");
                 if (url) {
                     const w = window.open("about:blank", "_blank");
@@ -785,7 +782,7 @@ resizeObserver.observe(c);
             <!DOCTYPE html>
             <html>
                 <head>
-                    <title>nothing here</title>
+                    <title>iFrame</title>
                 </head>
                 <body style="margin:0">
                     <iframe src="${url}" style="border:none;width:100vw;height:100vh;"></iframe>
