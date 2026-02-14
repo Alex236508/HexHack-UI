@@ -775,22 +775,37 @@ resizeObserver.observe(c);
 
 
             addBtn(util, 'iFrame launcher', () => {
-                const url = prompt("Enter URL");
-                if (url) {
-                    const w = window.open("about:blank", "_blank");
-                    w.document.write(`
-            <!DOCTYPE html>
-            <html>
-                <head>
-                    <title>iFrame</title>
-                </head>
-                <body style="margin:0">
-                    <iframe src="${url}" style="border:none;width:100vw;height:100vh;"></iframe>
-                </body>
-            </html>
-        `);
-                    w.document.close();
+                const rawInput = prompt("Enter URL (http/https)", "https://");
+                if (!rawInput) return;
+
+                let parsed;
+                try {
+                    parsed = new URL(rawInput.trim());
+                } catch (e) {
+                    alert('Invalid URL. Example: https://example.com');
+                    return;
                 }
+
+                if (!['http:', 'https:'].includes(parsed.protocol)) {
+                    alert('Only http/https URLs are allowed.');
+                    return;
+                }
+
+                const w = window.open('about:blank', '_blank');
+                if (!w) {
+                    alert('Popup blocked by browser. Please allow popups.');
+                    return;
+                }
+                const doc = w.document;
+                doc.open();
+                doc.write('<!DOCTYPE html><html><head><title>iFrame</title></head><body style="margin:0"></body></html>');
+                doc.close();
+
+                const iframe = doc.createElement('iframe');
+                iframe.src = parsed.href;
+                iframe.style.cssText = 'border:none;width:100vw;height:100vh;';
+                iframe.setAttribute('referrerpolicy', 'no-referrer');
+                doc.body.appendChild(iframe);
             });
 
             // Developer Console (Eruda)
@@ -832,12 +847,73 @@ resizeObserver.observe(c);
 
             // Calculator
             addBtn(util, 'Calculator', () => {
-                let _o;
-                while ((_o = prompt("Expression:", ""))) {
+                const isSafeExpression = (value) => /^[0-9+\-*/().%\s]+$/.test(value);
+
+                const computeSafeMath = (expr) => {
+                    const tokens = expr.match(/\d*\.?\d+|[()+\-*/%]/g) || [];
+                    const prec = { '+': 1, '-': 1, '*': 2, '/': 2, '%': 2 };
+                    const output = [];
+                    const ops = [];
+
+                    tokens.forEach((token) => {
+                        if (/^\d*\.?\d+$/.test(token)) {
+                            output.push(Number(token));
+                            return;
+                        }
+
+                        if (token === '(') {
+                            ops.push(token);
+                            return;
+                        }
+
+                        if (token === ')') {
+                            while (ops.length && ops[ops.length - 1] !== '(') {
+                                output.push(ops.pop());
+                            }
+                            if (ops[ops.length - 1] === '(') ops.pop();
+                            return;
+                        }
+
+                        while (ops.length && prec[ops[ops.length - 1]] >= prec[token]) {
+                            output.push(ops.pop());
+                        }
+                        ops.push(token);
+                    });
+
+                    while (ops.length) output.push(ops.pop());
+
+                    const stack = [];
+                    output.forEach((token) => {
+                        if (typeof token === 'number') {
+                            stack.push(token);
+                            return;
+                        }
+                        const b = stack.pop();
+                        const a = stack.pop();
+                        if (a === undefined || b === undefined) throw new Error('Malformed expression');
+
+                        if (token === '+') stack.push(a + b);
+                        else if (token === '-') stack.push(a - b);
+                        else if (token === '*') stack.push(a * b);
+                        else if (token === '/') stack.push(a / b);
+                        else if (token === '%') stack.push(a % b);
+                    });
+
+                    if (stack.length !== 1 || Number.isNaN(stack[0])) throw new Error('Malformed expression');
+                    return stack[0];
+                };
+
+                let input;
+                while ((input = prompt('Expression (numbers + + - * / % parentheses):', ''))) {
                     try {
-                        alert(eval(_o));
+                        const expr = input.trim();
+                        if (!isSafeExpression(expr)) {
+                            alert('Only numeric math expressions are allowed.');
+                            continue;
+                        }
+                        alert(computeSafeMath(expr));
                     } catch (e) {
-                        alert(e);
+                        alert(e.message || String(e));
                     }
                 }
             });
