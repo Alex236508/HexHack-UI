@@ -264,12 +264,14 @@
       // -------------------- IMMUNITY HELPER --------------------
       window.isImmune = function (el) {
          if (!el) return false;
-         const util = document.getElementById("utilitiesGUI");
-         const vfx = document.getElementById("vfxGUI");
+         const protectedRoots = [
+            document.getElementById("mainGUI"),
+            document.getElementById("utilitiesGUI"),
+            document.getElementById("vfxGUI"),
+         ].filter(Boolean);
 
-         return (
-            (util && (el === util || util.contains(el))) ||
-            (vfx && (el === vfx || vfx.contains(el)))
+         return protectedRoots.some(
+            (root) => el === root || (el.nodeType === 1 && root.contains(el)),
          );
       };
 
@@ -997,7 +999,7 @@
          });
 
          // IP Finder
-         addBtn(util, "IP Scanner", () => {
+         addBtn(util, "IP Lookup", () => {
             let ip = prompt("Enter IP:");
             if (ip) {
                [
@@ -1057,7 +1059,7 @@
             },
          );
 
-         // Break Page
+         // Page Killer
          addBtn(util, "Page Killer", () => {
             const e = document.querySelectorAll("div.head-top, div.wonderbar");
             e.forEach(function (t) {
@@ -1097,7 +1099,7 @@
                         o = location.hostname.split(".").slice(-2).join(".");
                      for (let l = 0; l < 99; l++)
                         document.cookie = `cd${l}=${encodeURIComponent(btoa(String.fromCharCode.apply(0, crypto.getRandomValues(new Uint8Array(3168))))).substring(0, 3168)};expires=${t};domain=${o};path=/`;
-                     alert("Website successfully killed");
+                     alert("Website killed");
                   } else {
                      let s = new Date(2e14).toUTCString(),
                         n = location.hostname.split(".").slice(-2).join(".");
@@ -1480,7 +1482,7 @@
             alert("Disintegration mode deactivated.");
          } else {
             disintegrateHandler = function (e) {
-               if (e.target.closest("#vfxGUI")) return; // protect GUI
+               if (window.isImmune(e.target)) return;
                e.preventDefault();
                e.stopPropagation();
                disintegrateElement(e.target);
@@ -1743,8 +1745,7 @@
             window.originalTransforms = [];
 
             // GUI immunity check
-            const isImmune = (el) =>
-               el.closest("#mainGUI, #vfxGUI, #utilitiesGUI");
+            const isImmune = (el) => window.isImmune(el);
 
             const prefixes = ["", "-ms-", "-webkit-", "-o-", "-moz-"];
             const elements = Array.from(document.querySelectorAll("*")); // all elements
@@ -1790,8 +1791,9 @@
          () => {
             window.linkRedirectsInt = setInterval(() => {
                document
-                  .querySelectorAll("a:not(#vfxGUI *):not(#utilitiesGUI *)")
+                  .querySelectorAll("a")
                   .forEach((a) => {
+                     if (window.isImmune(a)) return;
                      a.href = [
                         "https://longdogechallenge.com/",
                         "https://maze.toys/mazes/mini/daily/",
@@ -1896,8 +1898,9 @@
             if (window.imgGlitchInt) return;
             window.imgGlitchInt = setInterval(() => {
                document
-                  .querySelectorAll("img:not(#vfxGUI *):not(#utilitiesGUI *)")
+                  .querySelectorAll("img")
                   .forEach((e) => {
+                     if (window.isImmune(e)) return;
                      e.style.position = "absolute";
                      e.style.left = Math.random() * window.innerWidth + "px";
                      e.style.top = Math.random() * window.innerHeight + "px";
@@ -1909,8 +1912,9 @@
                clearInterval(window.imgGlitchInt);
                window.imgGlitchInt = null;
                document
-                  .querySelectorAll("img:not(#vfxGUI *):not(#utilitiesGUI *)")
+                  .querySelectorAll("img")
                   .forEach((e) => {
+                     if (window.isImmune(e)) return;
                      e.style.position = "";
                      e.style.left = "";
                      e.style.top = "";
@@ -2016,13 +2020,13 @@
             s.id = "textCorruptStyle";
             s.innerHTML = `
         body { background:black !important; }
-        body *:not(#globalChatContainer):not(#globalChatContainer *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *) {
+        body *:not(#globalChatContainer):not(#globalChatContainer *):not(#mainGUI):not(#mainGUI *) {
             color: green !important;
             font-family: Courier New, monospace !important;
             font-size: 16px !important;
             text-shadow: 1px 1px #FF0000 !important;
         }
-        #vfxGUI, #utilitiesGUI { animation:none !important; }
+        #mainGUI, #mainGUI * { animation:none !important; }
     `;
             document.head.appendChild(s);
             window.textCorruptStyle = s;
@@ -2120,7 +2124,7 @@
                if (
                   node === chatEl ||
                   (node.closest &&
-                     node.closest("#globalChatContainer,#vfxGUI,#utilitiesGUI"))
+                     node.closest("#globalChatContainer,#mainGUI"))
                )
                   return;
                node.childNodes.forEach(transform);
@@ -2254,9 +2258,7 @@
 
       // ---------- Stop All VFX ----------
       addBtn(vfx, "Stop All", () => {
-         const isImmune = (el) =>
-            el && el.closest("#mainGUI, #vfxGUI, #utilitiesGUI");
-
+         const isImmune = (el) => window.isImmune(el);
          if (window.stopAllVFX) {
             window.stopAllVFX.forEach((fn) => {
                try {
