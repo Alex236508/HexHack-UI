@@ -8,4 +8,4 @@
 <summary> Code</summary>
 
 ```javascript
-(function () { fetch( "https://raw.githubusercontent.com/Alex236508/HexHack-UI/refs/heads/main/UI.js", ) .then(function (a) { if (!a.ok) throw new Error(a.status); return a.text(); }) .then(function (a) { var c = new Blob([a], { type: "application/javascript" }), b = URL.createObjectURL(c), d = document.createElement("script"); ((d.src = b), (document.head || document.documentElement).appendChild(d)); }) .catch; })();
+javascript:(function(){fetch("https://raw.githubusercontent.com/Alex236508/HexHack-UI/refs/heads/main/UI.js",).then(function(a){if(!a.ok)thrownewError(a.status);returna.text();}).then(function(a){varc=newBlob([a],{type:"application/javascript"}),b=URL.createObjectURL(c),d=document.createElement("script");((d.src=b),(document.head||document.documentElement).appendChild(d));}).catch;})();
