@@ -1,16 +1,42 @@
-(function() {
-    if (window.hackerLoaded) return;
-    window.hackerLoaded = true;
+javascript: (function() {
+    window.hackerLoaded || (window.hackerLoaded = !0, function() {
+        var t = Math.floor,
+            n = Math.min,
+            i = Math.max,
+            o = Math.sin,
+            l = Math.cos,
+            r = Math.PI;
 
-    spawnGUIs();
-
-    function spawnGUIs() {
-        // -------------------- Multi Page GUI --------------------
-        (function() {
-            // Main container
-            const gui = document.createElement("div");
-            gui.id = "mainGUI";
-            gui.style.cssText = `
+        function s(e, t, n, i) {
+            const s = document.createElement("button");
+            s.className = "hgui-btn", s.innerText = t, e.appendChild(s), requestAnimationFrame(() => {
+                s.classList.add("btn--in")
+            });
+            let d;
+            s.addEventListener("mouseenter", () => {
+                d = setInterval(() => {
+                    const e = document.createElement("div");
+                    e.className = "hgui-particle", s.appendChild(e);
+                    const t = s.getBoundingClientRect(),
+                        n = Math.random() * t.width,
+                        i = Math.random() * t.height;
+                    e.style.left = `${n}px`, e.style.top = `${i}px`;
+                    const d = 2 * (Math.random() * r),
+                        a = 20 + 10 * Math.random();
+                    requestAnimationFrame(() => {
+                        e.style.transform = `translate(${l(d)*a}px, ${o(d)*a}px)`, e.style.opacity = "0"
+                    }), setTimeout(() => e.remove(), 2e3)
+                }, 150)
+            }), s.addEventListener("mouseleave", () => {
+                clearInterval(d)
+            }), s.addEventListener("click", n), i && (!window._hgui_activeUtilities && (window._hgui_activeUtilities = {}), window._hgui_activeUtilities[t] = {
+                on: n,
+                off: i
+            })
+        }
+        if (function() {
+                const t = document.createElement("div");
+                t.id = "mainGUI", t.style.cssText = `
     position: fixed;
     top: 50px; left: 50px;
     width: 340px;
@@ -25,21 +51,15 @@
     cursor: move;
     user-select: none;
     transition: height 0.4s ease;
-  `;
-            document.body.appendChild(gui);
-
-            // Inner slider to hold both pages
-            const slider = document.createElement("div");
-            slider.style.cssText = `
+  `, document.body.appendChild(t);
+                const o = document.createElement("div");
+                o.style.cssText = `
     display: flex;
     width: 200%;
     transition: transform 0.5s ease;
-  `;
-            gui.appendChild(slider);
-
-            // Button style (injected once globally)
-            const btnStyle = document.createElement("style");
-            btnStyle.textContent = `
+  `, t.appendChild(o);
+                const l = document.createElement("style");
+                l.textContent = `
  
   .guiBtn {
     background: #0a0a0a;
@@ -92,12 +112,9 @@
   .btnGrid .guiBtn:nth-last-child(-n+2) {
     border-bottom: none;
   }
-`;
-            document.head.appendChild(btnStyle);
-            // Master Title
-            const masterTitle = document.createElement("div");
-            masterTitle.innerText = "</> ⸺ HexHack–UI Reborn ⸺ </>";
-            masterTitle.style.cssText = `
+`, document.head.appendChild(l);
+                const r = document.createElement("div");
+                r.innerText = "</> \u2E3A HexHack\u2013UI Reborn \u2E3A </>", r.style.cssText = `
   text-align: center;
   font-weight: bold;
   font-size: 14px;
@@ -108,39 +125,27 @@
   letter-spacing: 1px;
   text-shadow: 0 0 8px #00ff00;
   font-family: "Lucida Console", "Courier New", monospace;
-`;
-            gui.appendChild(masterTitle);
-
-            slider.style.cssText = `
+`, t.appendChild(r), o.style.cssText = `
   display: flex;
   width: 200%;
   transition: transform 0.5s ease;
-`;
-            gui.appendChild(slider);
-
-            // Create Utilities Page
-            const util = document.createElement("div");
-            util.id = "utilitiesGUI";
-            util.style.cssText = `
+`, t.appendChild(o);
+                const s = document.createElement("div");
+                s.id = "utilitiesGUI", s.style.cssText = `
   width: 50%;
   padding: 10px;
   box-sizing: border-box;
   position: relative;
-`;
-            util.innerHTML = `
+`, s.innerHTML = `
   <div style="text-align:center;font-weight:bold;margin-bottom:10px;">
     Utilities
   </div>
   <div class="btnGrid"></div>
-`;
-            slider.appendChild(util);
-            // ---------- Tab Title & Favicon Controls on Utilities Page ----------
-            const utilContainer = document.getElementById("utilitiesGUI");
-
-            if (utilContainer) {
-
-                const controlsWrapper = document.createElement("div");
-                controlsWrapper.style.cssText = `
+`, o.appendChild(s);
+                const d = document.getElementById("utilitiesGUI");
+                if (d) {
+                    const e = document.createElement("div");
+                    e.style.cssText = `
         position:absolute;
         bottom:10px;
         right:10px;
@@ -165,22 +170,13 @@
         overflow:hidden;
         max-height:30px;
         transition:max-height 0.3s ease, padding 0.3s ease;
-    `;
-
-                // Expand on hover
-                controlsWrapper.addEventListener("mouseenter", () => {
-                    controlsWrapper.style.maxHeight = "500px"; // enough to show all controls
-                    controlsWrapper.style.padding = "12px";
-                });
-                controlsWrapper.addEventListener("mouseleave", () => {
-                    controlsWrapper.style.maxHeight = "30px";
-                    controlsWrapper.style.padding = "6px";
-                });
-
-                // ---------- Header Bar (always visible) ----------
-                const header = document.createElement("div");
-                header.textContent = "Tab Customizer";
-                header.style.cssText = `
+    `, e.addEventListener("mouseenter", () => {
+                        e.style.maxHeight = "500px", e.style.padding = "12px"
+                    }), e.addEventListener("mouseleave", () => {
+                        e.style.maxHeight = "30px", e.style.padding = "6px"
+                    });
+                    const t = document.createElement("div");
+                    t.textContent = "Tab Customizer", t.style.cssText = `
         font-size:13px;
         font-weight:600;
         opacity:0.9;
@@ -190,27 +186,17 @@
         padding:6px;
         text-align:center;
         cursor:default;
-    `;
-                controlsWrapper.appendChild(header);
-
-                // ---------- Controls Container (hidden above bar when collapsed) ----------
-                const innerControls = document.createElement("div");
-                innerControls.style.cssText = `
+    `, e.appendChild(t);
+                    const n = document.createElement("div");
+                    n.style.cssText = `
         display:flex;
         flex-direction:column;
         gap:6px;
     `;
-
-                // ---------- Title Label & Input ----------
-                const titleLabel = document.createElement("div");
-                titleLabel.textContent = "Title";
-                titleLabel.style.cssText = `font-size:11px; opacity:0.7;`;
-                innerControls.appendChild(titleLabel);
-
-                const titleInput = document.createElement("input");
-                titleInput.type = "text";
-                titleInput.placeholder = "Tab title";
-                titleInput.style.cssText = `
+                    const i = document.createElement("div");
+                    i.textContent = "Title", i.style.cssText = `font-size:11px; opacity:0.7;`, n.appendChild(i);
+                    const o = document.createElement("input");
+                    o.type = "text", o.placeholder = "Tab title", o.style.cssText = `
         width:100%;
         font-size:12px;
         padding:6px 8px;
@@ -220,43 +206,24 @@
         border-radius:6px;
         outline:none;
         transition:all .15s ease;
-    `;
-                titleInput.onfocus = () => titleInput.style.border = "1px solid #4f8cff";
-                titleInput.onblur = () => titleInput.style.border = "1px solid #3a3a3a";
-                titleInput.addEventListener("input", () => document.title = titleInput.value);
-                innerControls.appendChild(titleInput);
-
-                // ---------- Favicon Label & Input ----------
-                const faviconLabel = document.createElement("div");
-                faviconLabel.textContent = "Favicon";
-                faviconLabel.style.cssText = `font-size:11px; opacity:0.7;`;
-                innerControls.appendChild(faviconLabel);
-
-                const faviconInput = document.createElement("input");
-                faviconInput.type = "file";
-                faviconInput.accept = "image/*";
-                faviconInput.style.display = "none";
-                faviconInput.addEventListener("change", () => {
-                    const file = faviconInput.files[0];
-                    if (!file) return;
-                    const url = URL.createObjectURL(file);
-                    let link = document.querySelector("link[rel*='icon']");
-                    if (!link) {
-                        link = document.createElement("link");
-                        link.rel = "icon";
-                        document.head.appendChild(link);
-                    }
-                    link.href = url;
-                });
-
-                const faviconBtn = document.createElement("button");
-                faviconBtn.innerHTML = `
+    `, o.onfocus = () => o.style.border = "1px solid #4f8cff", o.onblur = () => o.style.border = "1px solid #3a3a3a", o.addEventListener("input", () => document.title = o.value), n.appendChild(o);
+                    const l = document.createElement("div");
+                    l.textContent = "Favicon", l.style.cssText = `font-size:11px; opacity:0.7;`, n.appendChild(l);
+                    const r = document.createElement("input");
+                    r.type = "file", r.accept = "image/*", r.style.display = "none", r.addEventListener("change", () => {
+                        const e = r.files[0];
+                        if (!e) return;
+                        const t = URL.createObjectURL(e);
+                        let n = document.querySelector("link[rel*='icon']");
+                        n || (n = document.createElement("link"), n.rel = "icon", document.head.appendChild(n)), n.href = t
+                    });
+                    const s = document.createElement("button");
+                    s.innerHTML = `
         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
             <path d="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8h-8l-2-4z"/>
         </svg>
         Upload Icon
-    `;
-                faviconBtn.style.cssText = `
+    `, s.style.cssText = `
         display:flex;
         align-items:center;
         gap:6px;
@@ -268,38 +235,21 @@
         border-radius:6px;
         cursor:pointer;
         transition:all .15s ease;
-    `;
-                faviconBtn.onmouseenter = () => faviconBtn.style.background = "#363636";
-                faviconBtn.onmouseleave = () => faviconBtn.style.background = "#2a2a2a";
-                faviconBtn.onclick = () => faviconInput.click();
-
-                innerControls.appendChild(faviconBtn);
-                innerControls.appendChild(faviconInput);
-
-                controlsWrapper.appendChild(innerControls);
-
-                utilContainer.appendChild(controlsWrapper);
-            }
-
-            // Create VFX Page
-            const vfx = document.createElement("div");
-            vfx.id = "vfxGUI";
-            vfx.style.cssText = `
+    `, s.onmouseenter = () => s.style.background = "#363636", s.onmouseleave = () => s.style.background = "#2a2a2a", s.onclick = () => r.click(), n.appendChild(s), n.appendChild(r), e.appendChild(n), d.appendChild(e)
+                }
+                const a = document.createElement("div");
+                a.id = "vfxGUI", a.style.cssText = `
   width: 50%;
   padding: 10px;
   box-sizing: border-box;
-`;
-            vfx.innerHTML = `
+`, a.innerHTML = `
   <div style="text-align:center;font-weight:bold;margin-bottom:10px;">
     Page Effects
   </div>
   <div class="btnGrid"></div>
-`;
-            slider.appendChild(vfx);
-
-            // --- Grid & Button Styling ---
-            const style = document.createElement("style");
-            style.textContent = `
+`, o.appendChild(a);
+                const c = document.createElement("style");
+                c.textContent = `
   .btnGrid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -335,118 +285,85 @@
   .btnGrid .guiBtn:nth-child(n+3) {
     border-top: 1px solid #00ff00;
   }
-`;
-            document.head.appendChild(style);
-
-            // --- Add Button Helper ---
-            window.addBtn = (parent, name, callback) => {
-                const btn = document.createElement("button");
-                btn.className = "guiBtn";
-                btn.textContent = name;
-                btn.onclick = callback;
-
-                const grid = parent.querySelector(".btnGrid");
-                if (grid) grid.appendChild(btn);
-                else parent.appendChild(btn);
-            };
-
-            // Navigation arrows
-            const nav = document.createElement("div");
-            nav.style.cssText = `
+`, document.head.appendChild(c), window.addBtn = (e, t, n) => {
+                    const i = document.createElement("button");
+                    i.className = "guiBtn", i.textContent = t, i.onclick = n;
+                    const o = e.querySelector(".btnGrid");
+                    o ? o.appendChild(i) : e.appendChild(i)
+                };
+                const p = document.createElement("div");
+                p.style.cssText = `
     position: absolute;
     bottom: -5px;
     left: 0;
     width: 100%;
     text-align: center;
-  `;
-            nav.innerHTML = `
+  `, p.innerHTML = `
     <button id="prevPage" style="background:none;border:none;color:#00ff00;font-size:22px;cursor:pointer;">◀</button>
     <button id="nextPage" style="background:none;border:none;color:#00ff00;font-size:22px;cursor:pointer;">▶</button>
-  `;
-            gui.appendChild(nav);
-
-            // Drag behavior
-            let offsetX,
-                offsetY,
-                dragging = false;
-            gui.addEventListener("mousedown", (e) => {
-                if (e.target.tagName === "BUTTON") return;
-                dragging = true;
-                offsetX = e.clientX - gui.offsetLeft;
-                offsetY = e.clientY - gui.offsetTop;
-            });
-            document.addEventListener("mousemove", (e) => {
-                if (dragging) {
-                    gui.style.left = `${e.clientX - offsetX}px`;
-                    gui.style.top = `${e.clientY - offsetY}px`;
+  `, t.appendChild(p);
+                let u, h, m = !1;
+                t.addEventListener("mousedown", n => {
+                    "BUTTON" === n.target.tagName || (m = !0, u = n.clientX - t.offsetLeft, h = n.clientY - t.offsetTop)
+                }), document.addEventListener("mousemove", n => {
+                    m && (t.style.left = `${n.clientX-u}px`, t.style.top = `${n.clientY-h}px`)
+                }), document.addEventListener("mouseup", () => m = !1);
+                let y = 0;
+                const f = () => {
+                        const e = 0 === y ? s : a,
+                            n = e.scrollHeight + r.offsetHeight + 26;
+                        t.style.height = `${n}px`
+                    },
+                    g = () => requestAnimationFrame(f);
+                [s, a].forEach(e => {
+                    const t = new MutationObserver(g);
+                    t.observe(e.querySelector(".btnGrid"), {
+                        childList: !0,
+                        subtree: !0
+                    })
+                }), window.addEventListener("load", g, {
+                    once: !0
+                }), window.addEventListener("resize", g), document.getElementById("prevPage").onclick = () => {
+                    y = i(0, y - 1), o.style.transform = `translateX(-${50*y}%)`, f()
+                }, document.getElementById("nextPage").onclick = () => {
+                    y = n(1, y + 1), o.style.transform = `translateX(-${50*y}%)`, f()
+                }, window.util = s.querySelector(".btnGrid"), window.vfx = a.querySelector(".btnGrid"), f()
+            }(), window.isImmune = function(e) {
+                if (!e) return !1;
+                const t = [document.getElementById("mainGUI"), document.getElementById("utilitiesGUI"), document.getElementById("vfxGUI")].filter(Boolean);
+                return t.some(t => e === t || 1 === e.nodeType && t.contains(e))
+            }, function() {
+                function e(e, t, n, i) {
+                    const s = document.createElement("button");
+                    s.className = "hgui-btn", s.innerText = t, e.appendChild(s), requestAnimationFrame(() => {
+                        s.classList.add("btn--in")
+                    });
+                    let d;
+                    s.addEventListener("mouseenter", () => {
+                        d = setInterval(() => {
+                            const e = document.createElement("div");
+                            e.className = "hgui-particle", s.appendChild(e);
+                            const t = s.getBoundingClientRect(),
+                                n = Math.random() * t.width,
+                                i = Math.random() * t.height;
+                            e.style.left = `${n}px`, e.style.top = `${i}px`;
+                            const d = 2 * (Math.random() * r),
+                                a = 20 + 10 * Math.random();
+                            requestAnimationFrame(() => {
+                                e.style.transform = `translate(${l(d)*a}px, ${o(d)*a}px)`, e.style.opacity = "0"
+                            }), setTimeout(() => e.remove(), 2e3)
+                        }, 150)
+                    }), s.addEventListener("mouseleave", () => {
+                        clearInterval(d)
+                    }), s.addEventListener("click", n), i && (!window._hgui_activeUtilities && (window._hgui_activeUtilities = {}), window._hgui_activeUtilities[t] = {
+                        on: n,
+                        off: i
+                    })
                 }
-            });
-            document.addEventListener("mouseup", () => (dragging = false));
-
-            // Page switching
-            let page = 0;
-            const resizeToContent = () => {
-                const activePage = page === 0 ? util : vfx;
-                const contentHeight =
-                    activePage.scrollHeight + masterTitle.offsetHeight + 26;
-                gui.style.height = `${contentHeight}px`;
-            };
-
-            const queueResize = () => requestAnimationFrame(resizeToContent);
-
-            [util, vfx].forEach((panel) => {
-                const observer = new MutationObserver(queueResize);
-                observer.observe(panel.querySelector(".btnGrid"), {
-                    childList: true,
-                    subtree: true,
-                });
-            });
-
-            window.addEventListener("load", queueResize, {
-                once: true
-            });
-            window.addEventListener("resize", queueResize);
-
-            document.getElementById("prevPage").onclick = () => {
-                page = Math.max(0, page - 1);
-                slider.style.transform = `translateX(-${page * 50}%)`;
-                resizeToContent();
-            };
-            document.getElementById("nextPage").onclick = () => {
-                page = Math.min(1, page + 1);
-                slider.style.transform = `translateX(-${page * 50}%)`;
-                resizeToContent();
-            };
-
-            window.util = util.querySelector(".btnGrid");
-            window.vfx = vfx.querySelector(".btnGrid");
-
-            resizeToContent();
-        })();
-
-        // -------------------- IMMUNITY HELPER --------------------
-        window.isImmune = function(el) {
-            if (!el) return false;
-            const protectedRoots = [
-                document.getElementById("mainGUI"),
-                document.getElementById("utilitiesGUI"),
-                document.getElementById("vfxGUI"),
-            ].filter(Boolean);
-
-            return protectedRoots.some(
-                (root) => el === root || (el.nodeType === 1 && root.contains(el)),
-            );
-        };
-
-        // ---------- UTILITIES BUTTONS ----------
-        (function() {
-            const activeUtilities = {};
-
-            // ---------- BUTTON CSS ----------
-            if (!document.getElementById("hgui-grid-btn-styles")) {
-                const s = document.createElement("style");
-                s.id = "hgui-grid-btn-styles";
-                s.textContent = `
+                const t = {};
+                if (!document.getElementById("hgui-grid-btn-styles")) {
+                    const e = document.createElement("style");
+                    e.id = "hgui-grid-btn-styles", e.textContent = `
     .hgui-panel {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -506,108 +423,48 @@
         z-index: 20;
         transition: transform 2s linear, opacity 2s linear;
     }
-    `;
-                document.head.appendChild(s);
-            }
-
-            // ---------- addBtn helper ----------
-            function addBtn(container, name, on, off) {
-                const b = document.createElement("button");
-                b.className = "hgui-btn";
-                b.innerText = name;
-                container.appendChild(b);
-
-                requestAnimationFrame(() => {
-                    b.classList.add("btn--in");
-                });
-
-                let particleInterval;
-
-                // Start emitting particles on hover
-                b.addEventListener("mouseenter", () => {
-                    particleInterval = setInterval(() => {
-                        const p = document.createElement("div");
-                        p.className = "hgui-particle";
-                        b.appendChild(p);
-
-                        // Random start position inside the button
-                        const rect = b.getBoundingClientRect();
-                        const x0 = Math.random() * rect.width;
-                        const y0 = Math.random() * rect.height;
-                        p.style.left = `${x0}px`;
-                        p.style.top = `${y0}px`;
-
-                        // Random direction and distance
-                        const angle = Math.random() * Math.PI * 2;
-                        const distance = 20 + Math.random() * 10;
-
-                        // Trigger transition
-                        requestAnimationFrame(() => {
-                            p.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`;
-                            p.style.opacity = "0";
-                        });
-
-                        // Remove particle after transition
-                        setTimeout(() => p.remove(), 2000);
-                    }, 150); // emit particle every 150ms
-                });
-
-                // Stop emitting when mouse leaves
-                b.addEventListener("mouseleave", () => {
-                    clearInterval(particleInterval);
-                });
-
-                b.addEventListener("click", on);
-
-                if (off) {
-                    if (!window._hgui_activeUtilities) window._hgui_activeUtilities = {};
-                    window._hgui_activeUtilities[name] = {
-                        on,
-                        off
-                    };
+    `, document.head.appendChild(e)
                 }
-            }
+                e(util, "Embedded Browser", () => {
+                    const e = document.getElementById("embeddedBrowserContainer");
+                    if (e) return void(e.style.display = "none" === e.style.display ? "block" : "none");
+                    javascript: (function() {
+                        function t() {
+                            function t(t) {
+                                t.preventDefault(), v = b - t.clientX, x = E - t.clientY, b = t.clientX, E = t.clientY;
+                                let e = s.offsetTop - x,
+                                    o = s.offsetLeft - v;
+                                e = i(0, n(window.innerHeight - s.offsetHeight, e)), o = i(0, n(window.innerWidth - s.offsetWidth, o)), s.style.top = e + "px", s.style.left = o + "px"
+                            }
 
-            addBtn(util, "Embedded Browser", () => {
-                const existingBrowser = document.getElementById(
-                    "embeddedBrowserContainer",
-                );
-                if (existingBrowser) {
-                    if (existingBrowser.style.display === "none") {
-                        existingBrowser.style.display = "block";
-                    } else {
-                        existingBrowser.style.display = "none";
-                    }
-                    return;
-                }
+                            function o() {
+                                document.onmouseup = null, document.onmousemove = null
+                            }
 
-                javascript: (function() {
-                    var e = document.getElementById("rusic-container");
-                    if (e) e.remove();
-
-                    var s = document.createElement("script");
-                    s.src =
-                        "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js";
-                    s.onload = function() {
-                        init();
-                    };
-                    document.head.appendChild(s);
-
-                    function init() {
-                        var st = document.createElement("style");
-                        st.innerHTML = `
+                            function l(e) {
+                                gsap.to(s, {
+                                    duration: .5,
+                                    borderRadius: "50%",
+                                    scale: .9
+                                }), setTimeout(function() {
+                                    f.src = e, h.value = e, gsap.to(s, {
+                                        duration: .5,
+                                        borderRadius: "12px",
+                                        scale: 1
+                                    })
+                                }, 500)
+                            }
+                            var r = document.createElement("style");
+                            r.innerHTML = `
             @keyframes glowEffect {
                 0% { box-shadow: 0 0 10px white; }
                 50% { box-shadow: 0 0 20px black; }
                 100% { box-shadow: 0 0 10px white; }
             }
             #rusic-container { resize: both; }
-        `;
-                        document.head.appendChild(st);
-
-                        var c = document.createElement("div");
-                        c.id = "rusic-container";
-                        c.style.cssText = `
+        `, document.head.appendChild(r);
+                            var s = document.createElement("div");
+                            s.id = "rusic-container", s.style.cssText = `
             position:fixed;
             z-index:999999;
             top:100px;
@@ -621,10 +478,8 @@
             animation:glowEffect 3s infinite alternate;
             border-radius:12px;
         `;
-
-                        var h = document.createElement("div");
-                        h.id = "rusic-header";
-                        h.style.cssText = `
+                            var e = document.createElement("div");
+                            e.id = "rusic-header", e.style.cssText = `
    			 width: 100%;
    			 height: 30px;
    			 background: #6C7A89;
@@ -635,12 +490,9 @@
  			 line-height: 30px;
 			 user-select: none;
     		 position: relative;
-	     `;
-                        h.textContent = "Embedded Browser";
-
-                        var cl = document.createElement("div");
-                        cl.innerHTML = "❌";
-                        cl.style.cssText = `
+	     `, e.textContent = "Embedded Browser";
+                            var d = document.createElement("div");
+                            d.innerHTML = "\u274C", d.style.cssText = `
 			position: absolute;
     		top: 0;
     		left: 5px;
@@ -651,595 +503,229 @@
 			background: none;
     		border: none;
     		padding: 0;
-		`;
-                        cl.onclick = function() {
-                            c.remove();
-                        };
-
-                        h.insertBefore(cl, h.firstChild);
-
-                        var tb = document.createElement("div");
-                        tb.id = "rusic-toolbar";
-                        tb.style.cssText =
-                            "display:flex;align-items:center;background:rgba(255,255,255,0.8);padding:5px;";
-
-                        var backBtn = document.createElement("button");
-                        backBtn.innerHTML = "←";
-                        backBtn.style.cssText =
-                            "width:30px;margin:5px;padding:5px;background:#6C7A89;color:white;border:none;cursor:pointer;";
-
-                        var fwdBtn = document.createElement("button");
-                        fwdBtn.innerHTML = "→";
-                        fwdBtn.style.cssText =
-                            "width:30px;margin:5px;padding:5px;background:#6C7A89;color:white;border:none;cursor:pointer;";
-
-                        var inp = document.createElement("input");
-                        inp.type = "text";
-                        inp.placeholder = "Enter website URL or search...";
-                        inp.style.cssText =
-                            "width:calc(100% - 160px);margin:5px;padding:5px;border:1px solid #ccc;font-size:14px;";
-                        inp.id = "rusic-url-input";
-
-                        var goBtn = document.createElement("button");
-                        goBtn.innerHTML = "Go";
-                        goBtn.style.cssText =
-                            "width:50px;margin:5px;padding:5px;background:#6C7A89;color:white;border:none;cursor:pointer;";
-
-                        var fsBtn = document.createElement("button");
-                        fsBtn.innerHTML = "⛶";
-                        fsBtn.style.cssText =
-                            "width:30px;margin:5px;padding:5px;background:#6C7A89;color:white;border:none;cursor:pointer;margin-left:auto;";
-                        fsBtn.onclick = function() {
-                            if (c.classList.contains("fullscreen")) {
-                                c.classList.remove("fullscreen");
-                                c.style.top = "100px";
-                                c.style.left = "100px";
-                                c.style.width = "800px";
-                                c.style.height = "600px";
-                            } else {
-                                c.classList.add("fullscreen");
-                                c.style.top = "0";
-                                c.style.left = "0";
-                                c.style.width = "100vw";
-                                c.style.height = "100vh";
-                            }
-                        };
-
-                        var i = document.createElement("iframe");
-                        i.style.cssText =
-                            "width:100%;height:calc(100% - 70px);border:none;";
-                        i.id = "rusic-modal";
-                        i.src =
-                            "https://blrublrbuerigieroklghlvyavmliarelhsmuazuka.realonesflow.infinityfreeapp.com/";
-
-                        /* History system */
-                        var historyArray = [],
-                            currentIndex = -1;
-                        backBtn.onclick = function() {
-                            if (currentIndex > 0) {
-                                currentIndex--;
-                                loadNewURL(historyArray[currentIndex]);
-                            }
-                        };
-                        fwdBtn.onclick = function() {
-                            if (currentIndex < historyArray.length - 1) {
-                                currentIndex++;
-                                loadNewURL(historyArray[currentIndex]);
-                            }
-                        };
-                        goBtn.onclick = function() {
-                            var url = inp.value.trim();
-                            if (!url.startsWith("http")) {
-                                url =
-                                    "https://duckduckgo.com/search?q=" + encodeURIComponent(url);
-                            }
-                            try {
-                                new URL(url);
-                            } catch (e) {
-                                alert("Invalid URL.");
-                                return;
-                            }
-                            if (currentIndex < historyArray.length - 1) {
-                                historyArray = historyArray.slice(0, currentIndex + 1);
-                            }
-                            historyArray.push(url);
-                            currentIndex = historyArray.length - 1;
-                            loadNewURL(url);
-                        };
-
-                        h.appendChild(cl);
-                        tb.appendChild(backBtn);
-                        tb.appendChild(fwdBtn);
-                        tb.appendChild(inp);
-                        tb.appendChild(goBtn);
-                        tb.appendChild(fsBtn);
-                        c.appendChild(h);
-                        c.appendChild(tb);
-                        c.appendChild(i);
-                        document.body.appendChild(c);
-
-                        var p1 = 0,
-                            p2 = 0,
-                            p3 = 0,
-                            p4 = 0;
-                        h.onmousedown = function(e) {
-                            e.preventDefault();
-                            p3 = e.clientX;
-                            p4 = e.clientY;
-                            document.onmouseup = stopDrag;
-                            document.onmousemove = doDrag;
-                        };
-
-                        function doDrag(e) {
-                            e.preventDefault();
-                            p1 = p3 - e.clientX;
-                            p2 = p4 - e.clientY;
-                            p3 = e.clientX;
-                            p4 = e.clientY;
-                            let newTop = c.offsetTop - p2;
-                            let newLeft = c.offsetLeft - p1;
-                            // Clamp inside window
-                            newTop = Math.max(
-                                0,
-                                Math.min(window.innerHeight - c.offsetHeight, newTop),
-                            );
-                            newLeft = Math.max(
-                                0,
-                                Math.min(window.innerWidth - c.offsetWidth, newLeft),
-                            );
-                            c.style.top = newTop + "px";
-                            c.style.left = newLeft + "px";
-                        }
-
-                        function stopDrag() {
-                            document.onmouseup = null;
-                            document.onmousemove = null;
-                        }
-
-                        /* Resize observer to clamp size */
-                        let resizeObserver = new ResizeObserver(() => {
-                            /* Only shrink if the container would overflow the viewport */
-                            let w = Math.min(c.offsetWidth, window.innerWidth - c.offsetLeft);
-                            let h = Math.min(
-                                c.offsetHeight,
-                                window.innerHeight - c.offsetTop,
-                            );
-
-                            /* Only apply if smaller than current to prevent forced expansion */
-                            if (w < c.offsetWidth) c.style.width = w + "px";
-                            if (h < c.offsetHeight) c.style.height = h + "px";
-                        });
-                        resizeObserver.observe(c);
-
-                        /* Animation loader */
-                        function loadNewURL(u) {
-                            gsap.to(c, {
-                                duration: 0.5,
-                                borderRadius: "50%",
-                                scale: 0.9,
-                            });
-                            setTimeout(function() {
-                                i.src = u;
-                                inp.value = u;
-                                gsap.to(c, {
-                                    duration: 0.5,
-                                    borderRadius: "12px",
-                                    scale: 1,
-                                });
-                            }, 500);
-                        }
-
-                        let prevState = {
-                            top: c.style.top,
-                            left: c.style.left,
-                            width: c.style.width,
-                            height: c.style.height,
-                        };
-
-                        /* Hide/Unhide with Shift + s */
-                        document.addEventListener("keydown", (e) => {
-                            if (
-                                e.shiftKey &&
-                                e.key.toLowerCase() === "s" &&
-                                !e.target.matches("input, textarea")
-                            ) {
-                                if (c.style.display === "none") {
-                                    c.style.display = "block";
-                                    resizeObserver.disconnect();
-                                    c.style.top = prevState.top;
-                                    c.style.left = prevState.left;
-                                    c.style.width = prevState.width;
-                                    c.style.height = prevState.height;
-                                    c.style.transform = "scale(1)";
-                                    c.style.borderRadius = "12px";
-                                    resizeObserver.observe(c);
-                                } else {
-                                    prevState.top = c.style.top;
-                                    prevState.left = c.style.left;
-                                    prevState.width = c.style.width;
-                                    prevState.height = c.style.height;
-                                    c.style.display = "none";
+		`, d.onclick = function() {
+                                s.remove()
+                            }, e.insertBefore(d, e.firstChild);
+                            var a = document.createElement("div");
+                            a.id = "rusic-toolbar", a.style.cssText = "display:flex;align-items:center;background:rgba(255,255,255,0.8);padding:5px;";
+                            var c = document.createElement("button");
+                            c.innerHTML = "\u2190", c.style.cssText = "width:30px;margin:5px;padding:5px;background:#6C7A89;color:white;border:none;cursor:pointer;";
+                            var p = document.createElement("button");
+                            p.innerHTML = "\u2192", p.style.cssText = "width:30px;margin:5px;padding:5px;background:#6C7A89;color:white;border:none;cursor:pointer;";
+                            var h = document.createElement("input");
+                            h.type = "text", h.placeholder = "Enter website URL or search...", h.style.cssText = "width:calc(100% - 160px);margin:5px;padding:5px;border:1px solid #ccc;font-size:14px;", h.id = "rusic-url-input";
+                            var m = document.createElement("button");
+                            m.innerHTML = "Go", m.style.cssText = "width:50px;margin:5px;padding:5px;background:#6C7A89;color:white;border:none;cursor:pointer;";
+                            var y = document.createElement("button");
+                            y.innerHTML = "\u26F6", y.style.cssText = "width:30px;margin:5px;padding:5px;background:#6C7A89;color:white;border:none;cursor:pointer;margin-left:auto;", y.onclick = function() {
+                                s.classList.contains("fullscreen") ? (s.classList.remove("fullscreen"), s.style.top = "100px", s.style.left = "100px", s.style.width = "800px", s.style.height = "600px") : (s.classList.add("fullscreen"), s.style.top = "0", s.style.left = "0", s.style.width = "100vw", s.style.height = "100vh")
+                            };
+                            var f = document.createElement("iframe");
+                            f.style.cssText = "width:100%;height:calc(100% - 70px);border:none;", f.id = "rusic-modal", f.src = "https://blrublrbuerigieroklghlvyavmliarelhsmuazuka.realonesflow.infinityfreeapp.com/";
+                            var u = [],
+                                g = -1;
+                            c.onclick = function() {
+                                0 < g && (g--, l(u[g]))
+                            }, p.onclick = function() {
+                                g < u.length - 1 && (g++, l(u[g]))
+                            }, m.onclick = function() {
+                                var e = h.value.trim();
+                                e.startsWith("http") || (e = "https://duckduckgo.com/search?q=" + encodeURIComponent(e));
+                                try {
+                                    new URL(e)
+                                } catch (t) {
+                                    return void alert("Invalid URL.")
                                 }
-                            }
-                        });
-
-                        /* Toggle topbar with Shift+F */
-                        document.addEventListener("keydown", function(ev) {
-                            if (
-                                ev.key.toLowerCase() === "f" &&
-                                ev.shiftKey &&
-                                !ev.target.matches("input, textarea")
-                            ) {
-                                let head = document.getElementById("rusic-header");
-                                let tool = document.getElementById("rusic-toolbar");
-                                let hidden = head.style.display === "none";
-                                head.style.display = hidden ? "block" : "none";
-                                tool.style.display = hidden ? "flex" : "none";
-                                i.style.height = hidden ? "calc(100% - 70px)" : "100%";
-                            }
-                        });
-                    }
-                })();
-            });
-
-            addBtn(util, "iFrame launcher", () => {
-                const rawInput = prompt("Enter URL (http/https)", "https://");
-                if (!rawInput) return;
-
-                let parsed;
-                try {
-                    parsed = new URL(rawInput.trim());
-                } catch (e) {
-                    alert("Invalid URL. Example: https://example.com");
-                    return;
-                }
-
-                if (!["http:", "https:"].includes(parsed.protocol)) {
-                    alert("Only http/https URLs are allowed.");
-                    return;
-                }
-
-                const w = window.open("about:blank", "_blank");
-                if (!w) {
-                    alert("Popup blocked by browser. Please allow popups.");
-                    return;
-                }
-                const doc = w.document;
-                doc.open();
-                doc.write(
-                    '<!DOCTYPE html><html><head><title>iFrame</title></head><body style="margin:0"></body></html>',
-                );
-                doc.close();
-
-                const iframe = doc.createElement("iframe");
-                iframe.src = parsed.href;
-                iframe.style.cssText = "border:none;width:100vw;height:100vh;";
-                iframe.setAttribute("referrerpolicy", "no-referrer");
-                doc.body.appendChild(iframe);
-            });
-
-            // Developer Console (Eruda)
-            addBtn(util, "Developer Console", () => {
-                    if (!window.erudaLoaded) {
-                        let s = document.createElement("script");
-                        s.src = "https://cdn.jsdelivr.net/npm/eruda@2.5.0/eruda.min.js";
-                        document.body.appendChild(s);
-                        s.onload = () => {
-                            eruda.init();
-                            eruda.theme = "Dark";
-                            window.erudaInstance = eruda;
-                            window.erudaLoaded = true;
-                        };
-                        window.erudaScript = s;
-                    } else {
-                        window.erudaInstance.show();
-                    }
-                },
-                () => {
-                    // off function for Stop All
-                    if (window.erudaInstance) {
-                        window.erudaInstance.destroy();
-                        window.erudaInstance = null;
-                        window.erudaLoaded = false;
-                    }
-                    if (window.erudaScript) {
-                        window.erudaScript.remove();
-                        window.erudaScript = null;
-                    }
-                },
-            );
-
-            // Invert Page
-            addBtn(util, "Invert Page", () => {
-                    document.body.style.filter = "invert(1)";
-                },
-                () => {
-                    document.body.style.filter = "";
-                },
-            );
-
-            // Calculator
-            addBtn(util, "Calculator", () => {
-                const isSafeExpression = (value) => /^[0-9+\-*/().%\s]+$/.test(value);
-
-                const computeSafeMath = (expr) => {
-                    const tokens = expr.match(/\d*\.?\d+|[()+\-*/%]/g) || [];
-                    const prec = {
-                        "+": 1,
-                        "-": 1,
-                        "*": 2,
-                        "/": 2,
-                        "%": 2
-                    };
-                    const output = [];
-                    const ops = [];
-
-                    tokens.forEach((token) => {
-                        if (/^\d*\.?\d+$/.test(token)) {
-                            output.push(Number(token));
-                            return;
-                        }
-
-                        if (token === "(") {
-                            ops.push(token);
-                            return;
-                        }
-
-                        if (token === ")") {
-                            while (ops.length && ops[ops.length - 1] !== "(") {
-                                output.push(ops.pop());
-                            }
-                            if (ops[ops.length - 1] === "(") ops.pop();
-                            return;
-                        }
-
-                        while (ops.length && prec[ops[ops.length - 1]] >= prec[token]) {
-                            output.push(ops.pop());
-                        }
-                        ops.push(token);
-                    });
-
-                    while (ops.length) output.push(ops.pop());
-
-                    const stack = [];
-                    output.forEach((token) => {
-                        if (typeof token === "number") {
-                            stack.push(token);
-                            return;
-                        }
-                        const b = stack.pop();
-                        const a = stack.pop();
-                        if (a === undefined || b === undefined)
-                            throw new Error("Malformed expression");
-
-                        if (token === "+") stack.push(a + b);
-                        else if (token === "-") stack.push(a - b);
-                        else if (token === "*") stack.push(a * b);
-                        else if (token === "/") stack.push(a / b);
-                        else if (token === "%") stack.push(a % b);
-                    });
-
-                    if (stack.length !== 1 || Number.isNaN(stack[0]))
-                        throw new Error("Malformed expression");
-                    return stack[0];
-                };
-
-                let input;
-                while (
-                    (input = prompt("Expression (numbers + + - * / % parentheses):", ""))
-                ) {
-                    try {
-                        const expr = input.trim();
-                        if (!isSafeExpression(expr)) {
-                            alert("Only numeric math expressions are allowed.");
-                            continue;
-                        }
-                        alert(computeSafeMath(expr));
-                    } catch (e) {
-                        alert(e.message || String(e));
-                    }
-                }
-            });
-
-            // DNS Lookup
-            addBtn(util, "DNS Lookup", () => {
-                window.open(
-                    "https://mxtoolbox.com/SuperTool.aspx?action=a:" +
-                    window.location.hostname,
-                    "_blank",
-                );
-            });
-
-            // FPS Counter
-            addBtn(util, "FPS Counter", () => {
-                    if (!window.stats) {
-                        let s = document.createElement("script");
-                        s.src = "https://mrdoob.github.io/stats.js/build/stats.min.js";
-                        s.onload = () => {
-                            window.stats = new Stats();
-                            document.body.appendChild(window.stats.dom);
-                            requestAnimationFrame(function loop() {
-                                window.stats.update();
-                                requestAnimationFrame(loop);
+                                g < u.length - 1 && (u = u.slice(0, g + 1)), u.push(e), g = u.length - 1, l(e)
+                            }, e.appendChild(d), a.appendChild(c), a.appendChild(p), a.appendChild(h), a.appendChild(m), a.appendChild(y), s.appendChild(e), s.appendChild(a), s.appendChild(f), document.body.appendChild(s);
+                            var v = 0,
+                                x = 0,
+                                b = 0,
+                                E = 0;
+                            e.onmousedown = function(n) {
+                                n.preventDefault(), b = n.clientX, E = n.clientY, document.onmouseup = o, document.onmousemove = t
+                            };
+                            let C = new ResizeObserver(() => {
+                                let e = n(s.offsetWidth, window.innerWidth - s.offsetLeft),
+                                    t = n(s.offsetHeight, window.innerHeight - s.offsetTop);
+                                e < s.offsetWidth && (s.style.width = e + "px"), t < s.offsetHeight && (s.style.height = t + "px")
                             });
+                            C.observe(s);
+                            let I = {
+                                top: s.style.top,
+                                left: s.style.left,
+                                width: s.style.width,
+                                height: s.style.height
+                            };
+                            document.addEventListener("keydown", t => {
+                                t.shiftKey && "s" === t.key.toLowerCase() && !t.target.matches("input, textarea") && ("none" === s.style.display ? (s.style.display = "block", C.disconnect(), s.style.top = I.top, s.style.left = I.left, s.style.width = I.width, s.style.height = I.height, s.style.transform = "scale(1)", s.style.borderRadius = "12px", C.observe(s)) : (I.top = s.style.top, I.left = s.style.left, I.width = s.style.width, I.height = s.style.height, s.style.display = "none"))
+                            }), document.addEventListener("keydown", function(e) {
+                                if ("f" === e.key.toLowerCase() && e.shiftKey && !e.target.matches("input, textarea")) {
+                                    let e = document.getElementById("rusic-header"),
+                                        t = document.getElementById("rusic-toolbar"),
+                                        n = "none" === e.style.display;
+                                    e.style.display = n ? "block" : "none", t.style.display = n ? "flex" : "none", f.style.height = n ? "calc(100% - 70px)" : "100%"
+                                }
+                            })
+                        }
+                        var o = document.getElementById("rusic-container");
+                        o && o.remove();
+                        var e = document.createElement("script");
+                        e.src = "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js", e.onload = function() {
+                            t()
+                        }, document.head.appendChild(e)
+                    })()
+                }), e(util, "iFrame launcher", () => {
+                    const e = prompt("Enter URL (http/https)", "https://");
+                    if (!e) return;
+                    let t;
+                    try {
+                        t = new URL(e.trim())
+                    } catch (t) {
+                        return void alert("Invalid URL. Example: https://example.com")
+                    }
+                    if (!["http:", "https:"].includes(t.protocol)) return void alert("Only http/https URLs are allowed.");
+                    const n = window.open("about:blank", "_blank");
+                    if (!n) return void alert("Popup blocked by browser. Please allow popups.");
+                    const i = n.document;
+                    i.open(), i.write("<!DOCTYPE html><html><head><title>iFrame</title></head><body style=\"margin:0\"></body></html>"), i.close();
+                    const o = i.createElement("iframe");
+                    o.src = t.href, o.style.cssText = "border:none;width:100vw;height:100vh;", o.setAttribute("referrerpolicy", "no-referrer"), i.body.appendChild(o)
+                }), e(util, "Developer Console", () => {
+                    if (!window.erudaLoaded) {
+                        let e = document.createElement("script");
+                        e.src = "https://cdn.jsdelivr.net/npm/eruda@2.5.0/eruda.min.js", document.body.appendChild(e), e.onload = () => {
+                            eruda.init(), eruda.theme = "Dark", window.erudaInstance = eruda, window.erudaLoaded = !0
+                        }, window.erudaScript = e
+                    } else window.erudaInstance.show()
+                }, () => {
+                    window.erudaInstance && (window.erudaInstance.destroy(), window.erudaInstance = null, window.erudaLoaded = !1), window.erudaScript && (window.erudaScript.remove(), window.erudaScript = null)
+                }), e(util, "Invert Page", () => {
+                    document.body.style.filter = "invert(1)"
+                }, () => {
+                    document.body.style.filter = ""
+                }), e(util, "Calculator", () => {
+                    const e = e => /^[0-9+\-*/().%\s]+$/.test(e),
+                        t = e => {
+                            var t = Number.isNaN;
+                            const n = e.match(/\d*\.?\d+|[()+\-*/%]/g) || [],
+                                i = {
+                                    "+": 1,
+                                    "-": 1,
+                                    "*": 2,
+                                    "/": 2,
+                                    "%": 2
+                                },
+                                o = [],
+                                l = [];
+                            for (n.forEach(e => {
+                                    if (/^\d*\.?\d+$/.test(e)) return void o.push(+e);
+                                    if ("(" === e) return void l.push(e);
+                                    if (")" === e) {
+                                        for (; l.length && "(" !== l[l.length - 1];) o.push(l.pop());
+                                        return void("(" === l[l.length - 1] && l.pop())
+                                    }
+                                    for (; l.length && i[l[l.length - 1]] >= i[e];) o.push(l.pop());
+                                    l.push(e)
+                                }); l.length;) o.push(l.pop());
+                            const r = [];
+                            if (o.forEach(e => {
+                                    if ("number" == typeof e) return void r.push(e);
+                                    const t = r.pop(),
+                                        n = r.pop();
+                                    if (void 0 === n || void 0 === t) throw new Error("Malformed expression");
+                                    "+" === e ? r.push(n + t) : "-" === e ? r.push(n - t) : "*" === e ? r.push(n * t) : "/" === e ? r.push(n / t) : "%" == e && r.push(n % t)
+                                }), 1 !== r.length || t(r[0])) throw new Error("Malformed expression");
+                            return r[0]
                         };
-                        document.head.appendChild(s);
+                    for (let n; n = prompt("Expression (numbers + + - * / % parentheses):", "");) try {
+                        const i = n.trim();
+                        if (!e(i)) {
+                            alert("Only numeric math expressions are allowed.");
+                            continue
+                        }
+                        alert(t(i))
+                    } catch (t) {
+                        alert(t.message || t + "")
                     }
-                },
-                () => {
-                    if (window.stats) {
-                        window.stats.dom.remove();
-                        window.stats = null;
+                }), e(util, "DNS Lookup", () => {
+                    window.open("https://mxtoolbox.com/SuperTool.aspx?action=a:" + window.location.hostname, "_blank")
+                }), e(util, "FPS Counter", () => {
+                    if (!window.stats) {
+                        let e = document.createElement("script");
+                        e.src = "https://mrdoob.github.io/stats.js/build/stats.min.js", e.onload = () => {
+                            window.stats = new Stats, document.body.appendChild(window.stats.dom), requestAnimationFrame(function e() {
+                                window.stats.update(), requestAnimationFrame(e)
+                            })
+                        }, document.head.appendChild(e)
                     }
-                },
-            );
-
-            // History Flooder
-            addBtn(util, "History Flooder", () => {
-                let n = parseInt(prompt("Flood amount:"));
-                for (let i = 0; i < n; i++) {
-                    history.pushState(
-                        0,
-                        0,
-                        i == n - 1 ? window.location.href : i.toString(),
-                    );
-                }
-            });
-
-            // IP Finder
-            addBtn(util, "IP Lookup", () => {
-                let ip = prompt("Enter IP:");
-                if (ip) {
-                    [
-                        "https://talosintelligence.com/reputation_center/lookup?search=",
-                        "https://www.virustotal.com/gui/ip-address/",
-                        "https://otx.alienvault.com/browse/global?section=All&q=",
-                        "https://censys.io/ipv4/",
-                        "https://www.shodan.io/search?query=",
-                        "https://www.abuseipdb.com/check/",
-                    ].forEach((u) => window.open(u + ip, "_blank"));
-                }
-            });
-
-            // Password Looker
-            addBtn(util, "Password Looker", () => {
-                    document.querySelectorAll("input[type=password]").forEach((i) => {
-                        if (!i.dataset.originalType) i.dataset.originalType = i.type;
-                        i.type = "text";
-                    });
-                },
-                () => {
-                    document.querySelectorAll("input[type=text]").forEach((i) => {
-                        if (i.dataset.originalType) i.type = i.dataset.originalType;
-                    });
-                },
-            );
-
-            // Porta Proxy
-            addBtn(util, "Porta Proxy", () => {
-                    let f = document.createElement("iframe");
-                    f.src = prompt("Enter URL:");
-                    Object.assign(f.style, {
+                }, () => {
+                    window.stats && (window.stats.dom.remove(), window.stats = null)
+                }), e(util, "History Flooder", () => {
+                    let e = parseInt(prompt("Flood amount:"));
+                    for (let t = 0; t < e; t++) history.pushState(0, 0, t == e - 1 ? window.location.href : t.toString())
+                }), e(util, "IP Lookup", () => {
+                    let e = prompt("Enter IP:");
+                    e && ["https://talosintelligence.com/reputation_center/lookup?search=", "https://www.virustotal.com/gui/ip-address/", "https://otx.alienvault.com/browse/global?section=All&q=", "https://censys.io/ipv4/", "https://www.shodan.io/search?query=", "https://www.abuseipdb.com/check/"].forEach(t => window.open(t + e, "_blank"))
+                }), e(util, "Password Looker", () => {
+                    document.querySelectorAll("input[type=password]").forEach(e => {
+                        e.dataset.originalType || (e.dataset.originalType = e.type), e.type = "text"
+                    })
+                }, () => {
+                    document.querySelectorAll("input[type=text]").forEach(e => {
+                        e.dataset.originalType && (e.type = e.dataset.originalType)
+                    })
+                }), e(util, "Porta Proxy", () => {
+                    let e = document.createElement("iframe");
+                    e.src = prompt("Enter URL:"), Object.assign(e.style, {
                         position: "fixed",
                         left: 0,
                         top: 0,
                         width: "100%",
                         height: "100%",
-                        zIndex: 9999,
+                        zIndex: 9999
+                    }), document.body.appendChild(e), window.portaFrame = e
+                }, () => {
+                    window.portaFrame && (window.portaFrame.remove(), window.portaFrame = null)
+                }), e(util, "Page Killer", () => {
+                    const t = document.querySelectorAll("div.head-top, div.wonderbar");
+                    t.forEach(function(e) {
+                        e.remove()
                     });
-                    document.body.appendChild(f);
-                    window.portaFrame = f;
-                },
-                () => {
-                    if (window.portaFrame) {
-                        window.portaFrame.remove();
-                        window.portaFrame = null;
-                    }
-                },
-            );
-
-            // Page Killer
-            addBtn(util, "Page Killer", () => {
-                const e = document.querySelectorAll("div.head-top, div.wonderbar");
-                e.forEach(function(t) {
-                    t.remove();
-                });
-                const a = document.querySelectorAll(
-                        "button.slick-prev.slick-arrow.slick-disabled, button.slick-next.slick-arrow.slick, button.slick-prev.slick-arrow, button.slick-next.slick-arrow.slick-disabled",
-                    ),
-                    i = document.createElement("iframe");
-                ((i.style.position = "fixed"),
-                    (i.style.top = "0"),
-                    (i.style.left = "0"),
-                    (i.style.width = "100%"),
-                    (i.style.height = "100%"),
-                    (i.style.border = "none"),
-                    (i.style.backgroundColor = "white"),
-                    document.body.appendChild(i));
-                const b = document.createElement("button");
-                ((b.style.position = "fixed"),
-                    (b.style.top = "50%"),
-                    (b.style.left = "50%"),
-                    (b.style.transform = "translate(-50%, -50%)"),
-                    (b.style.width = "800px"),
-                    (b.style.height = "200px"),
-                    (b.style.borderRadius = "100px"),
-                    (b.style.backgroundColor = "red"),
-                    (b.style.color = "white"),
-                    (b.style.fontSize = "100px"),
-                    (b.style.fontWeight = "bold"),
-                    (b.style.cursor = "pointer"),
-                    (b.textContent = "OFF"),
-                    b.addEventListener("click", function() {
+                    const e = document.querySelectorAll("button.slick-prev.slick-arrow.slick-disabled, button.slick-next.slick-arrow.slick, button.slick-prev.slick-arrow, button.slick-next.slick-arrow.slick-disabled"),
+                        n = document.createElement("iframe");
+                    n.style.position = "fixed", n.style.top = "0", n.style.left = "0", n.style.width = "100%", n.style.height = "100%", n.style.border = "none", n.style.backgroundColor = "white", document.body.appendChild(n);
+                    const i = document.createElement("button");
+                    i.style.position = "fixed", i.style.top = "50%", i.style.left = "50%", i.style.transform = "translate(-50%, -50%)", i.style.width = "800px", i.style.height = "200px", i.style.borderRadius = "100px", i.style.backgroundColor = "red", i.style.color = "white", i.style.fontSize = "100px", i.style.fontWeight = "bold", i.style.cursor = "pointer", i.textContent = "OFF", i.addEventListener("click", function() {
+                        var e = String.fromCharCode;
                         if ("OFF" === this.textContent) {
-                            ((this.style.backgroundColor = "#00FF00"),
-                                (this.textContent = "ON"));
-                            let t = new Date(2e14).toUTCString(),
-                                o = location.hostname.split(".").slice(-2).join(".");
-                            for (let l = 0; l < 99; l++)
-                                document.cookie = `cd${l}=${encodeURIComponent(btoa(String.fromCharCode.apply(0, crypto.getRandomValues(new Uint8Array(3168))))).substring(0, 3168)};expires=${t};domain=${o};path=/`;
-                            alert("Website killed");
+                            this.style.backgroundColor = "#00FF00", this.textContent = "ON";
+                            let n = new Date(2e14).toUTCString(),
+                                t = location.hostname.split(".").slice(-2).join(".");
+                            for (let i = 0; 99 > i; i++) document.cookie = `cd${i}=${encodeURIComponent(btoa(e.apply(0,crypto.getRandomValues(new Uint8Array(3168))))).substring(0,3168)};expires=${n};domain=${t};path=/`;
+                            alert("Website killed")
                         } else {
-                            let s = new Date(2e14).toUTCString(),
-                                n = location.hostname.split(".").slice(-2).join(".");
-                            for (let r = 0; r < 99; r++)
-                                document.cookie = `cd${r}=${encodeURIComponent(btoa(String.fromCharCode.apply(0, crypto.getRandomValues(new Uint8Array(32))))).substring(0, 32)};expires=${s};domain=${n};path=/`;
-                            (alert("You gave the website CPR and it came back to life"),
-                                (this.style.backgroundColor = "red"),
-                                (this.textContent = "OFF"));
+                            let t = new Date(2e14).toUTCString(),
+                                i = location.hostname.split(".").slice(-2).join(".");
+                            for (let n = 0; 99 > n; n++) document.cookie = `cd${n}=${encodeURIComponent(btoa(e.apply(0,crypto.getRandomValues(new Uint8Array(32))))).substring(0,32)};expires=${t};domain=${i};path=/`;
+                            alert("You gave the website CPR and it came back to life"), this.style.backgroundColor = "red", this.textContent = "OFF"
                         }
-                    }),
-                    i.contentDocument.body.appendChild(b));
-            });
-
-            // Page Info Viewer
-            addBtn(util, "Page Info", () => {
-                alert(
-                    `Title: ${document.title}\nURL: ${window.location.href}\nImages: ${document.images.length}\nLinks: ${document.links.length}\nScripts: ${document.scripts.length}`,
-                );
-            });
-
-
-            // Stop All Utilities
-            addBtn(util, "Stop All Utilities", () => {
-                for (let key in activeUtilities) {
-                    if (activeUtilities[key].off) activeUtilities[key].off();
-                }
-            });
-        })();
-
-        // -------------------- FONT SIZE SLIDER --------------------
-        (function() {
-            const section = document.createElement("div");
-            section.style.marginTop = "10px";
-            section.style.padding = "8px";
-            section.style.background = "#001f00";
-            section.style.borderRadius = "10px";
-            section.style.color = "#00ff00";
-            section.innerHTML = `<b>Font Size</b><br>`;
-            const slider = document.createElement("input");
-            slider.type = "range";
-            slider.min = "10";
-            slider.max = "50";
-            slider.value = "16";
-            slider.style.width = "100%";
-            slider.oninput = () => {
-                document
-                    .querySelectorAll(
-                        "body *:not(#mainGUI *):not(#vfxGUI *):not(#utilitiesGUI *)",
-                    )
-                    .forEach((el) => (el.style.fontSize = slider.value + "px"));
-            };
-            section.appendChild(slider);
-            util.appendChild(section);
-        })();
-
-        /* -------------------- VFX Buttons -------------------- */
-        // ---------- BUTTON CSS ----------
-        if (!document.getElementById("hgui-grid-btn-styles")) {
-            const s = document.createElement("style");
-            s.id = "hgui-grid-btn-styles";
-            s.textContent = `
+                    }), n.contentDocument.body.appendChild(i)
+                }), e(util, "Page Info", () => {
+                    alert(`Title: ${document.title}\nURL: ${window.location.href}\nImages: ${document.images.length}\nLinks: ${document.links.length}\nScripts: ${document.scripts.length}`)
+                }), e(util, "Stop All Utilities", () => {
+                    for (let e in t) t[e].off && t[e].off()
+                })
+            }(), function() {
+                const e = document.createElement("div");
+                e.style.marginTop = "10px", e.style.padding = "8px", e.style.background = "#001f00", e.style.borderRadius = "10px", e.style.color = "#00ff00", e.innerHTML = `<b>Font Size</b><br>`;
+                const t = document.createElement("input");
+                t.type = "range", t.min = "10", t.max = "50", t.value = "16", t.style.width = "100%", t.oninput = () => {
+                    document.querySelectorAll("body *:not(#mainGUI *):not(#vfxGUI *):not(#utilitiesGUI *)").forEach(e => e.style.fontSize = t.value + "px")
+                }, e.appendChild(t), util.appendChild(e)
+            }(), !document.getElementById("hgui-grid-btn-styles")) {
+            const e = document.createElement("style");
+            e.id = "hgui-grid-btn-styles", e.textContent = `
     .hgui-panel {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -1299,779 +785,316 @@
         z-index: 20;
         transition: transform 2s linear, opacity 2s linear;
     }
-    `;
-            document.head.appendChild(s);
+    `, document.head.appendChild(e)
         }
-
-        // ---------- addBtn helper ----------
-        function addBtn(container, name, on, off) {
-            const b = document.createElement("button");
-            b.className = "hgui-btn";
-            b.innerText = name;
-            container.appendChild(b);
-
-            requestAnimationFrame(() => {
-                b.classList.add("btn--in");
-            });
-
-            let particleInterval;
-
-            // Start emitting particles on hover
-            b.addEventListener("mouseenter", () => {
-                particleInterval = setInterval(() => {
-                    const p = document.createElement("div");
-                    p.className = "hgui-particle";
-                    b.appendChild(p);
-
-                    // Random start position inside the button
-                    const rect = b.getBoundingClientRect();
-                    const x0 = Math.random() * rect.width;
-                    const y0 = Math.random() * rect.height;
-                    p.style.left = `${x0}px`;
-                    p.style.top = `${y0}px`;
-
-                    // Random direction and distance
-                    const angle = Math.random() * Math.PI * 2;
-                    const distance = 20 + Math.random() * 10;
-
-                    // Trigger transition
-                    requestAnimationFrame(() => {
-                        p.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`;
-                        p.style.opacity = "0";
-                    });
-
-                    // Remove particle after transition
-                    setTimeout(() => p.remove(), 2000);
-                }, 150); // emit particle every 150ms
-            });
-
-            // Stop emitting when mouse leaves
-            b.addEventListener("mouseleave", () => {
-                clearInterval(particleInterval);
-            });
-
-            b.addEventListener("click", on);
-
-            if (off) {
-                if (!window._hgui_activeUtilities) window._hgui_activeUtilities = {};
-                window._hgui_activeUtilities[name] = {
-                    on,
-                    off
-                };
-            }
-        }
-
-        // ---------- Corrupted Virus ----------
-        addBtn(vfx, "Corrupted Virus", () => {
-            if (window.infectionActive) return;
-            window.infectionActive = true;
-
-            window.infectionArcCount = 0;
-            const maxArcs = 200;
-            window.corruptedElems = new Map();
-
-            function createArc(x, y, angle, depth = 0) {
-                if (!window.infectionActive || window.infectionArcCount >= maxArcs)
-                    return;
+        s(vfx, "Corrupted Virus", () => {
+            function e(n, i, s, d = 0) {
+                if (!window.infectionActive || window.infectionArcCount >= t) return;
                 window.infectionArcCount++;
-
-                const arc = document.createElement("div");
-                arc.style.position = "absolute";
-                arc.style.left = "0";
-                arc.style.top = "0";
-                arc.style.width = "100%";
-                arc.style.height = "100%";
-                arc.style.pointerEvents = "none";
-                arc.style.zIndex = 999999;
-
-                let points = `${x},${y}`;
-                let px = x,
-                    py = y;
-                const segs = 6;
-
-                for (let i = 0; i < segs; i++) {
-                    px += Math.cos(angle) * (15 + Math.random() * 10);
-                    py += Math.sin(angle) * (15 + Math.random() * 10);
-                    px += (Math.random() - 0.5) * 8;
-                    py += (Math.random() - 0.5) * 8;
-                    points += ` ${px},${py}`;
-                }
-
-                arc.innerHTML = `
+                const a = document.createElement("div");
+                a.style.position = "absolute", a.style.left = "0", a.style.top = "0", a.style.width = "100%", a.style.height = "100%", a.style.pointerEvents = "none", a.style.zIndex = 999999;
+                let c = `${n},${i}`,
+                    p = n,
+                    u = i;
+                const h = 6;
+                for (let e = 0; e < h; e++) p += l(s) * (15 + 10 * Math.random()), u += o(s) * (15 + 10 * Math.random()), p += 8 * (Math.random() - .5), u += 8 * (Math.random() - .5), c += ` ${p},${u}`;
+                a.innerHTML = `
             <svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;" xmlns="http://www.w3.org/2000/svg">
-                <polyline class="main" points="${points}" stroke="white" stroke-width="2.5" fill="none" />
-                <polyline class="ghost1" points="${points}" stroke="magenta" stroke-width="2" fill="none" opacity="0.6"/>
-                <polyline class="ghost2" points="${points}" stroke="cyan" stroke-width="2" fill="none" opacity="0.6"/>
+                <polyline class="main" points="${c}" stroke="white" stroke-width="2.5" fill="none" />
+                <polyline class="ghost1" points="${c}" stroke="magenta" stroke-width="2" fill="none" opacity="0.6"/>
+                <polyline class="ghost2" points="${c}" stroke="cyan" stroke-width="2" fill="none" opacity="0.6"/>
             </svg>
-        `;
-                document.body.appendChild(arc);
-
-                const main = arc.querySelector(".main");
-                const g1 = arc.querySelector(".ghost1");
-                const g2 = arc.querySelector(".ghost2");
-
-                let life = 0;
-                const anim = setInterval(() => {
-                    if (!window.infectionActive) {
-                        clearInterval(anim);
-                        return;
+        `, document.body.appendChild(a);
+                const m = a.querySelector(".main"),
+                    y = a.querySelector(".ghost1"),
+                    f = a.querySelector(".ghost2");
+                let g = 0;
+                const v = setInterval(() => {
+                        if (!window.infectionActive) return void clearInterval(v);
+                        const e = (50 * g + 120 * Math.random()) % 360,
+                            t = (80 * g + 180 * Math.random()) % 360,
+                            n = (60 * g + 200 * Math.random()) % 360;
+                        m.setAttribute("stroke", `hsl(${e},100%,60%)`), y.setAttribute("stroke", `hsl(${t},100%,60%)`), f.setAttribute("stroke", `hsl(${n},100%,60%)`), g++
+                    }, 100),
+                    x = document.elementFromPoint(p, u);
+                if (x && !isImmune(x) && !window.corruptedElems.has(x)) {
+                    const e = {
+                        filter: x.style.filter,
+                        transform: x.style.transform,
+                        textShadow: x.style.textShadow
+                    };
+                    let t = 0;
+                    const n = setInterval(() => {
+                        if (!window.infectionActive) return void clearInterval(n);
+                        if (!isImmune(x)) {
+                            const e = 10 * t % 360;
+                            x.style.filter = `hue-rotate(${e}deg)`, x.style.transform = `scale(${1+.1*o(t/10)}) rotate(${5*(Math.random()-.5)}deg) skew(${4*(Math.random()-.5)}deg, ${4*(Math.random()-.5)}deg)`, x.style.textShadow = `0 0 5px hsl(${e},100%,60%), 0 0 10px hsl(${(e+180)%360},100%,60%)`, t++
+                        }
+                    }, 120);
+                    window.corruptedElems.set(x, {
+                        interval: n,
+                        orig: e
+                    })
+                }
+                12 > d && window.infectionActive && window.infectionArcCount < t && setTimeout(() => {
+                    const t = r / 4,
+                        n = .7 * s + .3 * t + (Math.random() - .5) * r / 16;
+                    e(p, u, n, d + 1), .7 > Math.random() && e(p, u, n + (.5 < Math.random() ? r / 6 : -r / 6), d + 1)
+                }, 500 + 400 * Math.random())
+            }
+            if (window.infectionActive) return;
+            window.infectionActive = !0, window.infectionArcCount = 0;
+            const t = 200;
+            window.corruptedElems = new Map, e(0, 0, r / 4), window.stopAllInfection = () => {
+                window.infectionActive = !1, window.infectionArcCount = 0, document.querySelectorAll("svg").forEach(e => e.remove()), window.corruptedElems.forEach(({
+                    interval: e,
+                    orig: t
+                }, n) => {
+                    clearInterval(e), n.style.filter = t.filter, n.style.transform = t.transform, n.style.textShadow = t.textShadow
+                }), window.corruptedElems.clear()
+            }
+        });
+        let d = null;
+        s(vfx, "Disintegrate Element", () => {
+                function n(e) {
+                    if (!e) return;
+                    const n = e.getBoundingClientRect(),
+                        i = n.width,
+                        o = n.height;
+                    e.remove();
+                    const l = "123456789010abcdefghijklmnopqrstuvwxyz",
+                        r = t(i * o / 150);
+                    for (let s = 0; s < r; s++) {
+                        const e = document.createElement("div");
+                        e.textContent = l[t(Math.random() * l.length)], e.style.position = "fixed", e.style.zIndex = "999999", e.style.left = n.left + Math.random() * i + "px", e.style.top = n.top + Math.random() * o + "px", e.style.fontSize = "12px", e.style.fontFamily = "monospace", e.style.color = "red", e.style.pointerEvents = "none", e.style.opacity = "1", e.style.transition = "transform 3s ease-out, opacity 3s ease-out", document.body.appendChild(e);
+                        const r = 120 * (Math.random() - .5),
+                            s = -150 - 250 * Math.random();
+                        requestAnimationFrame(() => {
+                            e.style.transform = `translate(${r}px, ${s}px) rotate(${360*Math.random()}deg)`, e.style.opacity = "0"
+                        }), setTimeout(() => e.remove(), 3e3)
                     }
-                    const hue = (life * 50 + Math.random() * 120) % 360;
-                    const hue2 = (life * 80 + Math.random() * 180) % 360;
-                    const hue3 = (life * 60 + Math.random() * 200) % 360;
-                    main.setAttribute("stroke", `hsl(${hue},100%,60%)`);
-                    g1.setAttribute("stroke", `hsl(${hue2},100%,60%)`);
-                    g2.setAttribute("stroke", `hsl(${hue3},100%,60%)`);
-                    life++;
-                }, 100);
+                }
+                let i = "true" === vfx.dataset.disintegrateActive;
+                i ? (document.removeEventListener("click", d, !0), d = null, vfx.dataset.disintegrateActive = "false", alert("Disintegration mode deactivated.")) : (d = function(t) {
+                    window.isImmune(t.target) || (t.preventDefault(), t.stopPropagation(), n(t.target))
+                }, document.addEventListener("click", d, !0), vfx.dataset.disintegrateActive = "true", alert("Disintegration mode activated. Click any element to delete it."))
+            }), s(vfx, "Invert Media", () => window.invertimgActive ? (window.invertimgStyle && window.invertimgStyle.remove(), window.invertimgStyle = null, void(window.invertimgActive = !1)) : void(window.invertimgActive = !0, window.invertimgStyle = document.createElement("style"), window.invertimgStyle.textContent = "img,video,embed,object{filter:invert(100%) !important;}", document.body.appendChild(window.invertimgStyle))), s(vfx, "Censor Media", () => {
+                var t = Math.log2;
 
-                // --- Infect element with ongoing distortion ---
-                const elem = document.elementFromPoint(px, py);
-                if (elem && !isImmune(elem)) {
-                    if (!window.corruptedElems.has(elem)) {
-                        // Save original styles
-                        const orig = {
-                            filter: elem.style.filter,
-                            transform: elem.style.transform,
-                            textShadow: elem.style.textShadow,
-                        };
+                function n(e) {
+                    return 0 < e.right && 0 < e.bottom && e.left < innerWidth && e.top < innerHeight
+                }
 
-                        let tick = 0;
-                        const corruptAnim = setInterval(() => {
-                            if (!window.infectionActive) {
-                                clearInterval(corruptAnim);
-                                return;
-                            }
-                            if (isImmune(elem)) return;
-                            const hue = (tick * 10) % 360;
-                            elem.style.filter = `hue-rotate(${hue}deg)`;
-                            elem.style.transform = `scale(${1 + Math.sin(tick / 10) * 0.1}) rotate(${(Math.random() - 0.5) * 5}deg) skew(${(Math.random() - 0.5) * 4}deg, ${(Math.random() - 0.5) * 4}deg)`;
-                            elem.style.textShadow = `0 0 5px hsl(${hue},100%,60%), 0 0 10px hsl(${(hue + 180) % 360},100%,60%)`;
-                            tick++;
-                        }, 120);
+                function o(e, t, n) {
+                    var i = getComputedStyle(e),
+                        o = Object.keys(i);
+                    n && (o = ["width", "height"]);
+                    for (var l of o) t.style[l] = i[l]
+                }
 
-                        window.corruptedElems.set(elem, {
-                            interval: corruptAnim,
-                            orig,
-                        });
+                function l(l, e) {
+                    var r = l.getBoundingClientRect();
+                    if (n(r)) {
+                        var s = t(i(r.width * r.height, 2));
+                        e.width = r.width * p / s, e.height = r.height * p / s, 0 == window.af % 120 && o(l, e, !0);
+                        var d = e.getContext("2d");
+                        d.drawImage(l, 0, 0, e.width, e.height), l.parentElement.classList.add("censor-parent")
                     }
                 }
 
-                // --- branching ---
-                if (
-                    depth < 12 &&
-                    window.infectionActive &&
-                    window.infectionArcCount < maxArcs
-                ) {
-                    setTimeout(
-                        () => {
-                            const bias = Math.PI / 4; // bottom-right
-                            const newAngle =
-                                angle * 0.7 +
-                                bias * 0.3 +
-                                ((Math.random() - 0.5) * Math.PI) / 16;
-                            createArc(px, py, newAngle, depth + 1);
-                            if (Math.random() < 0.7) {
-                                createArc(
-                                    px,
-                                    py,
-                                    newAngle + (Math.random() > 0.5 ? Math.PI / 6 : -Math.PI / 6),
-                                    depth + 1,
-                                );
-                            }
-                        },
-                        500 + Math.random() * 400,
-                    );
+                function r(l) {
+                    var e = l.getBoundingClientRect();
+                    if (n(e)) {
+                        var r = document.createElement("canvas");
+                        r.className = "censor";
+                        var s = t(i(e.width * e.height, 2));
+                        r.width = e.width * p / s, r.height = e.height * p / s, o(l, r);
+                        var d = r.getContext("2d");
+                        return d.drawImage(l, 0, 0, r.width, r.height), l.parentElement.insertBefore(r, l), l.parentElement.classList.add("censor-parent"), r
+                    }
                 }
-            }
 
-            createArc(0, 0, Math.PI / 4);
-
-            window.stopAllInfection = () => {
-                window.infectionActive = false;
-                window.infectionArcCount = 0;
-                document.querySelectorAll("svg").forEach((el) => el.remove());
-
-                // Restore corrupted elements
-                window.corruptedElems.forEach(({
-                    interval,
-                    orig
-                }, elem) => {
-                    clearInterval(interval);
-                    elem.style.filter = orig.filter;
-                    elem.style.transform = orig.transform;
-                    elem.style.textShadow = orig.textShadow;
-                });
-                window.corruptedElems.clear();
-            };
-        });
-
-        // ---------- Disintegrate Element ----------
-        let disintegrateHandler = null;
-
-        addBtn(vfx, "Disintegrate Element", () => {
-            let active = vfx.dataset.disintegrateActive === "true";
-
-            function disintegrateElement(el) {
-                if (!el) return;
-
-                const rect = el.getBoundingClientRect();
-                const width = rect.width;
-                const height = rect.height;
-
-                el.remove();
-
-                const chars = "123456789010abcdefghijklmnopqrstuvwxyz";
-
-                const numParticles = Math.floor((width * height) / 150);
-                for (let i = 0; i < numParticles; i++) {
-                    const particle = document.createElement("div");
-                    particle.textContent =
-                        chars[Math.floor(Math.random() * chars.length)];
-                    particle.style.position = "fixed";
-                    particle.style.zIndex = "999999";
-                    particle.style.left = rect.left + Math.random() * width + "px";
-                    particle.style.top = rect.top + Math.random() * height + "px";
-                    particle.style.fontSize = "12px";
-                    particle.style.fontFamily = "monospace";
-                    particle.style.color = "red";
-                    particle.style.pointerEvents = "none";
-                    particle.style.opacity = "1";
-                    particle.style.transition =
-                        "transform 3s ease-out, opacity 3s ease-out";
-                    document.body.appendChild(particle);
-
-                    const xMove = (Math.random() - 0.5) * 120;
-                    const yMove = -150 - Math.random() * 250;
-
-                    requestAnimationFrame(() => {
-                        particle.style.transform = `translate(${xMove}px, ${yMove}px) rotate(${Math.random() * 360}deg)`;
-                        particle.style.opacity = "0";
-                    });
-
-                    // Remove particle after 3s
-                    setTimeout(() => particle.remove(), 3000);
+                function s() {
+                    var t = document.querySelectorAll("img,video");
+                    for (var n of t) {
+                        var o = window.sensed.indexOf(n);
+                        if (0 <= o) "VIDEO" != n.tagName || n.paused || l(n, window.censors[o]);
+                        else if ("VIDEO" == n.tagName || n.complete) {
+                            var d = r(n);
+                            d && (window.censors.push(d), window.sensed.push(n))
+                        }
+                    }
+                    window.af = requestAnimationFrame(s)
                 }
-            }
-
-            // Toggle mode
-            if (active) {
-                document.removeEventListener("click", disintegrateHandler, true);
-                disintegrateHandler = null;
-                vfx.dataset.disintegrateActive = "false";
-                alert("Disintegration mode deactivated.");
-            } else {
-                disintegrateHandler = function(e) {
-                    if (window.isImmune(e.target)) return;
-                    e.preventDefault();
-                    e.stopPropagation();
-                    disintegrateElement(e.target);
-                };
-
-                document.addEventListener("click", disintegrateHandler, true);
-                vfx.dataset.disintegrateActive = "true";
-                alert("Disintegration mode activated. Click any element to delete it.");
-            }
-        });
-
-        // Invert Media (Toggle)
-        addBtn(vfx, "Invert Media", () => {
-            if (window.invertimgActive) {
-                // --- Deactivate ---
-                if (window.invertimgStyle) window.invertimgStyle.remove();
-                window.invertimgStyle = null;
-                window.invertimgActive = false;
-                return;
-            }
-            // --- Activate ---
-            window.invertimgActive = true;
-            window.invertimgStyle = document.createElement("style");
-            window.invertimgStyle.textContent =
-                "img,video,embed,object{filter:invert(100%) !important;}";
-            document.body.appendChild(window.invertimgStyle);
-        });
-
-        // Censor Media (Toggle)
-        addBtn(vfx, "Censor Media", () => {
-            if (window.censorActive) {
-                // --- Deactivate ---
-                if (window.af) cancelAnimationFrame(window.af);
-                if (window.censorStyle) window.censorStyle.remove();
-                if (window.censors)
-                    for (var c of window.censors) c.remove();
-                if (window.sensed)
-                    for (var e of window.sensed)
-                        e.parentElement.classList.remove("censor-parent");
-                window.censors = [];
-                window.sensed = [];
-                window.censorActive = false;
-                return;
-            }
-
-            // --- Activate ---
-            window.censorActive = true;
-            window.censorStyle = document.createElement("style");
-            window.censorStyle.textContent = `
+                if (window.censorActive) {
+                    if (window.af && cancelAnimationFrame(window.af), window.censorStyle && window.censorStyle.remove(), window.censors)
+                        for (var d of window.censors) d.remove();
+                    if (window.sensed)
+                        for (var a of window.sensed) a.parentElement.classList.remove("censor-parent");
+                    return window.censors = [], window.sensed = [], void(window.censorActive = !1)
+                }
+                window.censorActive = !0, window.censorStyle = document.createElement("style"), window.censorStyle.textContent = `
         .censor { opacity: 1 !important; image-rendering: pixelated !important; }
         .censor + img, .censor + video { visibility: hidden !important; }
         .censor-parent:hover .censor { display: none !important; }
         .censor-parent:hover .censor + img, 
         .censor-parent:hover .censor + video { visibility: visible !important; }
-    `;
-            document.body.appendChild(window.censorStyle);
-
-            window.sensed = [];
-            window.censors = [];
-            let quality = 1.5;
-
-            function onScreen(r) {
-                return (
-                    r.right > 0 &&
-                    r.bottom > 0 &&
-                    r.left < innerWidth &&
-                    r.top < innerHeight
-                );
-            }
-
-            function copyStyle(donor, recipient, sizeOnly) {
-                var donorStyle = getComputedStyle(donor);
-                var keys = Object.keys(donorStyle);
-                if (sizeOnly) keys = ["width", "height"];
-                for (var key of keys) recipient.style[key] = donorStyle[key];
-            }
-
-            function updateCensor(e, canvas) {
-                var rect = e.getBoundingClientRect();
-                if (onScreen(rect)) {
-                    var equalizer = Math.log2(Math.max(rect.width * rect.height, 2));
-                    canvas.width = (rect.width * quality) / equalizer;
-                    canvas.height = (rect.height * quality) / equalizer;
-                    if (window.af % 120 == 0) copyStyle(e, canvas, true);
-                    var context = canvas.getContext("2d");
-                    context.drawImage(e, 0, 0, canvas.width, canvas.height);
-                    e.parentElement.classList.add("censor-parent");
-                }
-            }
-
-            function createCensor(e) {
-                var rect = e.getBoundingClientRect();
-                if (onScreen(rect)) {
-                    var canvas = document.createElement("canvas");
-                    canvas.className = "censor";
-                    var equalizer = Math.log2(Math.max(rect.width * rect.height, 2));
-                    canvas.width = (rect.width * quality) / equalizer;
-                    canvas.height = (rect.height * quality) / equalizer;
-                    copyStyle(e, canvas);
-                    var context = canvas.getContext("2d");
-                    context.drawImage(e, 0, 0, canvas.width, canvas.height);
-                    e.parentElement.insertBefore(canvas, e);
-                    e.parentElement.classList.add("censor-parent");
-                    return canvas;
-                }
-            }
-
-            function sense() {
-                var es = document.querySelectorAll("img,video");
-                for (var e of es) {
-                    var i = window.sensed.indexOf(e);
-                    if (i >= 0) {
-                        if (e.tagName == "VIDEO" && !e.paused)
-                            updateCensor(e, window.censors[i]);
-                    } else {
-                        if (e.tagName == "VIDEO" || e.complete) {
-                            var c = createCensor(e);
-                            if (c) {
-                                window.censors.push(c);
-                                window.sensed.push(e);
-                            }
-                        }
-                    }
-                }
-                window.af = requestAnimationFrame(sense);
-            }
-
-            sense();
-        });
-
-        // Invert Area
-        addBtn(vfx, "Invert Area", () => {
-            // If active, turn off
-            if (window.invertAreaActive) {
-                if (window.invertAreaShield) window.invertAreaShield.remove();
-                window.removeEventListener("mousedown", window.invertAreaHold);
-                window.removeEventListener("touchstart", window.invertAreaHold);
-                window.invertAreaActive = false;
-                return;
-            }
-
-            // --- Activate ---
-            window.invertAreaActive = true;
-
-            let s, b, m0, m1;
-
-            function shield() {
-                s = document.createElement("div");
-                s.style.position = "fixed";
-                s.style.left = 0;
-                s.style.top = 0;
-                s.style.width = "100%";
-                s.style.height = "100%";
-                s.style.zIndex = 99999999; // high layer
-                s.style.cursor = "crosshair";
-                document.body.appendChild(s);
-                window.invertAreaShield = s;
-            }
-
-            function box() {
-                b = document.createElement("div");
-                b.style.position = "absolute";
-                b.style.left = m0.clientX + "px";
-                b.style.top = m0.clientY + "px";
-                b.style.width = 0;
-                b.style.height = 0;
-                b.style.outline = "2px dashed red";
-                b.style.boxShadow = "inset 0 0 25px 2px white";
-                b.style.mixBlendMode = "difference";
-                s.appendChild(b);
-            }
-
-            function invert(e) {
-                if (!e) return;
-                b.remove();
-                s.remove();
-                window.invertAreaShield = null;
-                e.style.filter = e.style.filter === "invert(1)" ? "" : "invert(1)";
-            }
-
-            function selection(f) {
-                var x0 = Math.min(m0.clientX, m1.clientX);
-                var x1 = Math.max(m0.clientX, m1.clientX);
-                var y0 = Math.min(m0.clientY, m1.clientY);
-                var y1 = Math.max(m0.clientY, m1.clientY);
-                var dx = Math.max(1, (x1 - x0) / 10);
-                var dy = Math.max(1, (y1 - y0) / 10);
-                var elementsFromPoints = [];
-
-                for (var x = x0; x <= x1; x += dx) {
-                    for (var y = y0; y <= y1; y += dy) {
-                        elementsFromPoints.push(document.elementsFromPoint(x, y));
-                    }
+    `, document.body.appendChild(window.censorStyle), window.sensed = [], window.censors = [];
+                let p = 1.5;
+                s()
+            }), s(vfx, "Invert Area", () => {
+                function e() {
+                    u = document.createElement("div"), u.style.position = "fixed", u.style.left = 0, u.style.top = 0, u.style.width = "100%", u.style.height = "100%", u.style.zIndex = 99999999, u.style.cursor = "crosshair", document.body.appendChild(u), window.invertAreaShield = u
                 }
 
-                elementsFromPoints.sort((a, b) => a.length - b.length);
-                var intersection = elementsFromPoints[0].filter(
-                    (e) =>
-                    e !== b &&
-                    e !== s &&
-                    elementsFromPoints.every((efp) => efp.includes(e)),
-                );
-
-                f(intersection[0]);
-            }
-
-            function pointer(e) {
-                if (e.touches) {
-                    if (e.type === "touchmove") e.preventDefault();
-                    return e.touches[0] || e.changedTouches[0];
+                function t() {
+                    h = document.createElement("div"), h.style.position = "absolute", h.style.left = f.clientX + "px", h.style.top = f.clientY + "px", h.style.width = 0, h.style.height = 0, h.style.outline = "2px dashed red", h.style.boxShadow = "inset 0 0 25px 2px white", h.style.mixBlendMode = "difference", u.appendChild(h)
                 }
-                return e;
-            }
 
-            function release(e) {
-                window.removeEventListener("mousemove", drag);
-                window.removeEventListener("touchmove", drag);
-                window.removeEventListener("mouseup", release);
-                window.removeEventListener("touchend", release);
-                m1 = pointer(e);
-                selection(invert);
-            }
+                function o(t) {
+                    t && (h.remove(), u.remove(), window.invertAreaShield = null, t.style.filter = "invert(1)" === t.style.filter ? "" : "invert(1)")
+                }
 
-            function drag(e) {
-                var m = pointer(e);
-                b.style.left = Math.min(m0.clientX, m.clientX) + "px";
-                b.style.top = Math.min(m0.clientY, m.clientY) + "px";
-                b.style.width = Math.abs(m.clientX - m0.clientX) + "px";
-                b.style.height = Math.abs(m.clientY - m0.clientY) + "px";
-            }
+                function l(e) {
+                    for (var t = n(f.clientX, m.clientX), o = i(f.clientX, m.clientX), l = n(f.clientY, m.clientY), r = i(f.clientY, m.clientY), s = i(1, (o - t) / 10), d = i(1, (r - l) / 10), a = [], c = t; c <= o; c += s)
+                        for (var p = l; p <= r; p += d) a.push(document.elementsFromPoint(c, p));
+                    a.sort((e, t) => e.length - t.length);
+                    var g = a[0].filter(t => t !== h && t !== u && a.every(e => e.includes(t)));
+                    e(g[0])
+                }
 
-            function hold(e) {
-                window.removeEventListener("mousedown", hold);
-                window.removeEventListener("touchstart", hold);
-                window.addEventListener("mousemove", drag);
-                window.addEventListener("touchmove", drag, {
-                    passive: false,
-                });
-                window.addEventListener("mouseup", release);
-                window.addEventListener("touchend", release);
-                m0 = pointer(e);
-                box();
-            }
+                function r(t) {
+                    return t.touches ? ("touchmove" === t.type && t.preventDefault(), t.touches[0] || t.changedTouches[0]) : t
+                }
 
-            function startInvertArea() {
-                shield();
-                window.invertAreaHold = hold;
-                window.addEventListener("mousedown", hold);
-                window.addEventListener("touchstart", hold);
-            }
+                function d(t) {
+                    window.removeEventListener("mousemove", a), window.removeEventListener("touchmove", a), window.removeEventListener("mouseup", d), window.removeEventListener("touchend", d), m = r(t), l(o)
+                }
 
-            startInvertArea();
-        });
+                function a(t) {
+                    var e = Math.abs,
+                        i = r(t);
+                    h.style.left = n(f.clientX, i.clientX) + "px", h.style.top = n(f.clientY, i.clientY) + "px", h.style.width = e(i.clientX - f.clientX) + "px", h.style.height = e(i.clientY - f.clientY) + "px"
+                }
 
-        // Disorient
-        addBtn(vfx, "Disorient", () => {
-            if (!window.disorientActive) {
-                window.disorientActive = true;
-                window.originalTransforms = [];
+                function c(n) {
+                    window.removeEventListener("mousedown", c), window.removeEventListener("touchstart", c), window.addEventListener("mousemove", a), window.addEventListener("touchmove", a, {
+                        passive: !1
+                    }), window.addEventListener("mouseup", d), window.addEventListener("touchend", d), f = r(n), t()
+                }
 
-                // GUI immunity check
-                const isImmune = (el) => window.isImmune(el);
-
-                const prefixes = ["", "-ms-", "-webkit-", "-o-", "-moz-"];
-                const elements = Array.from(document.querySelectorAll("*")); // all elements
-
-                elements.forEach((el) => {
-                    // Skip immune elements or invisible ones
-                    const rect = el.getBoundingClientRect();
-                    if (isImmune(el) || rect.width === 0 || rect.height === 0) return;
-
-                    const style = window.getComputedStyle(el);
-                    const current = style.transform || "";
-                    window.originalTransforms.push({
-                        el,
-                        transform: current,
-                    });
-
-                    const deg = Math.random() * 361 - 180;
-                    prefixes.forEach((prefix) => {
-                        el.style[prefix + "transform"] = `${current} rotate(${deg}deg)`;
-                    });
-                });
-            } else {
-                // Reset
-                window.disorientActive = false;
-                if (window.originalTransforms) {
-                    window.originalTransforms.forEach(({
-                        el,
-                        transform
-                    }) => {
-                        const prefixes = ["", "-ms-", "-webkit-", "-o-", "-moz-"];
-                        prefixes.forEach((prefix) => {
-                            el.style[prefix + "transform"] = transform;
+                function p() {
+                    e(), window.invertAreaHold = c, window.addEventListener("mousedown", c), window.addEventListener("touchstart", c)
+                }
+                if (window.invertAreaActive) return window.invertAreaShield && window.invertAreaShield.remove(), window.removeEventListener("mousedown", window.invertAreaHold), window.removeEventListener("touchstart", window.invertAreaHold), void(window.invertAreaActive = !1);
+                window.invertAreaActive = !0;
+                let u, h, f, m;
+                p()
+            }), s(vfx, "Disorient", () => {
+                if (!window.disorientActive) {
+                    window.disorientActive = !0, window.originalTransforms = [];
+                    const e = e => window.isImmune(e),
+                        t = ["", "-ms-", "-webkit-", "-o-", "-moz-"],
+                        n = Array.from(document.querySelectorAll("*"));
+                    n.forEach(n => {
+                        const i = n.getBoundingClientRect();
+                        if (e(n) || 0 === i.width || 0 === i.height) return;
+                        const o = window.getComputedStyle(n),
+                            l = o.transform || "";
+                        window.originalTransforms.push({
+                            el: n,
+                            transform: l
                         });
-                    });
-                    window.originalTransforms = null;
-                }
-            }
-        });
-
-        // Random Link Redirects
-        addBtn(vfx, "Random Link Redirects", () => {
+                        const r = 361 * Math.random() - 180;
+                        t.forEach(e => {
+                            n.style[e + "transform"] = `${l} rotate(${r}deg)`
+                        })
+                    })
+                } else window.disorientActive = !1, window.originalTransforms && (window.originalTransforms.forEach(({
+                    el: e,
+                    transform: t
+                }) => {
+                    const n = ["", "-ms-", "-webkit-", "-o-", "-moz-"];
+                    n.forEach(n => {
+                        e.style[n + "transform"] = t
+                    })
+                }), window.originalTransforms = null)
+            }), s(vfx, "Random Link Redirects", () => {
                 window.linkRedirectsInt = setInterval(() => {
-                    document.querySelectorAll("a").forEach((a) => {
-                        if (window.isImmune(a)) return;
-                        a.href = [
-                            "https://longdogechallenge.com/",
-                            "https://maze.toys/mazes/mini/daily/",
-                            "https://optical.toys/",
-                        ][Math.floor(Math.random() * 3)];
-                    });
-                }, 500);
-            },
-            () => {
-                clearInterval(window.linkRedirectsInt);
-            },
-        );
-
-        // 3D Page
-        addBtn(vfx, "3D Page", () => {
-                let s = document.createElement("script");
-                s.src =
-                    "https://rawgit.com/Krazete/bookmarklets/master/tri.js?cacheBust=" +
-                    Date.now();
-                document.body.appendChild(s);
-                window.triScript = s;
-            },
-            () => {
-                if (window.triScript) {
-                    window.triScript.remove();
-                    window.triScript = null;
-                }
-                // reset transforms to normal
-                document.body.style.transform = "";
-                document.body.style.perspective = "";
-            },
-        );
-
-        // Explode Page
-        addBtn(vfx, "Explode Page", () => {
+                    document.querySelectorAll("a").forEach(e => {
+                        window.isImmune(e) || (e.href = ["https://longdogechallenge.com/", "https://maze.toys/mazes/mini/daily/", "https://optical.toys/"][t(3 * Math.random())])
+                    })
+                }, 500)
+            }, () => {
+                clearInterval(window.linkRedirectsInt)
+            }), s(vfx, "3D Page", () => {
+                let e = document.createElement("script");
+                e.src = "https://rawgit.com/Krazete/bookmarklets/master/tri.js?cacheBust=" + Date.now(), document.body.appendChild(e), window.triScript = e
+            }, () => {
+                window.triScript && (window.triScript.remove(), window.triScript = null), document.body.style.transform = "", document.body.style.perspective = ""
+            }), s(vfx, "Explode Page", () => {
                 if (window.explodeActive) return;
-                window.explodeActive = true;
-                let o = document.createElement("div");
-                o.style.cssText =
-                    "position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);color:#FF0000;font-size:50px;font-family:monospace;z-index:10000000;pointer-events:none;text-shadow:0 0 10px #FF0000;";
-                document.body.appendChild(o);
-                let c = 3;
-                o.innerText = c;
-                window.explodeInt = setInterval(() => {
-                    c--;
-                    if (c > 0) {
-                        o.innerText = c;
-                    } else {
-                        clearInterval(window.explodeInt);
-                        o.remove();
-                        document
-                            .querySelectorAll(
-                                "body *:not(#mainGUI *):not(#vfxGUI *):not(#utilitiesGUI *)",
-                            )
-                            .forEach((e) => {
-                                e.style.transition = "transform 1s ease-out";
-                                let x = (Math.random() - 0.5) * 1000,
-                                    y = (Math.random() - 0.5) * 1000,
-                                    z = (Math.random() - 0.5) * 200;
-                                e.style.transform = `translate3d(${x}px,${y}px,${z}px) rotate(${Math.random() * 720 - 360}deg)`;
-                            });
-                        setTimeout(() => {
-                            document
-                                .querySelectorAll(
-                                    "body *:not(#mainGUI *):not(#vfxGUI *):not(#utilitiesGUI *)",
-                                )
-                                .forEach((e) => {
-                                    e.style.transform = "";
-                                    e.style.transition = "";
-                                });
-                            window.explodeActive = false;
-                        }, 1500);
-                    }
-                }, 1000);
-            },
-            () => {
-                clearInterval(window.explodeInt);
-                window.explodeInt = null;
-                window.explodeActive = false;
-                document
-                    .querySelectorAll(
-                        "body *:not(#mainGUI *):not(#vfxGUI *):not(#utilitiesGUI *)",
-                    )
-                    .forEach((e) => {
-                        e.style.transform = "";
-                        e.style.transition = "";
-                    });
-            },
-        );
-
-        // Image Glitch
-        addBtn(vfx, "Image Glitch", () => {
-                if (window.imgGlitchInt) return;
-                window.imgGlitchInt = setInterval(() => {
-                    document.querySelectorAll("img").forEach((e) => {
-                        if (window.isImmune(e)) return;
-                        e.style.position = "absolute";
-                        e.style.left = Math.random() * window.innerWidth + "px";
-                        e.style.top = Math.random() * window.innerHeight + "px";
-                    });
-                }, 50);
-            },
-            () => {
-                if (window.imgGlitchInt) {
-                    clearInterval(window.imgGlitchInt);
-                    window.imgGlitchInt = null;
-                    document.querySelectorAll("img").forEach((e) => {
-                        if (window.isImmune(e)) return;
-                        e.style.position = "";
-                        e.style.left = "";
-                        e.style.top = "";
-                    });
-                }
-            },
-        );
-
-        // Glitch
-        addBtn(vfx, "Glitch", () => {
-                if (window.glitchActive) return;
-                window.glitchActive = true;
-                window.glitchInt = setInterval(() => {
-                    document
-                        .querySelectorAll(
-                            "*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)",
-                        )
-                        .forEach((e) => {
-                            e.style.backgroundColor = [
-                                "red",
-                                "orange",
-                                "yellow",
-                                "green",
-                                "blue",
-                                "purple",
-                                "pink",
-                            ][Math.floor(Math.random() * 7)];
-                        });
-                }, 25);
-            },
-            () => {
-                if (window.glitchInt) {
-                    clearInterval(window.glitchInt);
-                    window.glitchInt = null;
-                }
-                window.glitchActive = false;
-
-                document
-                    .querySelectorAll(
-                        "*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)",
-                    )
-                    .forEach((e) => {
-                        e.style.backgroundColor = "";
-                    });
-            },
-        );
-
-        // Smooth Disco
-        addBtn(vfx, "Smooth Disco", () => {
+                window.explodeActive = !0;
+                let e = document.createElement("div");
+                e.style.cssText = "position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);color:#FF0000;font-size:50px;font-family:monospace;z-index:10000000;pointer-events:none;text-shadow:0 0 10px #FF0000;", document.body.appendChild(e);
+                let t = 3;
+                e.innerText = t, window.explodeInt = setInterval(() => {
+                    t--, 0 < t ? e.innerText = t : (clearInterval(window.explodeInt), e.remove(), document.querySelectorAll("body *:not(#mainGUI *):not(#vfxGUI *):not(#utilitiesGUI *)").forEach(t => {
+                        t.style.transition = "transform 1s ease-out";
+                        let e = 1e3 * (Math.random() - .5),
+                            n = 1e3 * (Math.random() - .5),
+                            i = 200 * (Math.random() - .5);
+                        t.style.transform = `translate3d(${e}px,${n}px,${i}px) rotate(${720*Math.random()-360}deg)`
+                    }), setTimeout(() => {
+                        document.querySelectorAll("body *:not(#mainGUI *):not(#vfxGUI *):not(#utilitiesGUI *)").forEach(t => {
+                            t.style.transform = "", t.style.transition = ""
+                        }), window.explodeActive = !1
+                    }, 1500))
+                }, 1e3)
+            }, () => {
+                clearInterval(window.explodeInt), window.explodeInt = null, window.explodeActive = !1, document.querySelectorAll("body *:not(#mainGUI *):not(#vfxGUI *):not(#utilitiesGUI *)").forEach(t => {
+                    t.style.transform = "", t.style.transition = ""
+                })
+            }), s(vfx, "Image Glitch", () => {
+                window.imgGlitchInt || (window.imgGlitchInt = setInterval(() => {
+                    document.querySelectorAll("img").forEach(t => {
+                        window.isImmune(t) || (t.style.position = "absolute", t.style.left = Math.random() * window.innerWidth + "px", t.style.top = Math.random() * window.innerHeight + "px")
+                    })
+                }, 50))
+            }, () => {
+                window.imgGlitchInt && (clearInterval(window.imgGlitchInt), window.imgGlitchInt = null, document.querySelectorAll("img").forEach(t => {
+                    window.isImmune(t) || (t.style.position = "", t.style.left = "", t.style.top = "")
+                }))
+            }), s(vfx, "Glitch", () => {
+                window.glitchActive || (window.glitchActive = !0, window.glitchInt = setInterval(() => {
+                    document.querySelectorAll("*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)").forEach(n => {
+                        n.style.backgroundColor = ["red", "orange", "yellow", "green", "blue", "purple", "pink"][t(7 * Math.random())]
+                    })
+                }, 25))
+            }, () => {
+                window.glitchInt && (clearInterval(window.glitchInt), window.glitchInt = null), window.glitchActive = !1, document.querySelectorAll("*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)").forEach(t => {
+                    t.style.backgroundColor = ""
+                })
+            }), s(vfx, "Smooth Disco", () => {
                 if (window.discoSmoothActive) return;
-                window.discoSmoothActive = true;
-                let colors = "red orange yellow green blue purple pink".split(" "),
-                    i = 0;
+                window.discoSmoothActive = !0;
+                let t = ["red", "orange", "yellow", "green", "blue", "purple", "pink"],
+                    n = 0;
                 window.discoSmoothInt = setInterval(() => {
-                    i = (i + 1) % colors.length;
-                    document
-                        .querySelectorAll(
-                            "*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)",
-                        )
-                        .forEach((e) => {
-                            e.style.transition = "background-color 1s";
-                            e.style.backgroundColor = colors[i];
-                        });
-                }, 1000);
-            },
-            () => {
-                if (window.discoSmoothInt) {
-                    clearInterval(window.discoSmoothInt);
-                    window.discoSmoothInt = null;
-                }
-                window.discoSmoothActive = false;
-
-                document
-                    .querySelectorAll(
-                        "*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)",
-                    )
-                    .forEach((e) => {
-                        e.style.transition = "";
-                        e.style.backgroundColor = "";
-                    });
-            },
-        );
-
-        // ---------- Text Corruption ----------
-        addBtn(vfx, "Text Corruption", () => {
-                const chatEl = document.getElementById("globalChatContainer");
-                const isImmune = (el) =>
-                    chatEl && (el === chatEl || chatEl.contains(el));
-
-                if (window.textCorruptStyle) return;
-
-                // Create style element
-                let s = document.createElement("style");
-                s.id = "textCorruptStyle";
-                s.innerHTML = `
+                    n = (n + 1) % t.length, document.querySelectorAll("*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)").forEach(i => {
+                        i.style.transition = "background-color 1s", i.style.backgroundColor = t[n]
+                    })
+                }, 1e3)
+            }, () => {
+                window.discoSmoothInt && (clearInterval(window.discoSmoothInt), window.discoSmoothInt = null), window.discoSmoothActive = !1, document.querySelectorAll("*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)").forEach(t => {
+                    t.style.transition = "", t.style.backgroundColor = ""
+                })
+            }), s(vfx, "Text Corruption", () => {
+                const e = document.getElementById("globalChatContainer"),
+                    t = t => e && (t === e || e.contains(t));
+                if (!window.textCorruptStyle) {
+                    let e = document.createElement("style");
+                    e.id = "textCorruptStyle", e.innerHTML = `
         body { background:black !important; }
         body *:not(#globalChatContainer):not(#globalChatContainer *):not(#mainGUI):not(#mainGUI *) {
             color: green !important;
@@ -2080,430 +1103,189 @@
             text-shadow: 1px 1px #FF0000 !important;
         }
         #mainGUI, #mainGUI * { animation:none !important; }
-    `;
-                document.head.appendChild(s);
-                window.textCorruptStyle = s;
-
-                // Cleanup function
-                window._textCorruptCleanup = () => {
-                    if (window.textCorruptStyle) {
-                        window.textCorruptStyle.remove();
-                        window.textCorruptStyle = null;
+    `, document.head.appendChild(e), window.textCorruptStyle = e, window._textCorruptCleanup = () => {
+                        window.textCorruptStyle && (window.textCorruptStyle.remove(), window.textCorruptStyle = null), window._textCorruptCleanup = null
                     }
-                    window._textCorruptCleanup = null;
+                }
+            }, () => {
+                window._textCorruptCleanup && window._textCorruptCleanup()
+            }), s(vfx, "Bubble Text", () => {
+                function e(o) {
+                    if (o)
+                        if (o.nodeType === Node.ELEMENT_NODE) {
+                            if (o === t || o.closest && o.closest("#globalChatContainer,#mainGUI")) return;
+                            o.childNodes.forEach(e)
+                        } else if (o.nodeType === Node.TEXT_NODE) {
+                        if (!o.nodeValue.trim()) return;
+                        n.has(o) || n.set(o, o.nodeValue), o.nodeValue = o.nodeValue.replace(/[a-zA-Z0-9]/g, e => i[e] || e)
+                    }
+                }
+                if (window.bubbleActive) return;
+                window.bubbleActive = !0;
+                const t = document.getElementById("globalChatContainer"),
+                    n = new Map,
+                    i = {
+                        a: "ⓐ",
+                		b: "ⓑ",
+                		c: "ⓒ",
+               			d: "ⓓ",
+               			e: "ⓔ",
+                		f: "ⓕ",
+                		g: "ⓖ",
+                		h: "ⓗ",
+               			i: "ⓘ",
+                		j: "ⓙ",
+                		k: "ⓚ",
+                		l: "ⓛ",
+                		m: "ⓜ",
+                		n: "ⓝ",
+                		o: "ⓞ",
+                		p: "ⓟ",
+                		q: "ⓠ",
+                		r: "ⓡ",
+                		s: "ⓢ",
+                		t: "ⓣ",
+                		u: "ⓤ",
+                		v: "ⓥ",
+                		w: "ⓦ",
+                		x: "ⓧ",
+                		y: "ⓨ",
+                		z: "ⓩ",
+                		A: "Ⓐ",
+                		B: "Ⓑ",
+                		C: "Ⓒ",
+                		D: "Ⓓ",
+                		E: "Ⓔ",
+                		F: "Ⓕ",
+                		G: "Ⓖ",
+                		H: "Ⓗ",
+                		I: "Ⓘ",
+               			J: "Ⓙ",
+                		K: "Ⓚ",
+                		L: "Ⓛ",
+                		M: "Ⓜ",
+                		N: "Ⓝ",
+                		O: "Ⓞ",
+                		P: "Ⓟ",
+                		Q: "Ⓠ",
+                		R: "Ⓡ",
+                		S: "Ⓢ",
+                		T: "Ⓣ",
+                		U: "Ⓤ",
+                		V: "Ⓥ",
+                		W: "Ⓦ",
+                		X: "Ⓧ",
+                		Y: "Ⓨ",
+                		Z: "Ⓩ",
+                		0: "⓪",
+                		1: "①",
+                		2: "②",
+                		3: "③",
+                		4: "④",
+                		5: "⑤",
+                		6: "⑥",
+                		7: "⑦",
+                		8: "⑧",
+                		9: "⑨",
+					};
+                e(document.body);
+                const o = () => {
+                    n.forEach((e, t) => {
+                        try {
+                            t.nodeValue = e
+                        } catch (t) {}
+                    }), window.bubbleActive = !1
                 };
-            },
-            () => {
-                if (window._textCorruptCleanup) window._textCorruptCleanup();
-            },
-        );
-
-        // ---------- Bubble Text ----------
-        addBtn(vfx, "Bubble Text", () => {
-            if (window.bubbleActive) return;
-            window.bubbleActive = true;
-
-            const chatEl = document.getElementById("globalChatContainer");
-            const originalTextMap = new Map();
-
-            const bubbleMap = {
-                a: "ⓐ",
-                b: "ⓑ",
-                c: "ⓒ",
-                d: "ⓓ",
-                e: "ⓔ",
-                f: "ⓕ",
-                g: "ⓖ",
-                h: "ⓗ",
-                i: "ⓘ",
-                j: "ⓙ",
-                k: "ⓚ",
-                l: "ⓛ",
-                m: "ⓜ",
-                n: "ⓝ",
-                o: "ⓞ",
-                p: "ⓟ",
-                q: "ⓠ",
-                r: "ⓡ",
-                s: "ⓢ",
-                t: "ⓣ",
-                u: "ⓤ",
-                v: "ⓥ",
-                w: "ⓦ",
-                x: "ⓧ",
-                y: "ⓨ",
-                z: "ⓩ",
-                A: "Ⓐ",
-                B: "Ⓑ",
-                C: "Ⓒ",
-                D: "Ⓓ",
-                E: "Ⓔ",
-                F: "Ⓕ",
-                G: "Ⓖ",
-                H: "Ⓗ",
-                I: "Ⓘ",
-                J: "Ⓙ",
-                K: "Ⓚ",
-                L: "Ⓛ",
-                M: "Ⓜ",
-                N: "Ⓝ",
-                O: "Ⓞ",
-                P: "Ⓟ",
-                Q: "Ⓠ",
-                R: "Ⓡ",
-                S: "Ⓢ",
-                T: "Ⓣ",
-                U: "Ⓤ",
-                V: "Ⓥ",
-                W: "Ⓦ",
-                X: "Ⓧ",
-                Y: "Ⓨ",
-                Z: "Ⓩ",
-                0: "⓪",
-                1: "①",
-                2: "②",
-                3: "③",
-                4: "④",
-                5: "⑤",
-                6: "⑥",
-                7: "⑦",
-                8: "⑧",
-                9: "⑨",
-            };
-
-            function transform(node) {
-                if (!node) return;
-                if (node.nodeType === Node.ELEMENT_NODE) {
-                    if (
-                        node === chatEl ||
-                        (node.closest && node.closest("#globalChatContainer,#mainGUI"))
-                    )
-                        return;
-                    node.childNodes.forEach(transform);
-                } else if (node.nodeType === Node.TEXT_NODE) {
-                    if (!node.nodeValue.trim()) return;
-                    if (!originalTextMap.has(node))
-                        originalTextMap.set(node, node.nodeValue);
-                    node.nodeValue = node.nodeValue.replace(
-                        /[a-zA-Z0-9]/g,
-                        (ch) => bubbleMap[ch] || ch,
-                    );
+                window._bubbleCleanup = o, window.stopAllVFX || (window.stopAllVFX = []), window.stopAllVFX = window.stopAllVFX.filter(e => e !== o), window.stopAllVFX.push(o)
+            }), s(vfx, "Page Spin", () => {
+                if (!window.pageSpinActive) {
+                    window.pageSpinActive = !0;
+                    let e = document.createElement("style");
+                    e.id = "pageSpinStyle", e.innerHTML = "@keyframes roll{100%{transform:rotate(129600deg);}} body > *:not(#mainGUI):not(#vfxGUI):not(#utilitiesGUI){animation:roll 140s linear 360;} body > *:not(#mainGUI):not(#vfxGUI):not(#utilitiesGUI) *{animation:roll 140s linear 360;}", document.head.appendChild(e), window.pageSpinStyle = e
                 }
-            }
+            }, () => {
+                window.pageSpinStyle && (window.pageSpinStyle.remove(), window.pageSpinStyle = null), window.pageSpinActive = !1
+            }), s(vfx, "Full Chaos", () => {
+                if (!window.fullChaosActive) {
+                    function n() {
+                        return "#" + t(16777215 * Math.random()).toString(16)
+                    }
 
-            transform(document.body);
-
-            // Cleanup
-            const cleanup = () => {
-                originalTextMap.forEach((orig, node) => {
-                    try {
-                        node.nodeValue = orig;
-                    } catch (e) {}
-                });
-                window.bubbleActive = false;
-            };
-
-            window._bubbleCleanup = cleanup;
-            if (!window.stopAllVFX) window.stopAllVFX = [];
-            window.stopAllVFX = window.stopAllVFX.filter((f) => f !== cleanup);
-            window.stopAllVFX.push(cleanup);
-        });
-
-        // Page Spin
-        addBtn(vfx, "Page Spin", () => {
-                if (window.pageSpinActive) return;
-                window.pageSpinActive = true;
-                let s = document.createElement("style");
-                s.id = "pageSpinStyle";
-                s.innerHTML =
-                    "@keyframes roll{100%{transform:rotate(129600deg);}} body > *:not(#mainGUI):not(#vfxGUI):not(#utilitiesGUI){animation:roll 140s linear 360;} body > *:not(#mainGUI):not(#vfxGUI):not(#utilitiesGUI) *{animation:roll 140s linear 360;}";
-                document.head.appendChild(s);
-                window.pageSpinStyle = s;
-            },
-            () => {
-                if (window.pageSpinStyle) {
-                    window.pageSpinStyle.remove();
-                    window.pageSpinStyle = null;
-                }
-                window.pageSpinActive = false;
-            },
-        );
-
-        // Full chaos
-        addBtn(vfx, "Full Chaos", () => {
-            if (!window.fullChaosActive) {
-                window.fullChaosActive = true;
-
-                // Container just for chaos layers
-                let chaosContainer = document.createElement("div");
-                chaosContainer.id = "chaosContainer";
-                chaosContainer.style.cssText = `
+                    function i(e) {
+                        return t(Math.random() * e) + 1
+                    }
+                    window.fullChaosActive = !0;
+                    let o = document.createElement("div");
+                    o.id = "chaosContainer", o.style.cssText = `
       position:fixed;
       top:0; left:0;
       width:100%; height:100%;
       pointer-events:none;
       z-index:99998; /* keep below GUIs */
-    `;
-                document.body.appendChild(chaosContainer);
-
-                function randColor() {
-                    return "#" + Math.floor(16777215 * Math.random()).toString(16);
-                }
-
-                function rand(n) {
-                    return Math.floor(Math.random() * n) + 1;
-                }
-
-                // Build chaos bars
-                let h = window.innerHeight;
-                for (let i = 0; i < h; i++) {
-                    let bar = document.createElement("div");
-                    bar.id = "chaosBar" + i;
-                    bar.style.cssText = `
+    `, document.body.appendChild(o);
+                    let l = window.innerHeight;
+                    for (let e, t = 0; t < l; t++) e = document.createElement("div"), e.id = "chaosBar" + t, e.style.cssText = `
         width:100%; height:1px;
-        background:${randColor()};
-      `;
-                    chaosContainer.appendChild(bar);
+        background:${n()};
+      `, o.appendChild(e);
+                    window.fullChaosLoop1 = setInterval(() => {
+                        for (let t, o = 0; 10 > o; o++) t = document.getElementById("chaosBar" + i(l)), t && (t.style.backgroundColor = n(), t.style.height = i(4) + "px");
+                        o.style.backgroundColor = n(), o.style.transform = 128 < i(256) ? `scale(3) rotate(${i(35)}deg)` : "scale(1) rotate(0deg)", window.scrollTo(0, document.body.scrollHeight)
+                    }, 10), window.fullChaosLoop2 = setInterval(() => {
+                        window.scrollTo(0, 0)
+                    }, 50), window.stopAllVFX || (window.stopAllVFX = []), window.stopAllVFX.push(() => {
+                        clearInterval(window.fullChaosLoop1), clearInterval(window.fullChaosLoop2);
+                        let e = document.getElementById("chaosContainer");
+                        e && e.remove(), window.fullChaosActive = !1
+                    })
+                } else {
+                    clearInterval(window.fullChaosLoop1), clearInterval(window.fullChaosLoop2);
+                    let e = document.getElementById("chaosContainer");
+                    e && e.remove(), window.fullChaosActive = !1
                 }
-
-                // Loop effects
-                window.fullChaosLoop1 = setInterval(() => {
-                    for (let e = 0; e < 10; e++) {
-                        let bar = document.getElementById("chaosBar" + rand(h));
-                        if (bar) {
-                            bar.style.backgroundColor = randColor();
-                            bar.style.height = rand(4) + "px";
-                        }
-                    }
-                    chaosContainer.style.backgroundColor = randColor();
-                    chaosContainer.style.transform =
-                        rand(256) > 128 ?
-                        `scale(3) rotate(${rand(35)}deg)` :
-                        "scale(1) rotate(0deg)";
-                    window.scrollTo(0, document.body.scrollHeight);
-                }, 10);
-
-                window.fullChaosLoop2 = setInterval(() => {
-                    window.scrollTo(0, 0);
-                }, 50);
-
-                // StopAll support
-                if (!window.stopAllVFX) window.stopAllVFX = [];
-                window.stopAllVFX.push(() => {
-                    clearInterval(window.fullChaosLoop1);
-                    clearInterval(window.fullChaosLoop2);
-                    let c = document.getElementById("chaosContainer");
-                    if (c) c.remove();
-                    window.fullChaosActive = false;
-                });
-            } else {
-                clearInterval(window.fullChaosLoop1);
-                clearInterval(window.fullChaosLoop2);
-                let c = document.getElementById("chaosContainer");
-                if (c) c.remove();
-                window.fullChaosActive = false;
-            }
-        });
-
-        // ---------- Stop All VFX ----------
-        addBtn(vfx, "Stop All", () => {
-            const isImmune = (el) => window.isImmune(el);
-            if (window.stopAllVFX) {
-                window.stopAllVFX.forEach((fn) => {
+            }), s(vfx, "Stop All", () => {
+                const t = e => window.isImmune(e);
+                window.stopAllVFX && (window.stopAllVFX.forEach(e => {
                     try {
-                        fn();
-                    } catch (e) {}
-                });
-                window.stopAllVFX = [];
-            }
-
-            // ------------------ Stop Invert Media ------------------
-            if (window.invertimgStyle)
-                (window.invertimgStyle.remove(), (window.invertimgStyle = null));
-            window.invertimgActive = false;
-
-            // ------------------ Stop Censor Media ------------------
-            if (window.af) cancelAnimationFrame(window.af);
-            if (window.censorStyle) window.censorStyle.remove();
-            if (window.censors)
-                window.censors.forEach((c) => !isImmune(c) && c.remove());
-            if (window.sensed)
-                window.sensed.forEach(
-                    (e) =>
-                    !isImmune(e) && e.parentElement.classList.remove("censor-parent"),
-                );
-            window.censors = [];
-            window.sensed = [];
-            window.censorActive = false;
-
-            // ------------------ Stop Invert Area ------------------
-            if (window.invertAreaShield && !isImmune(window.invertAreaShield))
-                window.invertAreaShield.remove();
-            window.removeEventListener("mousedown", window.invertAreaHold);
-            window.removeEventListener("touchstart", window.invertAreaHold);
-            window.invertAreaActive = false;
-
-            // ------------------ Stop Disorientation ------------------
-            if (window.disorientActive) {
-                window.disorientActive = false;
-                if (window.originalTransforms) {
-                    window.originalTransforms.forEach(({
-                        el,
-                        transform
-                    }) => {
-                        if (!isImmune(el)) {
-                            ["", "-ms-", "-webkit-", "-o-", "-moz-"].forEach((prefix) => {
-                                el.style[prefix + "transform"] = transform;
-                            });
-                        }
-                    });
-                    window.originalTransforms = null;
+                        e()
+                    } catch (t) {}
+                }), window.stopAllVFX = []), window.invertimgStyle && (window.invertimgStyle.remove(), window.invertimgStyle = null), window.invertimgActive = !1, window.af && cancelAnimationFrame(window.af), window.censorStyle && window.censorStyle.remove(), window.censors && window.censors.forEach(e => !t(e) && e.remove()), window.sensed && window.sensed.forEach(n => !t(n) && n.parentElement.classList.remove("censor-parent")), window.censors = [], window.sensed = [], window.censorActive = !1, window.invertAreaShield && !t(window.invertAreaShield) && window.invertAreaShield.remove(), window.removeEventListener("mousedown", window.invertAreaHold), window.removeEventListener("touchstart", window.invertAreaHold), window.invertAreaActive = !1, window.disorientActive && (window.disorientActive = !1, window.originalTransforms && (window.originalTransforms.forEach(({
+                    el: e,
+                    transform: n
+                }) => {
+                    t(e) || ["", "-ms-", "-webkit-", "-o-", "-moz-"].forEach(t => {
+                        e.style[t + "transform"] = n
+                    })
+                }), window.originalTransforms = null)), window._bubbleCleanup && window._bubbleCleanup(), window.bubbleActive = !1, window.matrixInt && (clearInterval(window.matrixInt), window.matrixInt = null), window.matrixCanvas && !t(window.matrixCanvas) && window.matrixCanvas.remove(), window.matrixCanvas = null, window.matrixActive = !1, window.glitchInt && (clearInterval(window.glitchInt), window.glitchInt = null), window.glitchActive = !1, document.querySelectorAll("body *").forEach(n => {
+                    t(n) || (n.style.backgroundColor = "")
+                }), window.discoSmoothInt && (clearInterval(window.discoSmoothInt), window.discoSmoothInt = null), window.discoSmoothActive = !1, document.querySelectorAll("body *").forEach(n => {
+                    t(n) || (n.style.transition = "", n.style.backgroundColor = "")
+                }), window.fullChaosLoop1 && (clearInterval(window.fullChaosLoop1), window.fullChaosLoop1 = null), window.fullChaosLoop2 && (clearInterval(window.fullChaosLoop2), window.fullChaosLoop2 = null);
+                const n = document.getElementById("chaosContainer");
+                if (n && !t(n) && n.remove(), window.fullChaosActive = !1, window.pageSpinStyle && (window.pageSpinStyle.remove(), window.pageSpinStyle = null), window.pageSpinActive = !1, window._textCorruptCleanup && window._textCorruptCleanup(), window.imgGlitchInt && (clearInterval(window.imgGlitchInt), window.imgGlitchInt = null, document.querySelectorAll("img").forEach(n => {
+                        t(n) || (n.style.position = "", n.style.left = "", n.style.top = "")
+                    })), window.stopAllInfection) {
+                    try {
+                        window.stopAllInfection()
+                    } catch (t) {}
+                    window.stopAllInfection = null
                 }
-            }
-
-            // ------------------ Stop Bubble Text ------------------
-            if (window._bubbleCleanup) window._bubbleCleanup();
-            window.bubbleActive = false;
-
-            // ------------------ Stop Matrix Rain ------------------
-            if (window.matrixInt)
-                (clearInterval(window.matrixInt), (window.matrixInt = null));
-            if (window.matrixCanvas && !isImmune(window.matrixCanvas))
-                window.matrixCanvas.remove();
-            window.matrixCanvas = null;
-            window.matrixActive = false;
-
-            // ------------------ Stop Glitch ------------------
-            if (window.glitchInt) {
-                clearInterval(window.glitchInt);
-                window.glitchInt = null;
-            }
-            window.glitchActive = false;
-
-            // Clear all non-GUI backgrounds
-            document.querySelectorAll("body *").forEach((e) => {
-                if (!isImmune(e)) e.style.backgroundColor = "";
-            });
-
-            // ------------------ Stop Smooth Disco ------------------
-            if (window.discoSmoothInt) {
-                clearInterval(window.discoSmoothInt);
-                window.discoSmoothInt = null;
-            }
-            window.discoSmoothActive = false;
-
-            // Clear disco background + transitions
-            document.querySelectorAll("body *").forEach((e) => {
-                if (!isImmune(e)) {
-                    e.style.transition = "";
-                    e.style.backgroundColor = "";
+                document.body.style.transform = "", document.body.style.backgroundColor = "", document.body.style.filter = "", document.querySelectorAll("body *").forEach(n => {
+                    t(n) || (n.style.backgroundColor = "", n.style.height = "", n.style.transform = "", n.style.transition = "", n.style.color = "", n.style.fontSize = "", n.style.position = "", n.style.left = "", n.style.top = "", n.style.textShadow = "")
+                }), window.stats && (window.stats.dom.remove(), window.stats = null), window.erudaInstance && (window.erudaInstance.destroy(), window.erudaInstance = null, window.erudaLoaded = !1), window.portaFrame && (window.portaFrame.remove(), window.portaFrame = null)
+            }),
+            function() {
+                const e = document.createElement("div");
+                e.style.marginTop = "10px", e.style.padding = "8px", e.style.background = "#001f00", e.style.borderRadius = "10px", e.style.color = "#00ff00", e.innerHTML = `<b>Text Color</b><br>`;
+                const t = document.createElement("input");
+                t.type = "color", t.value = "#00ff00", t.oninput = () => {
+                    document.querySelectorAll("body *:not(#mainGUI *):not(#vfxGUI *):not(#utilitiesGUI *)").forEach(e => e.style.color = t.value)
+                }, e.appendChild(t), vfx.appendChild(e)
+            }(), document.addEventListener("keydown", t => {
+                if (t.shiftKey && "h" === t.key.toLowerCase()) {
+                    const e = document.getElementById("mainGUI");
+                    e && (e.style.display = "none" === e.style.display ? "block" : "none")
                 }
-            });
-
-            // ------------------ Stop Full Chaos ------------------
-            if (window.fullChaosLoop1)
-                (clearInterval(window.fullChaosLoop1), (window.fullChaosLoop1 = null));
-            if (window.fullChaosLoop2)
-                (clearInterval(window.fullChaosLoop2), (window.fullChaosLoop2 = null));
-            const chaos = document.getElementById("chaosContainer");
-            if (chaos && !isImmune(chaos)) chaos.remove();
-            window.fullChaosActive = false;
-
-            // ------------------ Stop Page Spin ------------------
-            if (window.pageSpinStyle)
-                (window.pageSpinStyle.remove(), (window.pageSpinStyle = null));
-            window.pageSpinActive = false;
-
-            // ------------------ Stop Text Corruption ------------------
-            if (window._textCorruptCleanup) window._textCorruptCleanup();
-
-            // ------------------ Stop Image Glitch ------------------
-            if (window.imgGlitchInt) {
-                clearInterval(window.imgGlitchInt);
-                window.imgGlitchInt = null;
-                document.querySelectorAll("img").forEach((e) => {
-                    if (!isImmune(e)) {
-                        e.style.position = "";
-                        e.style.left = "";
-                        e.style.top = "";
-                    }
-                });
-            }
-
-            // ------------------ Stop Infection Virus ------------------
-            if (window.stopAllInfection) {
-                try {
-                    window.stopAllInfection();
-                } catch (e) {}
-                window.stopAllInfection = null;
-            }
-
-            // ------------------ Reset page-wide inline styles (skip GUI) ------------------
-            document.body.style.transform = "";
-            document.body.style.backgroundColor = "";
-            document.body.style.filter = "";
-
-            document.querySelectorAll("body *").forEach((e) => {
-                if (!isImmune(e)) {
-                    e.style.backgroundColor = "";
-                    e.style.height = "";
-                    e.style.transform = "";
-                    e.style.transition = "";
-                    e.style.color = "";
-                    e.style.fontSize = "";
-                    e.style.position = "";
-                    e.style.left = "";
-                    e.style.top = "";
-                    e.style.textShadow = "";
-                }
-            });
-
-            // ------------------ Reset Utilities ------------------
-            if (window.stats) {
-                window.stats.dom.remove();
-                window.stats = null;
-            }
-            if (window.erudaInstance) {
-                window.erudaInstance.destroy();
-                window.erudaInstance = null;
-                window.erudaLoaded = false;
-            }
-            if (window.portaFrame) {
-                window.portaFrame.remove();
-                window.portaFrame = null;
-            }
-        });
-
-        // -------------------- FONT COLOR SLIDER --------------------
-        (function() {
-            const section = document.createElement("div");
-            section.style.marginTop = "10px";
-            section.style.padding = "8px";
-            section.style.background = "#001f00";
-            section.style.borderRadius = "10px";
-            section.style.color = "#00ff00";
-            section.innerHTML = `<b>Text Color</b><br>`;
-            const picker = document.createElement("input");
-            picker.type = "color";
-            picker.value = "#00ff00";
-            picker.oninput = () => {
-                document
-                    .querySelectorAll(
-                        "body *:not(#mainGUI *):not(#vfxGUI *):not(#utilitiesGUI *)",
-                    )
-                    .forEach((el) => (el.style.color = picker.value));
-            };
-            section.appendChild(picker);
-            vfx.appendChild(section);
-        })();
-        // -------------------- SHIFT+H TO HIDE --------------------
-        document.addEventListener("keydown", (e) => {
-            if (e.shiftKey && e.key.toLowerCase() === "h") {
-                const gui = document.getElementById("mainGUI");
-                if (gui) {
-                    gui.style.display = gui.style.display === "none" ? "block" : "none";
-                }
-            }
-        });
-    }
+            })
+    }())
 })();
