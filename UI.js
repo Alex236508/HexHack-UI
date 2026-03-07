@@ -473,33 +473,33 @@
 						var h = document.createElement("div");
 						h.id = "rusic-header";
 						h.style.cssText = `
-    width: 100%;
-    height: 30px;
-    background: #6C7A89;
-    cursor: move;
-    color: white;
-    font-family: sans-serif;
-    padding-left: 30px; 
-    line-height: 30px;
-    user-select: none;
-    position: relative;
-`;
+   			 width: 100%;
+   			 height: 30px;
+   			 background: #6C7A89;
+    		 cursor: move;
+   			 color: white;
+    		 font-family: sans-serif;
+  			 padding-left: 30px; 
+ 			 line-height: 30px;
+			 user-select: none;
+    		 position: relative;
+	     `;
 						h.textContent = "Embedded Browser";
 
 						var cl = document.createElement("div");
 						cl.innerHTML = "❌";
 						cl.style.cssText = `
-    position: absolute;
-    top: 0;
-    left: 5px;
-    font-size: 16px;
-    line-height: 30px;
-    cursor: pointer;
-    color: white;
-    background: none;
-    border: none;
-    padding: 0;
-`;
+			position: absolute;
+    		top: 0;
+    		left: 5px;
+    		font-size: 16px;
+    		line-height: 30px;
+    		cursor: pointer;
+    		color: white;
+			background: none;
+    		border: none;
+    		padding: 0;
+		`;
 						cl.onclick = function () {
 							c.remove();
 						};
