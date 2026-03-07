@@ -125,6 +125,7 @@
   width: 50%;
   padding: 10px;
   box-sizing: border-box;
+  position: relative;
 `;
 			util.innerHTML = `
   <div style="text-align:center;font-weight:bold;margin-bottom:10px;">
@@ -133,6 +134,152 @@
   <div class="btnGrid"></div>
 `;
 			slider.appendChild(util);
+// ---------- Tab Title & Favicon Controls on Utilities Page ----------
+const utilContainer = document.getElementById("utilitiesGUI");
+
+if (utilContainer) {
+
+    const controlsWrapper = document.createElement("div");
+    controlsWrapper.style.cssText = `
+        position:absolute;
+        bottom:10px;
+        right:10px;
+        width:200px;
+        display:flex;
+        flex-direction:column-reverse; /* bar stays at bottom */
+        gap:6px;
+
+        background: rgba(34, 49, 34, 0.25); /* army green tint, semi-transparent */
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+
+        padding:6px;
+        border-radius:12px;
+        border:1px solid rgba(255,255,255,0.2);
+        box-shadow:0 10px 25px rgba(0,0,0,0.5);
+
+        font-family:system-ui, sans-serif;
+        color:white;
+
+        z-index:10000001;
+        overflow:hidden;
+        max-height:30px;
+        transition:max-height 0.3s ease, padding 0.3s ease;
+    `;
+
+    // Expand on hover
+    controlsWrapper.addEventListener("mouseenter", () => {
+        controlsWrapper.style.maxHeight = "500px"; // enough to show all controls
+        controlsWrapper.style.padding = "12px";
+    });
+    controlsWrapper.addEventListener("mouseleave", () => {
+        controlsWrapper.style.maxHeight = "30px";
+        controlsWrapper.style.padding = "6px";
+    });
+
+    // ---------- Header Bar (always visible) ----------
+    const header = document.createElement("div");
+    header.textContent = "Tab Customizer";
+    header.style.cssText = `
+        font-size:13px;
+        font-weight:600;
+        opacity:0.9;
+        border-top-left-radius:10px;
+        border-top-right-radius:10px;
+        border-bottom:1px solid rgba(255,255,255,0.1);
+        padding:6px;
+        text-align:center;
+        cursor:default;
+    `;
+    controlsWrapper.appendChild(header);
+
+    // ---------- Controls Container (hidden above bar when collapsed) ----------
+    const innerControls = document.createElement("div");
+    innerControls.style.cssText = `
+        display:flex;
+        flex-direction:column;
+        gap:6px;
+    `;
+
+    // ---------- Title Label & Input ----------
+    const titleLabel = document.createElement("div");
+    titleLabel.textContent = "Title";
+    titleLabel.style.cssText = `font-size:11px; opacity:0.7;`;
+    innerControls.appendChild(titleLabel);
+
+    const titleInput = document.createElement("input");
+    titleInput.type = "text";
+    titleInput.placeholder = "Tab title";
+    titleInput.style.cssText = `
+        width:100%;
+        font-size:12px;
+        padding:6px 8px;
+        background:#1e1e1e;
+        color:white;
+        border:1px solid #3a3a3a;
+        border-radius:6px;
+        outline:none;
+        transition:all .15s ease;
+    `;
+    titleInput.onfocus = () => titleInput.style.border = "1px solid #4f8cff";
+    titleInput.onblur = () => titleInput.style.border = "1px solid #3a3a3a";
+    titleInput.addEventListener("input", () => document.title = titleInput.value);
+    innerControls.appendChild(titleInput);
+
+    // ---------- Favicon Label & Input ----------
+    const faviconLabel = document.createElement("div");
+    faviconLabel.textContent = "Favicon";
+    faviconLabel.style.cssText = `font-size:11px; opacity:0.7;`;
+    innerControls.appendChild(faviconLabel);
+
+    const faviconInput = document.createElement("input");
+    faviconInput.type = "file";
+    faviconInput.accept = "image/*";
+    faviconInput.style.display = "none";
+    faviconInput.addEventListener("change", () => {
+        const file = faviconInput.files[0];
+        if (!file) return;
+        const url = URL.createObjectURL(file);
+        let link = document.querySelector("link[rel*='icon']");
+        if (!link) {
+            link = document.createElement("link");
+            link.rel = "icon";
+            document.head.appendChild(link);
+        }
+        link.href = url;
+    });
+
+    const faviconBtn = document.createElement("button");
+    faviconBtn.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8h-8l-2-4z"/>
+        </svg>
+        Upload Icon
+    `;
+    faviconBtn.style.cssText = `
+        display:flex;
+        align-items:center;
+        gap:6px;
+        font-size:12px;
+        padding:6px 8px;
+        background:#2a2a2a;
+        color:white;
+        border:1px solid #3a3a3a;
+        border-radius:6px;
+        cursor:pointer;
+        transition:all .15s ease;
+    `;
+    faviconBtn.onmouseenter = () => faviconBtn.style.background = "#363636";
+    faviconBtn.onmouseleave = () => faviconBtn.style.background = "#2a2a2a";
+    faviconBtn.onclick = () => faviconInput.click();
+
+    innerControls.appendChild(faviconBtn);
+    innerControls.appendChild(faviconInput);
+
+    controlsWrapper.appendChild(innerControls);
+
+    utilContainer.appendChild(controlsWrapper);
+}
 
 			// Create VFX Page
 			const vfx = document.createElement("div");
@@ -1047,137 +1194,6 @@
 				}
 			});
 		})();
-
-		// ---------- Tab Title & Favicon Controls ----------
-		const vfxContainer = document.getElementById("vfxGUI");
-		if (vfxContainer) {
-			const controlsWrapper = document.createElement("div");
-			controlsWrapper.style.cssText = `
-position:absolute;
-bottom:12px;
-right:12px;
-display:flex;
-gap:8px;
-align-items:center;
-
-background:rgba(20,20,20,0.75);
-backdrop-filter: blur(6px);
-
-padding:8px 10px;
-border-radius:10px;
-border:1px solid rgba(255,255,255,0.08);
-
-box-shadow:0 6px 16px rgba(0,0,0,0.4);
-
-z-index:10000001;
-font-family: system-ui, sans-serif;
-`;
-
-			// Hidden file input for favicon
-			const faviconInput = document.createElement("input");
-			faviconInput.type = "file";
-			faviconInput.accept = "image/*";
-			faviconInput.style.display = "none";
-			faviconInput.addEventListener("change", () => {
-				const file = faviconInput.files[0];
-				if (!file) return;
-				const url = URL.createObjectURL(file);
-
-				// Find or create favicon <link>
-				let link = document.querySelector("link[rel*='icon']");
-				if (!link) {
-					link = document.createElement("link");
-					link.rel = "icon";
-					document.head.appendChild(link);
-				}
-				link.href = url;
-			});
-
-			// Visible folder button
-			const faviconBtn = document.createElement("button");
-			faviconBtn.innerHTML = `
-<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-<path d="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8h-8l-2-4z"/>
-</svg>
-`;
-			faviconBtn.style.cssText = `
-display:flex;
-align-items:center;
-justify-content:center;
-
-width:28px;
-height:28px;
-
-background:#2a2a2a;
-border:1px solid #3a3a3a;
-border-radius:6px;
-
-cursor:pointer;
-color:white;
-
-font-size:16px;
-padding:4px 6px;
-cursor:pointer;
-
-background:#2a2a2a;
-border:1px solid #3a3a3a;
-border-radius:6px;
-
-color:white;
-
-transition:all 0.15s ease;
-`;
-
-			faviconBtn.onmouseenter = () => {
-				faviconBtn.style.background = "#3a3a3a";
-				faviconBtn.style.transform = "scale(1.08)";
-			};
-
-			faviconBtn.onmouseleave = () => {
-				faviconBtn.style.background = "#2a2a2a";
-				faviconBtn.style.transform = "scale(1)";
-			};
-			faviconBtn.onclick = () => faviconInput.click();
-
-			// Tab title input
-			const titleInput = document.createElement("input");
-			titleInput.type = "text";
-			titleInput.placeholder = "Tab title";
-			titleInput.style.cssText = `
-width:120px;
-font-size:12px;
-padding:4px 6px;
-
-background:#1e1e1e;
-color:white;
-
-border:1px solid #3a3a3a;
-border-radius:6px;
-
-outline:none;
-
-transition:border 0.15s ease, box-shadow 0.15s ease;
-`;
-			titleInput.onfocus = () => {
-				titleInput.style.border = "1px solid #4f8cff";
-				titleInput.style.boxShadow = "0 0 4px rgba(79,140,255,0.6)";
-			};
-
-			titleInput.onblur = () => {
-				titleInput.style.border = "1px solid #3a3a3a";
-				titleInput.style.boxShadow = "none";
-			};
-
-			titleInput.addEventListener("input", () => {
-				document.title = titleInput.value;
-			});
-
-			// Add everything
-			controlsWrapper.appendChild(faviconBtn);
-			controlsWrapper.appendChild(faviconInput);
-			controlsWrapper.appendChild(titleInput);
-			vfxContainer.appendChild(controlsWrapper);
-		}
 
 		// -------------------- FONT SIZE SLIDER --------------------
 		(function () {
