@@ -1,16 +1,16 @@
-(function () {
-	if (window.hackerLoaded) return;
-	window.hackerLoaded = true;
+(function() {
+    if (window.hackerLoaded) return;
+    window.hackerLoaded = true;
 
-	spawnGUIs();
+    spawnGUIs();
 
-	function spawnGUIs() {
-		// -------------------- Multi Page GUI --------------------
-		(function () {
-			// Main container
-			const gui = document.createElement("div");
-			gui.id = "mainGUI";
-			gui.style.cssText = `
+    function spawnGUIs() {
+        // -------------------- Multi Page GUI --------------------
+        (function() {
+            // Main container
+            const gui = document.createElement("div");
+            gui.id = "mainGUI";
+            gui.style.cssText = `
     position: fixed;
     top: 50px; left: 50px;
     width: 340px;
@@ -26,20 +26,20 @@
     user-select: none;
     transition: height 0.4s ease;
   `;
-			document.body.appendChild(gui);
+            document.body.appendChild(gui);
 
-			// Inner slider to hold both pages
-			const slider = document.createElement("div");
-			slider.style.cssText = `
+            // Inner slider to hold both pages
+            const slider = document.createElement("div");
+            slider.style.cssText = `
     display: flex;
     width: 200%;
     transition: transform 0.5s ease;
   `;
-			gui.appendChild(slider);
+            gui.appendChild(slider);
 
-			// Button style (injected once globally)
-			const btnStyle = document.createElement("style");
-			btnStyle.textContent = `
+            // Button style (injected once globally)
+            const btnStyle = document.createElement("style");
+            btnStyle.textContent = `
  
   .guiBtn {
     background: #0a0a0a;
@@ -93,11 +93,11 @@
     border-bottom: none;
   }
 `;
-			document.head.appendChild(btnStyle);
-			// Master Title
-			const masterTitle = document.createElement("div");
-			masterTitle.innerText = "</> ⸺ HexHack–UI Reborn ⸺ </>";
-			masterTitle.style.cssText = `
+            document.head.appendChild(btnStyle);
+            // Master Title
+            const masterTitle = document.createElement("div");
+            masterTitle.innerText = "</> ⸺ HexHack–UI Reborn ⸺ </>";
+            masterTitle.style.cssText = `
   text-align: center;
   font-weight: bold;
   font-size: 14px;
@@ -109,38 +109,38 @@
   text-shadow: 0 0 8px #00ff00;
   font-family: "Lucida Console", "Courier New", monospace;
 `;
-			gui.appendChild(masterTitle);
+            gui.appendChild(masterTitle);
 
-			slider.style.cssText = `
+            slider.style.cssText = `
   display: flex;
   width: 200%;
   transition: transform 0.5s ease;
 `;
-			gui.appendChild(slider);
+            gui.appendChild(slider);
 
-			// Create Utilities Page
-			const util = document.createElement("div");
-			util.id = "utilitiesGUI";
-			util.style.cssText = `
+            // Create Utilities Page
+            const util = document.createElement("div");
+            util.id = "utilitiesGUI";
+            util.style.cssText = `
   width: 50%;
   padding: 10px;
   box-sizing: border-box;
   position: relative;
 `;
-			util.innerHTML = `
+            util.innerHTML = `
   <div style="text-align:center;font-weight:bold;margin-bottom:10px;">
     Utilities
   </div>
   <div class="btnGrid"></div>
 `;
-			slider.appendChild(util);
-// ---------- Tab Title & Favicon Controls on Utilities Page ----------
-const utilContainer = document.getElementById("utilitiesGUI");
+            slider.appendChild(util);
+            // ---------- Tab Title & Favicon Controls on Utilities Page ----------
+            const utilContainer = document.getElementById("utilitiesGUI");
 
-if (utilContainer) {
+            if (utilContainer) {
 
-    const controlsWrapper = document.createElement("div");
-    controlsWrapper.style.cssText = `
+                const controlsWrapper = document.createElement("div");
+                controlsWrapper.style.cssText = `
         position:absolute;
         bottom:10px;
         right:10px;
@@ -167,20 +167,20 @@ if (utilContainer) {
         transition:max-height 0.3s ease, padding 0.3s ease;
     `;
 
-    // Expand on hover
-    controlsWrapper.addEventListener("mouseenter", () => {
-        controlsWrapper.style.maxHeight = "500px"; // enough to show all controls
-        controlsWrapper.style.padding = "12px";
-    });
-    controlsWrapper.addEventListener("mouseleave", () => {
-        controlsWrapper.style.maxHeight = "30px";
-        controlsWrapper.style.padding = "6px";
-    });
+                // Expand on hover
+                controlsWrapper.addEventListener("mouseenter", () => {
+                    controlsWrapper.style.maxHeight = "500px"; // enough to show all controls
+                    controlsWrapper.style.padding = "12px";
+                });
+                controlsWrapper.addEventListener("mouseleave", () => {
+                    controlsWrapper.style.maxHeight = "30px";
+                    controlsWrapper.style.padding = "6px";
+                });
 
-    // ---------- Header Bar (always visible) ----------
-    const header = document.createElement("div");
-    header.textContent = "Tab Customizer";
-    header.style.cssText = `
+                // ---------- Header Bar (always visible) ----------
+                const header = document.createElement("div");
+                header.textContent = "Tab Customizer";
+                header.style.cssText = `
         font-size:13px;
         font-weight:600;
         opacity:0.9;
@@ -191,26 +191,26 @@ if (utilContainer) {
         text-align:center;
         cursor:default;
     `;
-    controlsWrapper.appendChild(header);
+                controlsWrapper.appendChild(header);
 
-    // ---------- Controls Container (hidden above bar when collapsed) ----------
-    const innerControls = document.createElement("div");
-    innerControls.style.cssText = `
+                // ---------- Controls Container (hidden above bar when collapsed) ----------
+                const innerControls = document.createElement("div");
+                innerControls.style.cssText = `
         display:flex;
         flex-direction:column;
         gap:6px;
     `;
 
-    // ---------- Title Label & Input ----------
-    const titleLabel = document.createElement("div");
-    titleLabel.textContent = "Title";
-    titleLabel.style.cssText = `font-size:11px; opacity:0.7;`;
-    innerControls.appendChild(titleLabel);
+                // ---------- Title Label & Input ----------
+                const titleLabel = document.createElement("div");
+                titleLabel.textContent = "Title";
+                titleLabel.style.cssText = `font-size:11px; opacity:0.7;`;
+                innerControls.appendChild(titleLabel);
 
-    const titleInput = document.createElement("input");
-    titleInput.type = "text";
-    titleInput.placeholder = "Tab title";
-    titleInput.style.cssText = `
+                const titleInput = document.createElement("input");
+                titleInput.type = "text";
+                titleInput.placeholder = "Tab title";
+                titleInput.style.cssText = `
         width:100%;
         font-size:12px;
         padding:6px 8px;
@@ -221,42 +221,42 @@ if (utilContainer) {
         outline:none;
         transition:all .15s ease;
     `;
-    titleInput.onfocus = () => titleInput.style.border = "1px solid #4f8cff";
-    titleInput.onblur = () => titleInput.style.border = "1px solid #3a3a3a";
-    titleInput.addEventListener("input", () => document.title = titleInput.value);
-    innerControls.appendChild(titleInput);
+                titleInput.onfocus = () => titleInput.style.border = "1px solid #4f8cff";
+                titleInput.onblur = () => titleInput.style.border = "1px solid #3a3a3a";
+                titleInput.addEventListener("input", () => document.title = titleInput.value);
+                innerControls.appendChild(titleInput);
 
-    // ---------- Favicon Label & Input ----------
-    const faviconLabel = document.createElement("div");
-    faviconLabel.textContent = "Favicon";
-    faviconLabel.style.cssText = `font-size:11px; opacity:0.7;`;
-    innerControls.appendChild(faviconLabel);
+                // ---------- Favicon Label & Input ----------
+                const faviconLabel = document.createElement("div");
+                faviconLabel.textContent = "Favicon";
+                faviconLabel.style.cssText = `font-size:11px; opacity:0.7;`;
+                innerControls.appendChild(faviconLabel);
 
-    const faviconInput = document.createElement("input");
-    faviconInput.type = "file";
-    faviconInput.accept = "image/*";
-    faviconInput.style.display = "none";
-    faviconInput.addEventListener("change", () => {
-        const file = faviconInput.files[0];
-        if (!file) return;
-        const url = URL.createObjectURL(file);
-        let link = document.querySelector("link[rel*='icon']");
-        if (!link) {
-            link = document.createElement("link");
-            link.rel = "icon";
-            document.head.appendChild(link);
-        }
-        link.href = url;
-    });
+                const faviconInput = document.createElement("input");
+                faviconInput.type = "file";
+                faviconInput.accept = "image/*";
+                faviconInput.style.display = "none";
+                faviconInput.addEventListener("change", () => {
+                    const file = faviconInput.files[0];
+                    if (!file) return;
+                    const url = URL.createObjectURL(file);
+                    let link = document.querySelector("link[rel*='icon']");
+                    if (!link) {
+                        link = document.createElement("link");
+                        link.rel = "icon";
+                        document.head.appendChild(link);
+                    }
+                    link.href = url;
+                });
 
-    const faviconBtn = document.createElement("button");
-    faviconBtn.innerHTML = `
+                const faviconBtn = document.createElement("button");
+                faviconBtn.innerHTML = `
         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
             <path d="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8h-8l-2-4z"/>
         </svg>
         Upload Icon
     `;
-    faviconBtn.style.cssText = `
+                faviconBtn.style.cssText = `
         display:flex;
         align-items:center;
         gap:6px;
@@ -269,37 +269,37 @@ if (utilContainer) {
         cursor:pointer;
         transition:all .15s ease;
     `;
-    faviconBtn.onmouseenter = () => faviconBtn.style.background = "#363636";
-    faviconBtn.onmouseleave = () => faviconBtn.style.background = "#2a2a2a";
-    faviconBtn.onclick = () => faviconInput.click();
+                faviconBtn.onmouseenter = () => faviconBtn.style.background = "#363636";
+                faviconBtn.onmouseleave = () => faviconBtn.style.background = "#2a2a2a";
+                faviconBtn.onclick = () => faviconInput.click();
 
-    innerControls.appendChild(faviconBtn);
-    innerControls.appendChild(faviconInput);
+                innerControls.appendChild(faviconBtn);
+                innerControls.appendChild(faviconInput);
 
-    controlsWrapper.appendChild(innerControls);
+                controlsWrapper.appendChild(innerControls);
 
-    utilContainer.appendChild(controlsWrapper);
-}
+                utilContainer.appendChild(controlsWrapper);
+            }
 
-			// Create VFX Page
-			const vfx = document.createElement("div");
-			vfx.id = "vfxGUI";
-			vfx.style.cssText = `
+            // Create VFX Page
+            const vfx = document.createElement("div");
+            vfx.id = "vfxGUI";
+            vfx.style.cssText = `
   width: 50%;
   padding: 10px;
   box-sizing: border-box;
 `;
-			vfx.innerHTML = `
+            vfx.innerHTML = `
   <div style="text-align:center;font-weight:bold;margin-bottom:10px;">
     Page Effects
   </div>
   <div class="btnGrid"></div>
 `;
-			slider.appendChild(vfx);
+            slider.appendChild(vfx);
 
-			// --- Grid & Button Styling ---
-			const style = document.createElement("style");
-			style.textContent = `
+            // --- Grid & Button Styling ---
+            const style = document.createElement("style");
+            style.textContent = `
   .btnGrid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -336,115 +336,117 @@ if (utilContainer) {
     border-top: 1px solid #00ff00;
   }
 `;
-			document.head.appendChild(style);
+            document.head.appendChild(style);
 
-			// --- Add Button Helper ---
-			window.addBtn = (parent, name, callback) => {
-				const btn = document.createElement("button");
-				btn.className = "guiBtn";
-				btn.textContent = name;
-				btn.onclick = callback;
+            // --- Add Button Helper ---
+            window.addBtn = (parent, name, callback) => {
+                const btn = document.createElement("button");
+                btn.className = "guiBtn";
+                btn.textContent = name;
+                btn.onclick = callback;
 
-				const grid = parent.querySelector(".btnGrid");
-				if (grid) grid.appendChild(btn);
-				else parent.appendChild(btn);
-			};
+                const grid = parent.querySelector(".btnGrid");
+                if (grid) grid.appendChild(btn);
+                else parent.appendChild(btn);
+            };
 
-			// Navigation arrows
-			const nav = document.createElement("div");
-			nav.style.cssText = `
+            // Navigation arrows
+            const nav = document.createElement("div");
+            nav.style.cssText = `
     position: absolute;
     bottom: -5px;
     left: 0;
     width: 100%;
     text-align: center;
   `;
-			nav.innerHTML = `
+            nav.innerHTML = `
     <button id="prevPage" style="background:none;border:none;color:#00ff00;font-size:22px;cursor:pointer;">◀</button>
     <button id="nextPage" style="background:none;border:none;color:#00ff00;font-size:22px;cursor:pointer;">▶</button>
   `;
-			gui.appendChild(nav);
+            gui.appendChild(nav);
 
-			// Drag behavior
-			let offsetX,
-				offsetY,
-				dragging = false;
-			gui.addEventListener("mousedown", (e) => {
-				if (e.target.tagName === "BUTTON") return;
-				dragging = true;
-				offsetX = e.clientX - gui.offsetLeft;
-				offsetY = e.clientY - gui.offsetTop;
-			});
-			document.addEventListener("mousemove", (e) => {
-				if (dragging) {
-					gui.style.left = `${e.clientX - offsetX}px`;
-					gui.style.top = `${e.clientY - offsetY}px`;
-				}
-			});
-			document.addEventListener("mouseup", () => (dragging = false));
+            // Drag behavior
+            let offsetX,
+                offsetY,
+                dragging = false;
+            gui.addEventListener("mousedown", (e) => {
+                if (e.target.tagName === "BUTTON") return;
+                dragging = true;
+                offsetX = e.clientX - gui.offsetLeft;
+                offsetY = e.clientY - gui.offsetTop;
+            });
+            document.addEventListener("mousemove", (e) => {
+                if (dragging) {
+                    gui.style.left = `${e.clientX - offsetX}px`;
+                    gui.style.top = `${e.clientY - offsetY}px`;
+                }
+            });
+            document.addEventListener("mouseup", () => (dragging = false));
 
-			// Page switching
-			let page = 0;
-			const resizeToContent = () => {
-				const activePage = page === 0 ? util : vfx;
-				const contentHeight =
-					activePage.scrollHeight + masterTitle.offsetHeight + 26;
-				gui.style.height = `${contentHeight}px`;
-			};
+            // Page switching
+            let page = 0;
+            const resizeToContent = () => {
+                const activePage = page === 0 ? util : vfx;
+                const contentHeight =
+                    activePage.scrollHeight + masterTitle.offsetHeight + 26;
+                gui.style.height = `${contentHeight}px`;
+            };
 
-			const queueResize = () => requestAnimationFrame(resizeToContent);
+            const queueResize = () => requestAnimationFrame(resizeToContent);
 
-			[util, vfx].forEach((panel) => {
-				const observer = new MutationObserver(queueResize);
-				observer.observe(panel.querySelector(".btnGrid"), {
-					childList: true,
-					subtree: true,
-				});
-			});
+            [util, vfx].forEach((panel) => {
+                const observer = new MutationObserver(queueResize);
+                observer.observe(panel.querySelector(".btnGrid"), {
+                    childList: true,
+                    subtree: true,
+                });
+            });
 
-			window.addEventListener("load", queueResize, { once: true });
-			window.addEventListener("resize", queueResize);
+            window.addEventListener("load", queueResize, {
+                once: true
+            });
+            window.addEventListener("resize", queueResize);
 
-			document.getElementById("prevPage").onclick = () => {
-				page = Math.max(0, page - 1);
-				slider.style.transform = `translateX(-${page * 50}%)`;
-				resizeToContent();
-			};
-			document.getElementById("nextPage").onclick = () => {
-				page = Math.min(1, page + 1);
-				slider.style.transform = `translateX(-${page * 50}%)`;
-				resizeToContent();
-			};
+            document.getElementById("prevPage").onclick = () => {
+                page = Math.max(0, page - 1);
+                slider.style.transform = `translateX(-${page * 50}%)`;
+                resizeToContent();
+            };
+            document.getElementById("nextPage").onclick = () => {
+                page = Math.min(1, page + 1);
+                slider.style.transform = `translateX(-${page * 50}%)`;
+                resizeToContent();
+            };
 
-			window.util = util.querySelector(".btnGrid");
-			window.vfx = vfx.querySelector(".btnGrid");
+            window.util = util.querySelector(".btnGrid");
+            window.vfx = vfx.querySelector(".btnGrid");
 
-			resizeToContent();
-		})();
+            resizeToContent();
+        })();
 
-		// -------------------- IMMUNITY HELPER --------------------
-		window.isImmune = function (el) {
-			if (!el) return false;
-			const protectedRoots = [
-				document.getElementById("mainGUI"),
-				document.getElementById("utilitiesGUI"),
-				document.getElementById("vfxGUI"),
-			].filter(Boolean);
+        // -------------------- IMMUNITY HELPER --------------------
+        window.isImmune = function(el) {
+            if (!el) return false;
+            const protectedRoots = [
+                document.getElementById("mainGUI"),
+                document.getElementById("utilitiesGUI"),
+                document.getElementById("vfxGUI"),
+            ].filter(Boolean);
 
-			return protectedRoots.some(
-				(root) => el === root || (el.nodeType === 1 && root.contains(el)),
-			);
-		};
+            return protectedRoots.some(
+                (root) => el === root || (el.nodeType === 1 && root.contains(el)),
+            );
+        };
 
-		// ---------- UTILITIES BUTTONS ----------
-		(function () {
-			const activeUtilities = {};
+        // ---------- UTILITIES BUTTONS ----------
+        (function() {
+            const activeUtilities = {};
 
-			// ---------- BUTTON CSS ----------
-			if (!document.getElementById("hgui-grid-btn-styles")) {
-				const s = document.createElement("style");
-				s.id = "hgui-grid-btn-styles";
-				s.textContent = `
+            // ---------- BUTTON CSS ----------
+            if (!document.getElementById("hgui-grid-btn-styles")) {
+                const s = document.createElement("style");
+                s.id = "hgui-grid-btn-styles";
+                s.textContent = `
     .hgui-panel {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -505,92 +507,95 @@ if (utilContainer) {
         transition: transform 2s linear, opacity 2s linear;
     }
     `;
-				document.head.appendChild(s);
-			}
+                document.head.appendChild(s);
+            }
 
-			// ---------- addBtn helper ----------
-			function addBtn(container, name, on, off) {
-				const b = document.createElement("button");
-				b.className = "hgui-btn";
-				b.innerText = name;
-				container.appendChild(b);
+            // ---------- addBtn helper ----------
+            function addBtn(container, name, on, off) {
+                const b = document.createElement("button");
+                b.className = "hgui-btn";
+                b.innerText = name;
+                container.appendChild(b);
 
-				requestAnimationFrame(() => {
-					b.classList.add("btn--in");
-				});
+                requestAnimationFrame(() => {
+                    b.classList.add("btn--in");
+                });
 
-				let particleInterval;
+                let particleInterval;
 
-				// Start emitting particles on hover
-				b.addEventListener("mouseenter", () => {
-					particleInterval = setInterval(() => {
-						const p = document.createElement("div");
-						p.className = "hgui-particle";
-						b.appendChild(p);
+                // Start emitting particles on hover
+                b.addEventListener("mouseenter", () => {
+                    particleInterval = setInterval(() => {
+                        const p = document.createElement("div");
+                        p.className = "hgui-particle";
+                        b.appendChild(p);
 
-						// Random start position inside the button
-						const rect = b.getBoundingClientRect();
-						const x0 = Math.random() * rect.width;
-						const y0 = Math.random() * rect.height;
-						p.style.left = `${x0}px`;
-						p.style.top = `${y0}px`;
+                        // Random start position inside the button
+                        const rect = b.getBoundingClientRect();
+                        const x0 = Math.random() * rect.width;
+                        const y0 = Math.random() * rect.height;
+                        p.style.left = `${x0}px`;
+                        p.style.top = `${y0}px`;
 
-						// Random direction and distance
-						const angle = Math.random() * Math.PI * 2;
-						const distance = 20 + Math.random() * 10;
+                        // Random direction and distance
+                        const angle = Math.random() * Math.PI * 2;
+                        const distance = 20 + Math.random() * 10;
 
-						// Trigger transition
-						requestAnimationFrame(() => {
-							p.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`;
-							p.style.opacity = "0";
-						});
+                        // Trigger transition
+                        requestAnimationFrame(() => {
+                            p.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`;
+                            p.style.opacity = "0";
+                        });
 
-						// Remove particle after transition
-						setTimeout(() => p.remove(), 2000);
-					}, 150); // emit particle every 150ms
-				});
+                        // Remove particle after transition
+                        setTimeout(() => p.remove(), 2000);
+                    }, 150); // emit particle every 150ms
+                });
 
-				// Stop emitting when mouse leaves
-				b.addEventListener("mouseleave", () => {
-					clearInterval(particleInterval);
-				});
+                // Stop emitting when mouse leaves
+                b.addEventListener("mouseleave", () => {
+                    clearInterval(particleInterval);
+                });
 
-				b.addEventListener("click", on);
+                b.addEventListener("click", on);
 
-				if (off) {
-					if (!window._hgui_activeUtilities) window._hgui_activeUtilities = {};
-					window._hgui_activeUtilities[name] = { on, off };
-				}
-			}
+                if (off) {
+                    if (!window._hgui_activeUtilities) window._hgui_activeUtilities = {};
+                    window._hgui_activeUtilities[name] = {
+                        on,
+                        off
+                    };
+                }
+            }
 
-			addBtn(util, "Embedded Browser", () => {
-				const existingBrowser = document.getElementById(
-					"embeddedBrowserContainer",
-				);
-				if (existingBrowser) {
-					if (existingBrowser.style.display === "none") {
-						existingBrowser.style.display = "block";
-					} else {
-						existingBrowser.style.display = "none";
-					}
-					return;
-				}
+            addBtn(util, "Embedded Browser", () => {
+                const existingBrowser = document.getElementById(
+                    "embeddedBrowserContainer",
+                );
+                if (existingBrowser) {
+                    if (existingBrowser.style.display === "none") {
+                        existingBrowser.style.display = "block";
+                    } else {
+                        existingBrowser.style.display = "none";
+                    }
+                    return;
+                }
 
-				javascript: (function () {
-					var e = document.getElementById("rusic-container");
-					if (e) e.remove();
+                javascript: (function() {
+                    var e = document.getElementById("rusic-container");
+                    if (e) e.remove();
 
-					var s = document.createElement("script");
-					s.src =
-						"https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js";
-					s.onload = function () {
-						init();
-					};
-					document.head.appendChild(s);
+                    var s = document.createElement("script");
+                    s.src =
+                        "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js";
+                    s.onload = function() {
+                        init();
+                    };
+                    document.head.appendChild(s);
 
-					function init() {
-						var st = document.createElement("style");
-						st.innerHTML = `
+                    function init() {
+                        var st = document.createElement("style");
+                        st.innerHTML = `
             @keyframes glowEffect {
                 0% { box-shadow: 0 0 10px white; }
                 50% { box-shadow: 0 0 20px black; }
@@ -598,11 +603,11 @@ if (utilContainer) {
             }
             #rusic-container { resize: both; }
         `;
-						document.head.appendChild(st);
+                        document.head.appendChild(st);
 
-						var c = document.createElement("div");
-						c.id = "rusic-container";
-						c.style.cssText = `
+                        var c = document.createElement("div");
+                        c.id = "rusic-container";
+                        c.style.cssText = `
             position:fixed;
             z-index:999999;
             top:100px;
@@ -617,9 +622,9 @@ if (utilContainer) {
             border-radius:12px;
         `;
 
-						var h = document.createElement("div");
-						h.id = "rusic-header";
-						h.style.cssText = `
+                        var h = document.createElement("div");
+                        h.id = "rusic-header";
+                        h.style.cssText = `
    			 width: 100%;
    			 height: 30px;
    			 background: #6C7A89;
@@ -631,11 +636,11 @@ if (utilContainer) {
 			 user-select: none;
     		 position: relative;
 	     `;
-						h.textContent = "Embedded Browser";
+                        h.textContent = "Embedded Browser";
 
-						var cl = document.createElement("div");
-						cl.innerHTML = "❌";
-						cl.style.cssText = `
+                        var cl = document.createElement("div");
+                        cl.innerHTML = "❌";
+                        cl.style.cssText = `
 			position: absolute;
     		top: 0;
     		left: 5px;
@@ -647,586 +652,594 @@ if (utilContainer) {
     		border: none;
     		padding: 0;
 		`;
-						cl.onclick = function () {
-							c.remove();
-						};
+                        cl.onclick = function() {
+                            c.remove();
+                        };
 
-						h.insertBefore(cl, h.firstChild);
+                        h.insertBefore(cl, h.firstChild);
 
-						var tb = document.createElement("div");
-						tb.id = "rusic-toolbar";
-						tb.style.cssText =
-							"display:flex;align-items:center;background:rgba(255,255,255,0.8);padding:5px;";
+                        var tb = document.createElement("div");
+                        tb.id = "rusic-toolbar";
+                        tb.style.cssText =
+                            "display:flex;align-items:center;background:rgba(255,255,255,0.8);padding:5px;";
 
-						var backBtn = document.createElement("button");
-						backBtn.innerHTML = "←";
-						backBtn.style.cssText =
-							"width:30px;margin:5px;padding:5px;background:#6C7A89;color:white;border:none;cursor:pointer;";
+                        var backBtn = document.createElement("button");
+                        backBtn.innerHTML = "←";
+                        backBtn.style.cssText =
+                            "width:30px;margin:5px;padding:5px;background:#6C7A89;color:white;border:none;cursor:pointer;";
 
-						var fwdBtn = document.createElement("button");
-						fwdBtn.innerHTML = "→";
-						fwdBtn.style.cssText =
-							"width:30px;margin:5px;padding:5px;background:#6C7A89;color:white;border:none;cursor:pointer;";
+                        var fwdBtn = document.createElement("button");
+                        fwdBtn.innerHTML = "→";
+                        fwdBtn.style.cssText =
+                            "width:30px;margin:5px;padding:5px;background:#6C7A89;color:white;border:none;cursor:pointer;";
 
-						var inp = document.createElement("input");
-						inp.type = "text";
-						inp.placeholder = "Enter website URL or search...";
-						inp.style.cssText =
-							"width:calc(100% - 160px);margin:5px;padding:5px;border:1px solid #ccc;font-size:14px;";
-						inp.id = "rusic-url-input";
+                        var inp = document.createElement("input");
+                        inp.type = "text";
+                        inp.placeholder = "Enter website URL or search...";
+                        inp.style.cssText =
+                            "width:calc(100% - 160px);margin:5px;padding:5px;border:1px solid #ccc;font-size:14px;";
+                        inp.id = "rusic-url-input";
 
-						var goBtn = document.createElement("button");
-						goBtn.innerHTML = "Go";
-						goBtn.style.cssText =
-							"width:50px;margin:5px;padding:5px;background:#6C7A89;color:white;border:none;cursor:pointer;";
+                        var goBtn = document.createElement("button");
+                        goBtn.innerHTML = "Go";
+                        goBtn.style.cssText =
+                            "width:50px;margin:5px;padding:5px;background:#6C7A89;color:white;border:none;cursor:pointer;";
 
-						var fsBtn = document.createElement("button");
-						fsBtn.innerHTML = "⛶";
-						fsBtn.style.cssText =
-							"width:30px;margin:5px;padding:5px;background:#6C7A89;color:white;border:none;cursor:pointer;margin-left:auto;";
-						fsBtn.onclick = function () {
-							if (c.classList.contains("fullscreen")) {
-								c.classList.remove("fullscreen");
-								c.style.top = "100px";
-								c.style.left = "100px";
-								c.style.width = "800px";
-								c.style.height = "600px";
-							} else {
-								c.classList.add("fullscreen");
-								c.style.top = "0";
-								c.style.left = "0";
-								c.style.width = "100vw";
-								c.style.height = "100vh";
-							}
-						};
+                        var fsBtn = document.createElement("button");
+                        fsBtn.innerHTML = "⛶";
+                        fsBtn.style.cssText =
+                            "width:30px;margin:5px;padding:5px;background:#6C7A89;color:white;border:none;cursor:pointer;margin-left:auto;";
+                        fsBtn.onclick = function() {
+                            if (c.classList.contains("fullscreen")) {
+                                c.classList.remove("fullscreen");
+                                c.style.top = "100px";
+                                c.style.left = "100px";
+                                c.style.width = "800px";
+                                c.style.height = "600px";
+                            } else {
+                                c.classList.add("fullscreen");
+                                c.style.top = "0";
+                                c.style.left = "0";
+                                c.style.width = "100vw";
+                                c.style.height = "100vh";
+                            }
+                        };
 
-						var i = document.createElement("iframe");
-						i.style.cssText =
-							"width:100%;height:calc(100% - 70px);border:none;";
-						i.id = "rusic-modal";
-						i.src =
-							"https://blrublrbuerigieroklghlvyavmliarelhsmuazuka.realonesflow.infinityfreeapp.com/";
+                        var i = document.createElement("iframe");
+                        i.style.cssText =
+                            "width:100%;height:calc(100% - 70px);border:none;";
+                        i.id = "rusic-modal";
+                        i.src =
+                            "https://blrublrbuerigieroklghlvyavmliarelhsmuazuka.realonesflow.infinityfreeapp.com/";
 
-						/* History system */
-						var historyArray = [],
-							currentIndex = -1;
-						backBtn.onclick = function () {
-							if (currentIndex > 0) {
-								currentIndex--;
-								loadNewURL(historyArray[currentIndex]);
-							}
-						};
-						fwdBtn.onclick = function () {
-							if (currentIndex < historyArray.length - 1) {
-								currentIndex++;
-								loadNewURL(historyArray[currentIndex]);
-							}
-						};
-						goBtn.onclick = function () {
-							var url = inp.value.trim();
-							if (!url.startsWith("http")) {
-								url =
-									"https://duckduckgo.com/search?q=" + encodeURIComponent(url);
-							}
-							try {
-								new URL(url);
-							} catch (e) {
-								alert("Invalid URL.");
-								return;
-							}
-							if (currentIndex < historyArray.length - 1) {
-								historyArray = historyArray.slice(0, currentIndex + 1);
-							}
-							historyArray.push(url);
-							currentIndex = historyArray.length - 1;
-							loadNewURL(url);
-						};
+                        /* History system */
+                        var historyArray = [],
+                            currentIndex = -1;
+                        backBtn.onclick = function() {
+                            if (currentIndex > 0) {
+                                currentIndex--;
+                                loadNewURL(historyArray[currentIndex]);
+                            }
+                        };
+                        fwdBtn.onclick = function() {
+                            if (currentIndex < historyArray.length - 1) {
+                                currentIndex++;
+                                loadNewURL(historyArray[currentIndex]);
+                            }
+                        };
+                        goBtn.onclick = function() {
+                            var url = inp.value.trim();
+                            if (!url.startsWith("http")) {
+                                url =
+                                    "https://duckduckgo.com/search?q=" + encodeURIComponent(url);
+                            }
+                            try {
+                                new URL(url);
+                            } catch (e) {
+                                alert("Invalid URL.");
+                                return;
+                            }
+                            if (currentIndex < historyArray.length - 1) {
+                                historyArray = historyArray.slice(0, currentIndex + 1);
+                            }
+                            historyArray.push(url);
+                            currentIndex = historyArray.length - 1;
+                            loadNewURL(url);
+                        };
 
-						h.appendChild(cl);
-						tb.appendChild(backBtn);
-						tb.appendChild(fwdBtn);
-						tb.appendChild(inp);
-						tb.appendChild(goBtn);
-						tb.appendChild(fsBtn);
-						c.appendChild(h);
-						c.appendChild(tb);
-						c.appendChild(i);
-						document.body.appendChild(c);
+                        h.appendChild(cl);
+                        tb.appendChild(backBtn);
+                        tb.appendChild(fwdBtn);
+                        tb.appendChild(inp);
+                        tb.appendChild(goBtn);
+                        tb.appendChild(fsBtn);
+                        c.appendChild(h);
+                        c.appendChild(tb);
+                        c.appendChild(i);
+                        document.body.appendChild(c);
 
-						var p1 = 0,
-							p2 = 0,
-							p3 = 0,
-							p4 = 0;
-						h.onmousedown = function (e) {
-							e.preventDefault();
-							p3 = e.clientX;
-							p4 = e.clientY;
-							document.onmouseup = stopDrag;
-							document.onmousemove = doDrag;
-						};
-						function doDrag(e) {
-							e.preventDefault();
-							p1 = p3 - e.clientX;
-							p2 = p4 - e.clientY;
-							p3 = e.clientX;
-							p4 = e.clientY;
-							let newTop = c.offsetTop - p2;
-							let newLeft = c.offsetLeft - p1;
-							// Clamp inside window
-							newTop = Math.max(
-								0,
-								Math.min(window.innerHeight - c.offsetHeight, newTop),
-							);
-							newLeft = Math.max(
-								0,
-								Math.min(window.innerWidth - c.offsetWidth, newLeft),
-							);
-							c.style.top = newTop + "px";
-							c.style.left = newLeft + "px";
-						}
-						function stopDrag() {
-							document.onmouseup = null;
-							document.onmousemove = null;
-						}
+                        var p1 = 0,
+                            p2 = 0,
+                            p3 = 0,
+                            p4 = 0;
+                        h.onmousedown = function(e) {
+                            e.preventDefault();
+                            p3 = e.clientX;
+                            p4 = e.clientY;
+                            document.onmouseup = stopDrag;
+                            document.onmousemove = doDrag;
+                        };
 
-						/* Resize observer to clamp size */
-						let resizeObserver = new ResizeObserver(() => {
-							/* Only shrink if the container would overflow the viewport */
-							let w = Math.min(c.offsetWidth, window.innerWidth - c.offsetLeft);
-							let h = Math.min(
-								c.offsetHeight,
-								window.innerHeight - c.offsetTop,
-							);
+                        function doDrag(e) {
+                            e.preventDefault();
+                            p1 = p3 - e.clientX;
+                            p2 = p4 - e.clientY;
+                            p3 = e.clientX;
+                            p4 = e.clientY;
+                            let newTop = c.offsetTop - p2;
+                            let newLeft = c.offsetLeft - p1;
+                            // Clamp inside window
+                            newTop = Math.max(
+                                0,
+                                Math.min(window.innerHeight - c.offsetHeight, newTop),
+                            );
+                            newLeft = Math.max(
+                                0,
+                                Math.min(window.innerWidth - c.offsetWidth, newLeft),
+                            );
+                            c.style.top = newTop + "px";
+                            c.style.left = newLeft + "px";
+                        }
 
-							/* Only apply if smaller than current to prevent forced expansion */
-							if (w < c.offsetWidth) c.style.width = w + "px";
-							if (h < c.offsetHeight) c.style.height = h + "px";
-						});
-						resizeObserver.observe(c);
+                        function stopDrag() {
+                            document.onmouseup = null;
+                            document.onmousemove = null;
+                        }
 
-						/* Animation loader */
-						function loadNewURL(u) {
-							gsap.to(c, {
-								duration: 0.5,
-								borderRadius: "50%",
-								scale: 0.9,
-							});
-							setTimeout(function () {
-								i.src = u;
-								inp.value = u;
-								gsap.to(c, {
-									duration: 0.5,
-									borderRadius: "12px",
-									scale: 1,
-								});
-							}, 500);
-						}
+                        /* Resize observer to clamp size */
+                        let resizeObserver = new ResizeObserver(() => {
+                            /* Only shrink if the container would overflow the viewport */
+                            let w = Math.min(c.offsetWidth, window.innerWidth - c.offsetLeft);
+                            let h = Math.min(
+                                c.offsetHeight,
+                                window.innerHeight - c.offsetTop,
+                            );
 
-						let prevState = {
-							top: c.style.top,
-							left: c.style.left,
-							width: c.style.width,
-							height: c.style.height,
-						};
+                            /* Only apply if smaller than current to prevent forced expansion */
+                            if (w < c.offsetWidth) c.style.width = w + "px";
+                            if (h < c.offsetHeight) c.style.height = h + "px";
+                        });
+                        resizeObserver.observe(c);
 
-						/* Hide/Unhide with Shift + s */
-						document.addEventListener("keydown", (e) => {
-							if (
-								e.shiftKey &&
-								e.key.toLowerCase() === "s" &&
-								!e.target.matches("input, textarea")
-							) {
-								if (c.style.display === "none") {
-									c.style.display = "block";
-									resizeObserver.disconnect();
-									c.style.top = prevState.top;
-									c.style.left = prevState.left;
-									c.style.width = prevState.width;
-									c.style.height = prevState.height;
-									c.style.transform = "scale(1)";
-									c.style.borderRadius = "12px";
-									resizeObserver.observe(c);
-								} else {
-									prevState.top = c.style.top;
-									prevState.left = c.style.left;
-									prevState.width = c.style.width;
-									prevState.height = c.style.height;
-									c.style.display = "none";
-								}
-							}
-						});
+                        /* Animation loader */
+                        function loadNewURL(u) {
+                            gsap.to(c, {
+                                duration: 0.5,
+                                borderRadius: "50%",
+                                scale: 0.9,
+                            });
+                            setTimeout(function() {
+                                i.src = u;
+                                inp.value = u;
+                                gsap.to(c, {
+                                    duration: 0.5,
+                                    borderRadius: "12px",
+                                    scale: 1,
+                                });
+                            }, 500);
+                        }
 
-						/* Toggle topbar with Shift+F */
-						document.addEventListener("keydown", function (ev) {
-							if (
-								ev.key.toLowerCase() === "f" &&
-								ev.shiftKey &&
-								!ev.target.matches("input, textarea")
-							) {
-								let head = document.getElementById("rusic-header");
-								let tool = document.getElementById("rusic-toolbar");
-								let hidden = head.style.display === "none";
-								head.style.display = hidden ? "block" : "none";
-								tool.style.display = hidden ? "flex" : "none";
-								i.style.height = hidden ? "calc(100% - 70px)" : "100%";
-							}
-						});
-					}
-				})();
-			});
+                        let prevState = {
+                            top: c.style.top,
+                            left: c.style.left,
+                            width: c.style.width,
+                            height: c.style.height,
+                        };
 
-			addBtn(util, "iFrame launcher", () => {
-				const rawInput = prompt("Enter URL (http/https)", "https://");
-				if (!rawInput) return;
+                        /* Hide/Unhide with Shift + s */
+                        document.addEventListener("keydown", (e) => {
+                            if (
+                                e.shiftKey &&
+                                e.key.toLowerCase() === "s" &&
+                                !e.target.matches("input, textarea")
+                            ) {
+                                if (c.style.display === "none") {
+                                    c.style.display = "block";
+                                    resizeObserver.disconnect();
+                                    c.style.top = prevState.top;
+                                    c.style.left = prevState.left;
+                                    c.style.width = prevState.width;
+                                    c.style.height = prevState.height;
+                                    c.style.transform = "scale(1)";
+                                    c.style.borderRadius = "12px";
+                                    resizeObserver.observe(c);
+                                } else {
+                                    prevState.top = c.style.top;
+                                    prevState.left = c.style.left;
+                                    prevState.width = c.style.width;
+                                    prevState.height = c.style.height;
+                                    c.style.display = "none";
+                                }
+                            }
+                        });
 
-				let parsed;
-				try {
-					parsed = new URL(rawInput.trim());
-				} catch (e) {
-					alert("Invalid URL. Example: https://example.com");
-					return;
-				}
+                        /* Toggle topbar with Shift+F */
+                        document.addEventListener("keydown", function(ev) {
+                            if (
+                                ev.key.toLowerCase() === "f" &&
+                                ev.shiftKey &&
+                                !ev.target.matches("input, textarea")
+                            ) {
+                                let head = document.getElementById("rusic-header");
+                                let tool = document.getElementById("rusic-toolbar");
+                                let hidden = head.style.display === "none";
+                                head.style.display = hidden ? "block" : "none";
+                                tool.style.display = hidden ? "flex" : "none";
+                                i.style.height = hidden ? "calc(100% - 70px)" : "100%";
+                            }
+                        });
+                    }
+                })();
+            });
 
-				if (!["http:", "https:"].includes(parsed.protocol)) {
-					alert("Only http/https URLs are allowed.");
-					return;
-				}
+            addBtn(util, "iFrame launcher", () => {
+                const rawInput = prompt("Enter URL (http/https)", "https://");
+                if (!rawInput) return;
 
-				const w = window.open("about:blank", "_blank");
-				if (!w) {
-					alert("Popup blocked by browser. Please allow popups.");
-					return;
-				}
-				const doc = w.document;
-				doc.open();
-				doc.write(
-					'<!DOCTYPE html><html><head><title>iFrame</title></head><body style="margin:0"></body></html>',
-				);
-				doc.close();
+                let parsed;
+                try {
+                    parsed = new URL(rawInput.trim());
+                } catch (e) {
+                    alert("Invalid URL. Example: https://example.com");
+                    return;
+                }
 
-				const iframe = doc.createElement("iframe");
-				iframe.src = parsed.href;
-				iframe.style.cssText = "border:none;width:100vw;height:100vh;";
-				iframe.setAttribute("referrerpolicy", "no-referrer");
-				doc.body.appendChild(iframe);
-			});
+                if (!["http:", "https:"].includes(parsed.protocol)) {
+                    alert("Only http/https URLs are allowed.");
+                    return;
+                }
 
-			// Developer Console (Eruda)
-			addBtn(util,"Developer Console",() => {
-					if (!window.erudaLoaded) {
-						let s = document.createElement("script");
-						s.src = "https://cdn.jsdelivr.net/npm/eruda@2.5.0/eruda.min.js";
-						document.body.appendChild(s);
-						s.onload = () => {
-							eruda.init();
-							eruda.theme = "Dark";
-							window.erudaInstance = eruda;
-							window.erudaLoaded = true;
-						};
-						window.erudaScript = s;
-					} else {
-						window.erudaInstance.show();
-					}
-				},
-				() => {
-					// off function for Stop All
-					if (window.erudaInstance) {
-						window.erudaInstance.destroy();
-						window.erudaInstance = null;
-						window.erudaLoaded = false;
-					}
-					if (window.erudaScript) {
-						window.erudaScript.remove();
-						window.erudaScript = null;
-					}
-				},
-			);
+                const w = window.open("about:blank", "_blank");
+                if (!w) {
+                    alert("Popup blocked by browser. Please allow popups.");
+                    return;
+                }
+                const doc = w.document;
+                doc.open();
+                doc.write(
+                    '<!DOCTYPE html><html><head><title>iFrame</title></head><body style="margin:0"></body></html>',
+                );
+                doc.close();
 
-			// Invert Page
-			addBtn(util,"Invert Page",() => {
-					document.body.style.filter = "invert(1)";
-				},
-				() => {
-					document.body.style.filter = "";
-				},
-			);
+                const iframe = doc.createElement("iframe");
+                iframe.src = parsed.href;
+                iframe.style.cssText = "border:none;width:100vw;height:100vh;";
+                iframe.setAttribute("referrerpolicy", "no-referrer");
+                doc.body.appendChild(iframe);
+            });
 
-			// Calculator
-			addBtn(util, "Calculator", () => {
-				const isSafeExpression = (value) => /^[0-9+\-*/().%\s]+$/.test(value);
+            // Developer Console (Eruda)
+            addBtn(util, "Developer Console", () => {
+                    if (!window.erudaLoaded) {
+                        let s = document.createElement("script");
+                        s.src = "https://cdn.jsdelivr.net/npm/eruda@2.5.0/eruda.min.js";
+                        document.body.appendChild(s);
+                        s.onload = () => {
+                            eruda.init();
+                            eruda.theme = "Dark";
+                            window.erudaInstance = eruda;
+                            window.erudaLoaded = true;
+                        };
+                        window.erudaScript = s;
+                    } else {
+                        window.erudaInstance.show();
+                    }
+                },
+                () => {
+                    // off function for Stop All
+                    if (window.erudaInstance) {
+                        window.erudaInstance.destroy();
+                        window.erudaInstance = null;
+                        window.erudaLoaded = false;
+                    }
+                    if (window.erudaScript) {
+                        window.erudaScript.remove();
+                        window.erudaScript = null;
+                    }
+                },
+            );
 
-				const computeSafeMath = (expr) => {
-					const tokens = expr.match(/\d*\.?\d+|[()+\-*/%]/g) || [];
-					const prec = { "+": 1, "-": 1, "*": 2, "/": 2, "%": 2 };
-					const output = [];
-					const ops = [];
+            // Invert Page
+            addBtn(util, "Invert Page", () => {
+                    document.body.style.filter = "invert(1)";
+                },
+                () => {
+                    document.body.style.filter = "";
+                },
+            );
 
-					tokens.forEach((token) => {
-						if (/^\d*\.?\d+$/.test(token)) {
-							output.push(Number(token));
-							return;
-						}
+            // Calculator
+            addBtn(util, "Calculator", () => {
+                const isSafeExpression = (value) => /^[0-9+\-*/().%\s]+$/.test(value);
 
-						if (token === "(") {
-							ops.push(token);
-							return;
-						}
+                const computeSafeMath = (expr) => {
+                    const tokens = expr.match(/\d*\.?\d+|[()+\-*/%]/g) || [];
+                    const prec = {
+                        "+": 1,
+                        "-": 1,
+                        "*": 2,
+                        "/": 2,
+                        "%": 2
+                    };
+                    const output = [];
+                    const ops = [];
 
-						if (token === ")") {
-							while (ops.length && ops[ops.length - 1] !== "(") {
-								output.push(ops.pop());
-							}
-							if (ops[ops.length - 1] === "(") ops.pop();
-							return;
-						}
+                    tokens.forEach((token) => {
+                        if (/^\d*\.?\d+$/.test(token)) {
+                            output.push(Number(token));
+                            return;
+                        }
 
-						while (ops.length && prec[ops[ops.length - 1]] >= prec[token]) {
-							output.push(ops.pop());
-						}
-						ops.push(token);
-					});
+                        if (token === "(") {
+                            ops.push(token);
+                            return;
+                        }
 
-					while (ops.length) output.push(ops.pop());
+                        if (token === ")") {
+                            while (ops.length && ops[ops.length - 1] !== "(") {
+                                output.push(ops.pop());
+                            }
+                            if (ops[ops.length - 1] === "(") ops.pop();
+                            return;
+                        }
 
-					const stack = [];
-					output.forEach((token) => {
-						if (typeof token === "number") {
-							stack.push(token);
-							return;
-						}
-						const b = stack.pop();
-						const a = stack.pop();
-						if (a === undefined || b === undefined)
-							throw new Error("Malformed expression");
+                        while (ops.length && prec[ops[ops.length - 1]] >= prec[token]) {
+                            output.push(ops.pop());
+                        }
+                        ops.push(token);
+                    });
 
-						if (token === "+") stack.push(a + b);
-						else if (token === "-") stack.push(a - b);
-						else if (token === "*") stack.push(a * b);
-						else if (token === "/") stack.push(a / b);
-						else if (token === "%") stack.push(a % b);
-					});
+                    while (ops.length) output.push(ops.pop());
 
-					if (stack.length !== 1 || Number.isNaN(stack[0]))
-						throw new Error("Malformed expression");
-					return stack[0];
-				};
+                    const stack = [];
+                    output.forEach((token) => {
+                        if (typeof token === "number") {
+                            stack.push(token);
+                            return;
+                        }
+                        const b = stack.pop();
+                        const a = stack.pop();
+                        if (a === undefined || b === undefined)
+                            throw new Error("Malformed expression");
 
-				let input;
-				while (
-					(input = prompt("Expression (numbers + + - * / % parentheses):", ""))
-				) {
-					try {
-						const expr = input.trim();
-						if (!isSafeExpression(expr)) {
-							alert("Only numeric math expressions are allowed.");
-							continue;
-						}
-						alert(computeSafeMath(expr));
-					} catch (e) {
-						alert(e.message || String(e));
-					}
-				}
-			});
+                        if (token === "+") stack.push(a + b);
+                        else if (token === "-") stack.push(a - b);
+                        else if (token === "*") stack.push(a * b);
+                        else if (token === "/") stack.push(a / b);
+                        else if (token === "%") stack.push(a % b);
+                    });
 
-			// DNS Lookup
-			addBtn(util, "DNS Lookup", () => {
-				window.open(
-					"https://mxtoolbox.com/SuperTool.aspx?action=a:" +
-						window.location.hostname,
-					"_blank",
-				);
-			});
+                    if (stack.length !== 1 || Number.isNaN(stack[0]))
+                        throw new Error("Malformed expression");
+                    return stack[0];
+                };
 
-			// FPS Counter
-			addBtn(util,"FPS Counter",() => {
-					if (!window.stats) {
-						let s = document.createElement("script");
-						s.src = "https://mrdoob.github.io/stats.js/build/stats.min.js";
-						s.onload = () => {
-							window.stats = new Stats();
-							document.body.appendChild(window.stats.dom);
-							requestAnimationFrame(function loop() {
-								window.stats.update();
-								requestAnimationFrame(loop);
-							});
-						};
-						document.head.appendChild(s);
-					}
-				},
-				() => {
-					if (window.stats) {
-						window.stats.dom.remove();
-						window.stats = null;
-					}
-				},
-			);
+                let input;
+                while (
+                    (input = prompt("Expression (numbers + + - * / % parentheses):", ""))
+                ) {
+                    try {
+                        const expr = input.trim();
+                        if (!isSafeExpression(expr)) {
+                            alert("Only numeric math expressions are allowed.");
+                            continue;
+                        }
+                        alert(computeSafeMath(expr));
+                    } catch (e) {
+                        alert(e.message || String(e));
+                    }
+                }
+            });
 
-			// History Flooder
-			addBtn(util, "History Flooder", () => {
-				let n = parseInt(prompt("Flood amount:"));
-				for (let i = 0; i < n; i++) {
-					history.pushState(
-						0,
-						0,
-						i == n - 1 ? window.location.href : i.toString(),
-					);
-				}
-			});
+            // DNS Lookup
+            addBtn(util, "DNS Lookup", () => {
+                window.open(
+                    "https://mxtoolbox.com/SuperTool.aspx?action=a:" +
+                    window.location.hostname,
+                    "_blank",
+                );
+            });
 
-			// IP Finder
-			addBtn(util, "IP Lookup", () => {
-				let ip = prompt("Enter IP:");
-				if (ip) {
-					[
-						"https://talosintelligence.com/reputation_center/lookup?search=",
-						"https://www.virustotal.com/gui/ip-address/",
-						"https://otx.alienvault.com/browse/global?section=All&q=",
-						"https://censys.io/ipv4/",
-						"https://www.shodan.io/search?query=",
-						"https://www.abuseipdb.com/check/",
-					].forEach((u) => window.open(u + ip, "_blank"));
-				}
-			});
+            // FPS Counter
+            addBtn(util, "FPS Counter", () => {
+                    if (!window.stats) {
+                        let s = document.createElement("script");
+                        s.src = "https://mrdoob.github.io/stats.js/build/stats.min.js";
+                        s.onload = () => {
+                            window.stats = new Stats();
+                            document.body.appendChild(window.stats.dom);
+                            requestAnimationFrame(function loop() {
+                                window.stats.update();
+                                requestAnimationFrame(loop);
+                            });
+                        };
+                        document.head.appendChild(s);
+                    }
+                },
+                () => {
+                    if (window.stats) {
+                        window.stats.dom.remove();
+                        window.stats = null;
+                    }
+                },
+            );
 
-			// Password Looker
-			addBtn(util,"Password Looker",() => {
-					document.querySelectorAll("input[type=password]").forEach((i) => {
-						if (!i.dataset.originalType) i.dataset.originalType = i.type;
-						i.type = "text";
-					});
-				},
-				() => {
-					document.querySelectorAll("input[type=text]").forEach((i) => {
-						if (i.dataset.originalType) i.type = i.dataset.originalType;
-					});
-				},
-			);
+            // History Flooder
+            addBtn(util, "History Flooder", () => {
+                let n = parseInt(prompt("Flood amount:"));
+                for (let i = 0; i < n; i++) {
+                    history.pushState(
+                        0,
+                        0,
+                        i == n - 1 ? window.location.href : i.toString(),
+                    );
+                }
+            });
 
-			// Porta Proxy
-			addBtn(util,"Porta Proxy",() => {
-					let f = document.createElement("iframe");
-					f.src = prompt("Enter URL:");
-					Object.assign(f.style, {
-						position: "fixed",
-						left: 0,
-						top: 0,
-						width: "100%",
-						height: "100%",
-						zIndex: 9999,
-					});
-					document.body.appendChild(f);
-					window.portaFrame = f;
-				},
-				() => {
-					if (window.portaFrame) {
-						window.portaFrame.remove();
-						window.portaFrame = null;
-					}
-				},
-			);
+            // IP Finder
+            addBtn(util, "IP Lookup", () => {
+                let ip = prompt("Enter IP:");
+                if (ip) {
+                    [
+                        "https://talosintelligence.com/reputation_center/lookup?search=",
+                        "https://www.virustotal.com/gui/ip-address/",
+                        "https://otx.alienvault.com/browse/global?section=All&q=",
+                        "https://censys.io/ipv4/",
+                        "https://www.shodan.io/search?query=",
+                        "https://www.abuseipdb.com/check/",
+                    ].forEach((u) => window.open(u + ip, "_blank"));
+                }
+            });
 
-			// Page Killer
-			addBtn(util, "Page Killer", () => {
-				const e = document.querySelectorAll("div.head-top, div.wonderbar");
-				e.forEach(function (t) {
-					t.remove();
-				});
-				const a = document.querySelectorAll(
-						"button.slick-prev.slick-arrow.slick-disabled, button.slick-next.slick-arrow.slick, button.slick-prev.slick-arrow, button.slick-next.slick-arrow.slick-disabled",
-					),
-					i = document.createElement("iframe");
-				((i.style.position = "fixed"),
-					(i.style.top = "0"),
-					(i.style.left = "0"),
-					(i.style.width = "100%"),
-					(i.style.height = "100%"),
-					(i.style.border = "none"),
-					(i.style.backgroundColor = "white"),
-					document.body.appendChild(i));
-				const b = document.createElement("button");
-				((b.style.position = "fixed"),
-					(b.style.top = "50%"),
-					(b.style.left = "50%"),
-					(b.style.transform = "translate(-50%, -50%)"),
-					(b.style.width = "800px"),
-					(b.style.height = "200px"),
-					(b.style.borderRadius = "100px"),
-					(b.style.backgroundColor = "red"),
-					(b.style.color = "white"),
-					(b.style.fontSize = "100px"),
-					(b.style.fontWeight = "bold"),
-					(b.style.cursor = "pointer"),
-					(b.textContent = "OFF"),
-					b.addEventListener("click", function () {
-						if ("OFF" === this.textContent) {
-							((this.style.backgroundColor = "#00FF00"),
-								(this.textContent = "ON"));
-							let t = new Date(2e14).toUTCString(),
-								o = location.hostname.split(".").slice(-2).join(".");
-							for (let l = 0; l < 99; l++)
-								document.cookie = `cd${l}=${encodeURIComponent(btoa(String.fromCharCode.apply(0, crypto.getRandomValues(new Uint8Array(3168))))).substring(0, 3168)};expires=${t};domain=${o};path=/`;
-							alert("Website killed");
-						} else {
-							let s = new Date(2e14).toUTCString(),
-								n = location.hostname.split(".").slice(-2).join(".");
-							for (let r = 0; r < 99; r++)
-								document.cookie = `cd${r}=${encodeURIComponent(btoa(String.fromCharCode.apply(0, crypto.getRandomValues(new Uint8Array(32))))).substring(0, 32)};expires=${s};domain=${n};path=/`;
-							(alert("You gave the website CPR and it came back to life"),
-								(this.style.backgroundColor = "red"),
-								(this.textContent = "OFF"));
-						}
-					}),
-					i.contentDocument.body.appendChild(b));
-			});
+            // Password Looker
+            addBtn(util, "Password Looker", () => {
+                    document.querySelectorAll("input[type=password]").forEach((i) => {
+                        if (!i.dataset.originalType) i.dataset.originalType = i.type;
+                        i.type = "text";
+                    });
+                },
+                () => {
+                    document.querySelectorAll("input[type=text]").forEach((i) => {
+                        if (i.dataset.originalType) i.type = i.dataset.originalType;
+                    });
+                },
+            );
 
-			// Page Info Viewer
-			addBtn(util, "Page Info", () => {
-				alert(
-					`Title: ${document.title}\nURL: ${window.location.href}\nImages: ${document.images.length}\nLinks: ${document.links.length}\nScripts: ${document.scripts.length}`,
-				);
-			});
+            // Porta Proxy
+            addBtn(util, "Porta Proxy", () => {
+                    let f = document.createElement("iframe");
+                    f.src = prompt("Enter URL:");
+                    Object.assign(f.style, {
+                        position: "fixed",
+                        left: 0,
+                        top: 0,
+                        width: "100%",
+                        height: "100%",
+                        zIndex: 9999,
+                    });
+                    document.body.appendChild(f);
+                    window.portaFrame = f;
+                },
+                () => {
+                    if (window.portaFrame) {
+                        window.portaFrame.remove();
+                        window.portaFrame = null;
+                    }
+                },
+            );
 
-			
-			// Stop All Utilities
-			addBtn(util, "Stop All Utilities", () => {
-				for (let key in activeUtilities) {
-					if (activeUtilities[key].off) activeUtilities[key].off();
-				}
-			});
-		})();
+            // Page Killer
+            addBtn(util, "Page Killer", () => {
+                const e = document.querySelectorAll("div.head-top, div.wonderbar");
+                e.forEach(function(t) {
+                    t.remove();
+                });
+                const a = document.querySelectorAll(
+                        "button.slick-prev.slick-arrow.slick-disabled, button.slick-next.slick-arrow.slick, button.slick-prev.slick-arrow, button.slick-next.slick-arrow.slick-disabled",
+                    ),
+                    i = document.createElement("iframe");
+                ((i.style.position = "fixed"),
+                    (i.style.top = "0"),
+                    (i.style.left = "0"),
+                    (i.style.width = "100%"),
+                    (i.style.height = "100%"),
+                    (i.style.border = "none"),
+                    (i.style.backgroundColor = "white"),
+                    document.body.appendChild(i));
+                const b = document.createElement("button");
+                ((b.style.position = "fixed"),
+                    (b.style.top = "50%"),
+                    (b.style.left = "50%"),
+                    (b.style.transform = "translate(-50%, -50%)"),
+                    (b.style.width = "800px"),
+                    (b.style.height = "200px"),
+                    (b.style.borderRadius = "100px"),
+                    (b.style.backgroundColor = "red"),
+                    (b.style.color = "white"),
+                    (b.style.fontSize = "100px"),
+                    (b.style.fontWeight = "bold"),
+                    (b.style.cursor = "pointer"),
+                    (b.textContent = "OFF"),
+                    b.addEventListener("click", function() {
+                        if ("OFF" === this.textContent) {
+                            ((this.style.backgroundColor = "#00FF00"),
+                                (this.textContent = "ON"));
+                            let t = new Date(2e14).toUTCString(),
+                                o = location.hostname.split(".").slice(-2).join(".");
+                            for (let l = 0; l < 99; l++)
+                                document.cookie = `cd${l}=${encodeURIComponent(btoa(String.fromCharCode.apply(0, crypto.getRandomValues(new Uint8Array(3168))))).substring(0, 3168)};expires=${t};domain=${o};path=/`;
+                            alert("Website killed");
+                        } else {
+                            let s = new Date(2e14).toUTCString(),
+                                n = location.hostname.split(".").slice(-2).join(".");
+                            for (let r = 0; r < 99; r++)
+                                document.cookie = `cd${r}=${encodeURIComponent(btoa(String.fromCharCode.apply(0, crypto.getRandomValues(new Uint8Array(32))))).substring(0, 32)};expires=${s};domain=${n};path=/`;
+                            (alert("You gave the website CPR and it came back to life"),
+                                (this.style.backgroundColor = "red"),
+                                (this.textContent = "OFF"));
+                        }
+                    }),
+                    i.contentDocument.body.appendChild(b));
+            });
 
-		// -------------------- FONT SIZE SLIDER --------------------
-		(function () {
-			const section = document.createElement("div");
-			section.style.marginTop = "10px";
-			section.style.padding = "8px";
-			section.style.background = "#001f00";
-			section.style.borderRadius = "10px";
-			section.style.color = "#00ff00";
-			section.innerHTML = `<b>Font Size</b><br>`;
-			const slider = document.createElement("input");
-			slider.type = "range";
-			slider.min = "10";
-			slider.max = "50";
-			slider.value = "16";
-			slider.style.width = "100%";
-			slider.oninput = () => {
-				document
-					.querySelectorAll(
-						"body *:not(#mainGUI *):not(#vfxGUI *):not(#utilitiesGUI *)",
-					)
-					.forEach((el) => (el.style.fontSize = slider.value + "px"));
-			};
-			section.appendChild(slider);
-			util.appendChild(section);
-		})();
+            // Page Info Viewer
+            addBtn(util, "Page Info", () => {
+                alert(
+                    `Title: ${document.title}\nURL: ${window.location.href}\nImages: ${document.images.length}\nLinks: ${document.links.length}\nScripts: ${document.scripts.length}`,
+                );
+            });
 
-		/* -------------------- VFX Buttons -------------------- */
-		// ---------- BUTTON CSS ----------
-		if (!document.getElementById("hgui-grid-btn-styles")) {
-			const s = document.createElement("style");
-			s.id = "hgui-grid-btn-styles";
-			s.textContent = `
+
+            // Stop All Utilities
+            addBtn(util, "Stop All Utilities", () => {
+                for (let key in activeUtilities) {
+                    if (activeUtilities[key].off) activeUtilities[key].off();
+                }
+            });
+        })();
+
+        // -------------------- FONT SIZE SLIDER --------------------
+        (function() {
+            const section = document.createElement("div");
+            section.style.marginTop = "10px";
+            section.style.padding = "8px";
+            section.style.background = "#001f00";
+            section.style.borderRadius = "10px";
+            section.style.color = "#00ff00";
+            section.innerHTML = `<b>Font Size</b><br>`;
+            const slider = document.createElement("input");
+            slider.type = "range";
+            slider.min = "10";
+            slider.max = "50";
+            slider.value = "16";
+            slider.style.width = "100%";
+            slider.oninput = () => {
+                document
+                    .querySelectorAll(
+                        "body *:not(#mainGUI *):not(#vfxGUI *):not(#utilitiesGUI *)",
+                    )
+                    .forEach((el) => (el.style.fontSize = slider.value + "px"));
+            };
+            section.appendChild(slider);
+            util.appendChild(section);
+        })();
+
+        /* -------------------- VFX Buttons -------------------- */
+        // ---------- BUTTON CSS ----------
+        if (!document.getElementById("hgui-grid-btn-styles")) {
+            const s = document.createElement("style");
+            s.id = "hgui-grid-btn-styles";
+            s.textContent = `
     .hgui-panel {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -1287,768 +1300,778 @@ if (utilContainer) {
         transition: transform 2s linear, opacity 2s linear;
     }
     `;
-			document.head.appendChild(s);
-		}
+            document.head.appendChild(s);
+        }
 
-		// ---------- addBtn helper ----------
-		function addBtn(container, name, on, off) {
-			const b = document.createElement("button");
-			b.className = "hgui-btn";
-			b.innerText = name;
-			container.appendChild(b);
+        // ---------- addBtn helper ----------
+        function addBtn(container, name, on, off) {
+            const b = document.createElement("button");
+            b.className = "hgui-btn";
+            b.innerText = name;
+            container.appendChild(b);
 
-			requestAnimationFrame(() => {
-				b.classList.add("btn--in");
-			});
+            requestAnimationFrame(() => {
+                b.classList.add("btn--in");
+            });
 
-			let particleInterval;
+            let particleInterval;
 
-			// Start emitting particles on hover
-			b.addEventListener("mouseenter", () => {
-				particleInterval = setInterval(() => {
-					const p = document.createElement("div");
-					p.className = "hgui-particle";
-					b.appendChild(p);
+            // Start emitting particles on hover
+            b.addEventListener("mouseenter", () => {
+                particleInterval = setInterval(() => {
+                    const p = document.createElement("div");
+                    p.className = "hgui-particle";
+                    b.appendChild(p);
 
-					// Random start position inside the button
-					const rect = b.getBoundingClientRect();
-					const x0 = Math.random() * rect.width;
-					const y0 = Math.random() * rect.height;
-					p.style.left = `${x0}px`;
-					p.style.top = `${y0}px`;
+                    // Random start position inside the button
+                    const rect = b.getBoundingClientRect();
+                    const x0 = Math.random() * rect.width;
+                    const y0 = Math.random() * rect.height;
+                    p.style.left = `${x0}px`;
+                    p.style.top = `${y0}px`;
 
-					// Random direction and distance
-					const angle = Math.random() * Math.PI * 2;
-					const distance = 20 + Math.random() * 10;
+                    // Random direction and distance
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = 20 + Math.random() * 10;
 
-					// Trigger transition
-					requestAnimationFrame(() => {
-						p.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`;
-						p.style.opacity = "0";
-					});
+                    // Trigger transition
+                    requestAnimationFrame(() => {
+                        p.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`;
+                        p.style.opacity = "0";
+                    });
 
-					// Remove particle after transition
-					setTimeout(() => p.remove(), 2000);
-				}, 150); // emit particle every 150ms
-			});
+                    // Remove particle after transition
+                    setTimeout(() => p.remove(), 2000);
+                }, 150); // emit particle every 150ms
+            });
 
-			// Stop emitting when mouse leaves
-			b.addEventListener("mouseleave", () => {
-				clearInterval(particleInterval);
-			});
+            // Stop emitting when mouse leaves
+            b.addEventListener("mouseleave", () => {
+                clearInterval(particleInterval);
+            });
 
-			b.addEventListener("click", on);
+            b.addEventListener("click", on);
 
-			if (off) {
-				if (!window._hgui_activeUtilities) window._hgui_activeUtilities = {};
-				window._hgui_activeUtilities[name] = { on, off };
-			}
-		}
+            if (off) {
+                if (!window._hgui_activeUtilities) window._hgui_activeUtilities = {};
+                window._hgui_activeUtilities[name] = {
+                    on,
+                    off
+                };
+            }
+        }
 
-		// ---------- Corrupted Virus ----------
-		addBtn(vfx, "Corrupted Virus", () => {
-			if (window.infectionActive) return;
-			window.infectionActive = true;
+        // ---------- Corrupted Virus ----------
+        addBtn(vfx, "Corrupted Virus", () => {
+            if (window.infectionActive) return;
+            window.infectionActive = true;
 
-			window.infectionArcCount = 0;
-			const maxArcs = 200;
-			window.corruptedElems = new Map();
+            window.infectionArcCount = 0;
+            const maxArcs = 200;
+            window.corruptedElems = new Map();
 
-			function createArc(x, y, angle, depth = 0) {
-				if (!window.infectionActive || window.infectionArcCount >= maxArcs)
-					return;
-				window.infectionArcCount++;
+            function createArc(x, y, angle, depth = 0) {
+                if (!window.infectionActive || window.infectionArcCount >= maxArcs)
+                    return;
+                window.infectionArcCount++;
 
-				const arc = document.createElement("div");
-				arc.style.position = "absolute";
-				arc.style.left = "0";
-				arc.style.top = "0";
-				arc.style.width = "100%";
-				arc.style.height = "100%";
-				arc.style.pointerEvents = "none";
-				arc.style.zIndex = 999999;
+                const arc = document.createElement("div");
+                arc.style.position = "absolute";
+                arc.style.left = "0";
+                arc.style.top = "0";
+                arc.style.width = "100%";
+                arc.style.height = "100%";
+                arc.style.pointerEvents = "none";
+                arc.style.zIndex = 999999;
 
-				let points = `${x},${y}`;
-				let px = x,
-					py = y;
-				const segs = 6;
+                let points = `${x},${y}`;
+                let px = x,
+                    py = y;
+                const segs = 6;
 
-				for (let i = 0; i < segs; i++) {
-					px += Math.cos(angle) * (15 + Math.random() * 10);
-					py += Math.sin(angle) * (15 + Math.random() * 10);
-					px += (Math.random() - 0.5) * 8;
-					py += (Math.random() - 0.5) * 8;
-					points += ` ${px},${py}`;
-				}
+                for (let i = 0; i < segs; i++) {
+                    px += Math.cos(angle) * (15 + Math.random() * 10);
+                    py += Math.sin(angle) * (15 + Math.random() * 10);
+                    px += (Math.random() - 0.5) * 8;
+                    py += (Math.random() - 0.5) * 8;
+                    points += ` ${px},${py}`;
+                }
 
-				arc.innerHTML = `
+                arc.innerHTML = `
             <svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;" xmlns="http://www.w3.org/2000/svg">
                 <polyline class="main" points="${points}" stroke="white" stroke-width="2.5" fill="none" />
                 <polyline class="ghost1" points="${points}" stroke="magenta" stroke-width="2" fill="none" opacity="0.6"/>
                 <polyline class="ghost2" points="${points}" stroke="cyan" stroke-width="2" fill="none" opacity="0.6"/>
             </svg>
         `;
-				document.body.appendChild(arc);
+                document.body.appendChild(arc);
 
-				const main = arc.querySelector(".main");
-				const g1 = arc.querySelector(".ghost1");
-				const g2 = arc.querySelector(".ghost2");
+                const main = arc.querySelector(".main");
+                const g1 = arc.querySelector(".ghost1");
+                const g2 = arc.querySelector(".ghost2");
 
-				let life = 0;
-				const anim = setInterval(() => {
-					if (!window.infectionActive) {
-						clearInterval(anim);
-						return;
-					}
-					const hue = (life * 50 + Math.random() * 120) % 360;
-					const hue2 = (life * 80 + Math.random() * 180) % 360;
-					const hue3 = (life * 60 + Math.random() * 200) % 360;
-					main.setAttribute("stroke", `hsl(${hue},100%,60%)`);
-					g1.setAttribute("stroke", `hsl(${hue2},100%,60%)`);
-					g2.setAttribute("stroke", `hsl(${hue3},100%,60%)`);
-					life++;
-				}, 100);
+                let life = 0;
+                const anim = setInterval(() => {
+                    if (!window.infectionActive) {
+                        clearInterval(anim);
+                        return;
+                    }
+                    const hue = (life * 50 + Math.random() * 120) % 360;
+                    const hue2 = (life * 80 + Math.random() * 180) % 360;
+                    const hue3 = (life * 60 + Math.random() * 200) % 360;
+                    main.setAttribute("stroke", `hsl(${hue},100%,60%)`);
+                    g1.setAttribute("stroke", `hsl(${hue2},100%,60%)`);
+                    g2.setAttribute("stroke", `hsl(${hue3},100%,60%)`);
+                    life++;
+                }, 100);
 
-				// --- Infect element with ongoing distortion ---
-				const elem = document.elementFromPoint(px, py);
-				if (elem && !isImmune(elem)) {
-					if (!window.corruptedElems.has(elem)) {
-						// Save original styles
-						const orig = {
-							filter: elem.style.filter,
-							transform: elem.style.transform,
-							textShadow: elem.style.textShadow,
-						};
+                // --- Infect element with ongoing distortion ---
+                const elem = document.elementFromPoint(px, py);
+                if (elem && !isImmune(elem)) {
+                    if (!window.corruptedElems.has(elem)) {
+                        // Save original styles
+                        const orig = {
+                            filter: elem.style.filter,
+                            transform: elem.style.transform,
+                            textShadow: elem.style.textShadow,
+                        };
 
-						let tick = 0;
-						const corruptAnim = setInterval(() => {
-							if (!window.infectionActive) {
-								clearInterval(corruptAnim);
-								return;
-							}
-							if (isImmune(elem)) return;
-							const hue = (tick * 10) % 360;
-							elem.style.filter = `hue-rotate(${hue}deg)`;
-							elem.style.transform = `scale(${1 + Math.sin(tick / 10) * 0.1}) rotate(${(Math.random() - 0.5) * 5}deg) skew(${(Math.random() - 0.5) * 4}deg, ${(Math.random() - 0.5) * 4}deg)`;
-							elem.style.textShadow = `0 0 5px hsl(${hue},100%,60%), 0 0 10px hsl(${(hue + 180) % 360},100%,60%)`;
-							tick++;
-						}, 120);
+                        let tick = 0;
+                        const corruptAnim = setInterval(() => {
+                            if (!window.infectionActive) {
+                                clearInterval(corruptAnim);
+                                return;
+                            }
+                            if (isImmune(elem)) return;
+                            const hue = (tick * 10) % 360;
+                            elem.style.filter = `hue-rotate(${hue}deg)`;
+                            elem.style.transform = `scale(${1 + Math.sin(tick / 10) * 0.1}) rotate(${(Math.random() - 0.5) * 5}deg) skew(${(Math.random() - 0.5) * 4}deg, ${(Math.random() - 0.5) * 4}deg)`;
+                            elem.style.textShadow = `0 0 5px hsl(${hue},100%,60%), 0 0 10px hsl(${(hue + 180) % 360},100%,60%)`;
+                            tick++;
+                        }, 120);
 
-						window.corruptedElems.set(elem, {
-							interval: corruptAnim,
-							orig,
-						});
-					}
-				}
+                        window.corruptedElems.set(elem, {
+                            interval: corruptAnim,
+                            orig,
+                        });
+                    }
+                }
 
-				// --- branching ---
-				if (
-					depth < 12 &&
-					window.infectionActive &&
-					window.infectionArcCount < maxArcs
-				) {
-					setTimeout(
-						() => {
-							const bias = Math.PI / 4; // bottom-right
-							const newAngle =
-								angle * 0.7 +
-								bias * 0.3 +
-								((Math.random() - 0.5) * Math.PI) / 16;
-							createArc(px, py, newAngle, depth + 1);
-							if (Math.random() < 0.7) {
-								createArc(
-									px,
-									py,
-									newAngle + (Math.random() > 0.5 ? Math.PI / 6 : -Math.PI / 6),
-									depth + 1,
-								);
-							}
-						},
-						500 + Math.random() * 400,
-					);
-				}
-			}
+                // --- branching ---
+                if (
+                    depth < 12 &&
+                    window.infectionActive &&
+                    window.infectionArcCount < maxArcs
+                ) {
+                    setTimeout(
+                        () => {
+                            const bias = Math.PI / 4; // bottom-right
+                            const newAngle =
+                                angle * 0.7 +
+                                bias * 0.3 +
+                                ((Math.random() - 0.5) * Math.PI) / 16;
+                            createArc(px, py, newAngle, depth + 1);
+                            if (Math.random() < 0.7) {
+                                createArc(
+                                    px,
+                                    py,
+                                    newAngle + (Math.random() > 0.5 ? Math.PI / 6 : -Math.PI / 6),
+                                    depth + 1,
+                                );
+                            }
+                        },
+                        500 + Math.random() * 400,
+                    );
+                }
+            }
 
-			createArc(0, 0, Math.PI / 4);
+            createArc(0, 0, Math.PI / 4);
 
-			window.stopAllInfection = () => {
-				window.infectionActive = false;
-				window.infectionArcCount = 0;
-				document.querySelectorAll("svg").forEach((el) => el.remove());
+            window.stopAllInfection = () => {
+                window.infectionActive = false;
+                window.infectionArcCount = 0;
+                document.querySelectorAll("svg").forEach((el) => el.remove());
 
-				// Restore corrupted elements
-				window.corruptedElems.forEach(({ interval, orig }, elem) => {
-					clearInterval(interval);
-					elem.style.filter = orig.filter;
-					elem.style.transform = orig.transform;
-					elem.style.textShadow = orig.textShadow;
-				});
-				window.corruptedElems.clear();
-			};
-		});
+                // Restore corrupted elements
+                window.corruptedElems.forEach(({
+                    interval,
+                    orig
+                }, elem) => {
+                    clearInterval(interval);
+                    elem.style.filter = orig.filter;
+                    elem.style.transform = orig.transform;
+                    elem.style.textShadow = orig.textShadow;
+                });
+                window.corruptedElems.clear();
+            };
+        });
 
-		// ---------- Disintegrate Element ----------
-		let disintegrateHandler = null;
+        // ---------- Disintegrate Element ----------
+        let disintegrateHandler = null;
 
-		addBtn(vfx, "Disintegrate Element", () => {
-			let active = vfx.dataset.disintegrateActive === "true";
+        addBtn(vfx, "Disintegrate Element", () => {
+            let active = vfx.dataset.disintegrateActive === "true";
 
-			function disintegrateElement(el) {
-				if (!el) return;
+            function disintegrateElement(el) {
+                if (!el) return;
 
-				const rect = el.getBoundingClientRect();
-				const width = rect.width;
-				const height = rect.height;
+                const rect = el.getBoundingClientRect();
+                const width = rect.width;
+                const height = rect.height;
 
-				el.remove();
+                el.remove();
 
-				const chars = "123456789010abcdefghijklmnopqrstuvwxyz";
+                const chars = "123456789010abcdefghijklmnopqrstuvwxyz";
 
-				const numParticles = Math.floor((width * height) / 150);
-				for (let i = 0; i < numParticles; i++) {
-					const particle = document.createElement("div");
-					particle.textContent =
-						chars[Math.floor(Math.random() * chars.length)];
-					particle.style.position = "fixed";
-					particle.style.zIndex = "999999";
-					particle.style.left = rect.left + Math.random() * width + "px";
-					particle.style.top = rect.top + Math.random() * height + "px";
-					particle.style.fontSize = "12px";
-					particle.style.fontFamily = "monospace";
-					particle.style.color = "red";
-					particle.style.pointerEvents = "none";
-					particle.style.opacity = "1";
-					particle.style.transition =
-						"transform 3s ease-out, opacity 3s ease-out";
-					document.body.appendChild(particle);
+                const numParticles = Math.floor((width * height) / 150);
+                for (let i = 0; i < numParticles; i++) {
+                    const particle = document.createElement("div");
+                    particle.textContent =
+                        chars[Math.floor(Math.random() * chars.length)];
+                    particle.style.position = "fixed";
+                    particle.style.zIndex = "999999";
+                    particle.style.left = rect.left + Math.random() * width + "px";
+                    particle.style.top = rect.top + Math.random() * height + "px";
+                    particle.style.fontSize = "12px";
+                    particle.style.fontFamily = "monospace";
+                    particle.style.color = "red";
+                    particle.style.pointerEvents = "none";
+                    particle.style.opacity = "1";
+                    particle.style.transition =
+                        "transform 3s ease-out, opacity 3s ease-out";
+                    document.body.appendChild(particle);
 
-					const xMove = (Math.random() - 0.5) * 120;
-					const yMove = -150 - Math.random() * 250;
+                    const xMove = (Math.random() - 0.5) * 120;
+                    const yMove = -150 - Math.random() * 250;
 
-					requestAnimationFrame(() => {
-						particle.style.transform = `translate(${xMove}px, ${yMove}px) rotate(${Math.random() * 360}deg)`;
-						particle.style.opacity = "0";
-					});
+                    requestAnimationFrame(() => {
+                        particle.style.transform = `translate(${xMove}px, ${yMove}px) rotate(${Math.random() * 360}deg)`;
+                        particle.style.opacity = "0";
+                    });
 
-					// Remove particle after 3s
-					setTimeout(() => particle.remove(), 3000);
-				}
-			}
+                    // Remove particle after 3s
+                    setTimeout(() => particle.remove(), 3000);
+                }
+            }
 
-			// Toggle mode
-			if (active) {
-				document.removeEventListener("click", disintegrateHandler, true);
-				disintegrateHandler = null;
-				vfx.dataset.disintegrateActive = "false";
-				alert("Disintegration mode deactivated.");
-			} else {
-				disintegrateHandler = function (e) {
-					if (window.isImmune(e.target)) return;
-					e.preventDefault();
-					e.stopPropagation();
-					disintegrateElement(e.target);
-				};
+            // Toggle mode
+            if (active) {
+                document.removeEventListener("click", disintegrateHandler, true);
+                disintegrateHandler = null;
+                vfx.dataset.disintegrateActive = "false";
+                alert("Disintegration mode deactivated.");
+            } else {
+                disintegrateHandler = function(e) {
+                    if (window.isImmune(e.target)) return;
+                    e.preventDefault();
+                    e.stopPropagation();
+                    disintegrateElement(e.target);
+                };
 
-				document.addEventListener("click", disintegrateHandler, true);
-				vfx.dataset.disintegrateActive = "true";
-				alert("Disintegration mode activated. Click any element to delete it.");
-			}
-		});
+                document.addEventListener("click", disintegrateHandler, true);
+                vfx.dataset.disintegrateActive = "true";
+                alert("Disintegration mode activated. Click any element to delete it.");
+            }
+        });
 
-		// Invert Media (Toggle)
-		addBtn(vfx, "Invert Media", () => {
-			if (window.invertimgActive) {
-				// --- Deactivate ---
-				if (window.invertimgStyle) window.invertimgStyle.remove();
-				window.invertimgStyle = null;
-				window.invertimgActive = false;
-				return;
-			}
-			// --- Activate ---
-			window.invertimgActive = true;
-			window.invertimgStyle = document.createElement("style");
-			window.invertimgStyle.textContent =
-				"img,video,embed,object{filter:invert(100%) !important;}";
-			document.body.appendChild(window.invertimgStyle);
-		});
+        // Invert Media (Toggle)
+        addBtn(vfx, "Invert Media", () => {
+            if (window.invertimgActive) {
+                // --- Deactivate ---
+                if (window.invertimgStyle) window.invertimgStyle.remove();
+                window.invertimgStyle = null;
+                window.invertimgActive = false;
+                return;
+            }
+            // --- Activate ---
+            window.invertimgActive = true;
+            window.invertimgStyle = document.createElement("style");
+            window.invertimgStyle.textContent =
+                "img,video,embed,object{filter:invert(100%) !important;}";
+            document.body.appendChild(window.invertimgStyle);
+        });
 
-		// Censor Media (Toggle)
-		addBtn(vfx, "Censor Media", () => {
-			if (window.censorActive) {
-				// --- Deactivate ---
-				if (window.af) cancelAnimationFrame(window.af);
-				if (window.censorStyle) window.censorStyle.remove();
-				if (window.censors) for (var c of window.censors) c.remove();
-				if (window.sensed)
-					for (var e of window.sensed)
-						e.parentElement.classList.remove("censor-parent");
-				window.censors = [];
-				window.sensed = [];
-				window.censorActive = false;
-				return;
-			}
+        // Censor Media (Toggle)
+        addBtn(vfx, "Censor Media", () => {
+            if (window.censorActive) {
+                // --- Deactivate ---
+                if (window.af) cancelAnimationFrame(window.af);
+                if (window.censorStyle) window.censorStyle.remove();
+                if (window.censors)
+                    for (var c of window.censors) c.remove();
+                if (window.sensed)
+                    for (var e of window.sensed)
+                        e.parentElement.classList.remove("censor-parent");
+                window.censors = [];
+                window.sensed = [];
+                window.censorActive = false;
+                return;
+            }
 
-			// --- Activate ---
-			window.censorActive = true;
-			window.censorStyle = document.createElement("style");
-			window.censorStyle.textContent = `
+            // --- Activate ---
+            window.censorActive = true;
+            window.censorStyle = document.createElement("style");
+            window.censorStyle.textContent = `
         .censor { opacity: 1 !important; image-rendering: pixelated !important; }
         .censor + img, .censor + video { visibility: hidden !important; }
         .censor-parent:hover .censor { display: none !important; }
         .censor-parent:hover .censor + img, 
         .censor-parent:hover .censor + video { visibility: visible !important; }
     `;
-			document.body.appendChild(window.censorStyle);
+            document.body.appendChild(window.censorStyle);
 
-			window.sensed = [];
-			window.censors = [];
-			let quality = 1.5;
+            window.sensed = [];
+            window.censors = [];
+            let quality = 1.5;
 
-			function onScreen(r) {
-				return (
-					r.right > 0 &&
-					r.bottom > 0 &&
-					r.left < innerWidth &&
-					r.top < innerHeight
-				);
-			}
+            function onScreen(r) {
+                return (
+                    r.right > 0 &&
+                    r.bottom > 0 &&
+                    r.left < innerWidth &&
+                    r.top < innerHeight
+                );
+            }
 
-			function copyStyle(donor, recipient, sizeOnly) {
-				var donorStyle = getComputedStyle(donor);
-				var keys = Object.keys(donorStyle);
-				if (sizeOnly) keys = ["width", "height"];
-				for (var key of keys) recipient.style[key] = donorStyle[key];
-			}
+            function copyStyle(donor, recipient, sizeOnly) {
+                var donorStyle = getComputedStyle(donor);
+                var keys = Object.keys(donorStyle);
+                if (sizeOnly) keys = ["width", "height"];
+                for (var key of keys) recipient.style[key] = donorStyle[key];
+            }
 
-			function updateCensor(e, canvas) {
-				var rect = e.getBoundingClientRect();
-				if (onScreen(rect)) {
-					var equalizer = Math.log2(Math.max(rect.width * rect.height, 2));
-					canvas.width = (rect.width * quality) / equalizer;
-					canvas.height = (rect.height * quality) / equalizer;
-					if (window.af % 120 == 0) copyStyle(e, canvas, true);
-					var context = canvas.getContext("2d");
-					context.drawImage(e, 0, 0, canvas.width, canvas.height);
-					e.parentElement.classList.add("censor-parent");
-				}
-			}
+            function updateCensor(e, canvas) {
+                var rect = e.getBoundingClientRect();
+                if (onScreen(rect)) {
+                    var equalizer = Math.log2(Math.max(rect.width * rect.height, 2));
+                    canvas.width = (rect.width * quality) / equalizer;
+                    canvas.height = (rect.height * quality) / equalizer;
+                    if (window.af % 120 == 0) copyStyle(e, canvas, true);
+                    var context = canvas.getContext("2d");
+                    context.drawImage(e, 0, 0, canvas.width, canvas.height);
+                    e.parentElement.classList.add("censor-parent");
+                }
+            }
 
-			function createCensor(e) {
-				var rect = e.getBoundingClientRect();
-				if (onScreen(rect)) {
-					var canvas = document.createElement("canvas");
-					canvas.className = "censor";
-					var equalizer = Math.log2(Math.max(rect.width * rect.height, 2));
-					canvas.width = (rect.width * quality) / equalizer;
-					canvas.height = (rect.height * quality) / equalizer;
-					copyStyle(e, canvas);
-					var context = canvas.getContext("2d");
-					context.drawImage(e, 0, 0, canvas.width, canvas.height);
-					e.parentElement.insertBefore(canvas, e);
-					e.parentElement.classList.add("censor-parent");
-					return canvas;
-				}
-			}
+            function createCensor(e) {
+                var rect = e.getBoundingClientRect();
+                if (onScreen(rect)) {
+                    var canvas = document.createElement("canvas");
+                    canvas.className = "censor";
+                    var equalizer = Math.log2(Math.max(rect.width * rect.height, 2));
+                    canvas.width = (rect.width * quality) / equalizer;
+                    canvas.height = (rect.height * quality) / equalizer;
+                    copyStyle(e, canvas);
+                    var context = canvas.getContext("2d");
+                    context.drawImage(e, 0, 0, canvas.width, canvas.height);
+                    e.parentElement.insertBefore(canvas, e);
+                    e.parentElement.classList.add("censor-parent");
+                    return canvas;
+                }
+            }
 
-			function sense() {
-				var es = document.querySelectorAll("img,video");
-				for (var e of es) {
-					var i = window.sensed.indexOf(e);
-					if (i >= 0) {
-						if (e.tagName == "VIDEO" && !e.paused)
-							updateCensor(e, window.censors[i]);
-					} else {
-						if (e.tagName == "VIDEO" || e.complete) {
-							var c = createCensor(e);
-							if (c) {
-								window.censors.push(c);
-								window.sensed.push(e);
-							}
-						}
-					}
-				}
-				window.af = requestAnimationFrame(sense);
-			}
+            function sense() {
+                var es = document.querySelectorAll("img,video");
+                for (var e of es) {
+                    var i = window.sensed.indexOf(e);
+                    if (i >= 0) {
+                        if (e.tagName == "VIDEO" && !e.paused)
+                            updateCensor(e, window.censors[i]);
+                    } else {
+                        if (e.tagName == "VIDEO" || e.complete) {
+                            var c = createCensor(e);
+                            if (c) {
+                                window.censors.push(c);
+                                window.sensed.push(e);
+                            }
+                        }
+                    }
+                }
+                window.af = requestAnimationFrame(sense);
+            }
 
-			sense();
-		});
+            sense();
+        });
 
-		// Invert Area
-		addBtn(vfx, "Invert Area", () => {
-			// If active, turn off
-			if (window.invertAreaActive) {
-				if (window.invertAreaShield) window.invertAreaShield.remove();
-				window.removeEventListener("mousedown", window.invertAreaHold);
-				window.removeEventListener("touchstart", window.invertAreaHold);
-				window.invertAreaActive = false;
-				return;
-			}
+        // Invert Area
+        addBtn(vfx, "Invert Area", () => {
+            // If active, turn off
+            if (window.invertAreaActive) {
+                if (window.invertAreaShield) window.invertAreaShield.remove();
+                window.removeEventListener("mousedown", window.invertAreaHold);
+                window.removeEventListener("touchstart", window.invertAreaHold);
+                window.invertAreaActive = false;
+                return;
+            }
 
-			// --- Activate ---
-			window.invertAreaActive = true;
+            // --- Activate ---
+            window.invertAreaActive = true;
 
-			let s, b, m0, m1;
+            let s, b, m0, m1;
 
-			function shield() {
-				s = document.createElement("div");
-				s.style.position = "fixed";
-				s.style.left = 0;
-				s.style.top = 0;
-				s.style.width = "100%";
-				s.style.height = "100%";
-				s.style.zIndex = 99999999; // high layer
-				s.style.cursor = "crosshair";
-				document.body.appendChild(s);
-				window.invertAreaShield = s;
-			}
+            function shield() {
+                s = document.createElement("div");
+                s.style.position = "fixed";
+                s.style.left = 0;
+                s.style.top = 0;
+                s.style.width = "100%";
+                s.style.height = "100%";
+                s.style.zIndex = 99999999; // high layer
+                s.style.cursor = "crosshair";
+                document.body.appendChild(s);
+                window.invertAreaShield = s;
+            }
 
-			function box() {
-				b = document.createElement("div");
-				b.style.position = "absolute";
-				b.style.left = m0.clientX + "px";
-				b.style.top = m0.clientY + "px";
-				b.style.width = 0;
-				b.style.height = 0;
-				b.style.outline = "2px dashed red";
-				b.style.boxShadow = "inset 0 0 25px 2px white";
-				b.style.mixBlendMode = "difference";
-				s.appendChild(b);
-			}
+            function box() {
+                b = document.createElement("div");
+                b.style.position = "absolute";
+                b.style.left = m0.clientX + "px";
+                b.style.top = m0.clientY + "px";
+                b.style.width = 0;
+                b.style.height = 0;
+                b.style.outline = "2px dashed red";
+                b.style.boxShadow = "inset 0 0 25px 2px white";
+                b.style.mixBlendMode = "difference";
+                s.appendChild(b);
+            }
 
-			function invert(e) {
-				if (!e) return;
-				b.remove();
-				s.remove();
-				window.invertAreaShield = null;
-				e.style.filter = e.style.filter === "invert(1)" ? "" : "invert(1)";
-			}
+            function invert(e) {
+                if (!e) return;
+                b.remove();
+                s.remove();
+                window.invertAreaShield = null;
+                e.style.filter = e.style.filter === "invert(1)" ? "" : "invert(1)";
+            }
 
-			function selection(f) {
-				var x0 = Math.min(m0.clientX, m1.clientX);
-				var x1 = Math.max(m0.clientX, m1.clientX);
-				var y0 = Math.min(m0.clientY, m1.clientY);
-				var y1 = Math.max(m0.clientY, m1.clientY);
-				var dx = Math.max(1, (x1 - x0) / 10);
-				var dy = Math.max(1, (y1 - y0) / 10);
-				var elementsFromPoints = [];
+            function selection(f) {
+                var x0 = Math.min(m0.clientX, m1.clientX);
+                var x1 = Math.max(m0.clientX, m1.clientX);
+                var y0 = Math.min(m0.clientY, m1.clientY);
+                var y1 = Math.max(m0.clientY, m1.clientY);
+                var dx = Math.max(1, (x1 - x0) / 10);
+                var dy = Math.max(1, (y1 - y0) / 10);
+                var elementsFromPoints = [];
 
-				for (var x = x0; x <= x1; x += dx) {
-					for (var y = y0; y <= y1; y += dy) {
-						elementsFromPoints.push(document.elementsFromPoint(x, y));
-					}
-				}
+                for (var x = x0; x <= x1; x += dx) {
+                    for (var y = y0; y <= y1; y += dy) {
+                        elementsFromPoints.push(document.elementsFromPoint(x, y));
+                    }
+                }
 
-				elementsFromPoints.sort((a, b) => a.length - b.length);
-				var intersection = elementsFromPoints[0].filter(
-					(e) =>
-						e !== b &&
-						e !== s &&
-						elementsFromPoints.every((efp) => efp.includes(e)),
-				);
+                elementsFromPoints.sort((a, b) => a.length - b.length);
+                var intersection = elementsFromPoints[0].filter(
+                    (e) =>
+                    e !== b &&
+                    e !== s &&
+                    elementsFromPoints.every((efp) => efp.includes(e)),
+                );
 
-				f(intersection[0]);
-			}
+                f(intersection[0]);
+            }
 
-			function pointer(e) {
-				if (e.touches) {
-					if (e.type === "touchmove") e.preventDefault();
-					return e.touches[0] || e.changedTouches[0];
-				}
-				return e;
-			}
+            function pointer(e) {
+                if (e.touches) {
+                    if (e.type === "touchmove") e.preventDefault();
+                    return e.touches[0] || e.changedTouches[0];
+                }
+                return e;
+            }
 
-			function release(e) {
-				window.removeEventListener("mousemove", drag);
-				window.removeEventListener("touchmove", drag);
-				window.removeEventListener("mouseup", release);
-				window.removeEventListener("touchend", release);
-				m1 = pointer(e);
-				selection(invert);
-			}
+            function release(e) {
+                window.removeEventListener("mousemove", drag);
+                window.removeEventListener("touchmove", drag);
+                window.removeEventListener("mouseup", release);
+                window.removeEventListener("touchend", release);
+                m1 = pointer(e);
+                selection(invert);
+            }
 
-			function drag(e) {
-				var m = pointer(e);
-				b.style.left = Math.min(m0.clientX, m.clientX) + "px";
-				b.style.top = Math.min(m0.clientY, m.clientY) + "px";
-				b.style.width = Math.abs(m.clientX - m0.clientX) + "px";
-				b.style.height = Math.abs(m.clientY - m0.clientY) + "px";
-			}
+            function drag(e) {
+                var m = pointer(e);
+                b.style.left = Math.min(m0.clientX, m.clientX) + "px";
+                b.style.top = Math.min(m0.clientY, m.clientY) + "px";
+                b.style.width = Math.abs(m.clientX - m0.clientX) + "px";
+                b.style.height = Math.abs(m.clientY - m0.clientY) + "px";
+            }
 
-			function hold(e) {
-				window.removeEventListener("mousedown", hold);
-				window.removeEventListener("touchstart", hold);
-				window.addEventListener("mousemove", drag);
-				window.addEventListener("touchmove", drag, {
-					passive: false,
-				});
-				window.addEventListener("mouseup", release);
-				window.addEventListener("touchend", release);
-				m0 = pointer(e);
-				box();
-			}
+            function hold(e) {
+                window.removeEventListener("mousedown", hold);
+                window.removeEventListener("touchstart", hold);
+                window.addEventListener("mousemove", drag);
+                window.addEventListener("touchmove", drag, {
+                    passive: false,
+                });
+                window.addEventListener("mouseup", release);
+                window.addEventListener("touchend", release);
+                m0 = pointer(e);
+                box();
+            }
 
-			function startInvertArea() {
-				shield();
-				window.invertAreaHold = hold;
-				window.addEventListener("mousedown", hold);
-				window.addEventListener("touchstart", hold);
-			}
+            function startInvertArea() {
+                shield();
+                window.invertAreaHold = hold;
+                window.addEventListener("mousedown", hold);
+                window.addEventListener("touchstart", hold);
+            }
 
-			startInvertArea();
-		});
+            startInvertArea();
+        });
 
-		// Disorient
-		addBtn(vfx, "Disorient", () => {
-			if (!window.disorientActive) {
-				window.disorientActive = true;
-				window.originalTransforms = [];
+        // Disorient
+        addBtn(vfx, "Disorient", () => {
+            if (!window.disorientActive) {
+                window.disorientActive = true;
+                window.originalTransforms = [];
 
-				// GUI immunity check
-				const isImmune = (el) => window.isImmune(el);
+                // GUI immunity check
+                const isImmune = (el) => window.isImmune(el);
 
-				const prefixes = ["", "-ms-", "-webkit-", "-o-", "-moz-"];
-				const elements = Array.from(document.querySelectorAll("*")); // all elements
+                const prefixes = ["", "-ms-", "-webkit-", "-o-", "-moz-"];
+                const elements = Array.from(document.querySelectorAll("*")); // all elements
 
-				elements.forEach((el) => {
-					// Skip immune elements or invisible ones
-					const rect = el.getBoundingClientRect();
-					if (isImmune(el) || rect.width === 0 || rect.height === 0) return;
+                elements.forEach((el) => {
+                    // Skip immune elements or invisible ones
+                    const rect = el.getBoundingClientRect();
+                    if (isImmune(el) || rect.width === 0 || rect.height === 0) return;
 
-					const style = window.getComputedStyle(el);
-					const current = style.transform || "";
-					window.originalTransforms.push({
-						el,
-						transform: current,
-					});
+                    const style = window.getComputedStyle(el);
+                    const current = style.transform || "";
+                    window.originalTransforms.push({
+                        el,
+                        transform: current,
+                    });
 
-					const deg = Math.random() * 361 - 180;
-					prefixes.forEach((prefix) => {
-						el.style[prefix + "transform"] = `${current} rotate(${deg}deg)`;
-					});
-				});
-			} else {
-				// Reset
-				window.disorientActive = false;
-				if (window.originalTransforms) {
-					window.originalTransforms.forEach(({ el, transform }) => {
-						const prefixes = ["", "-ms-", "-webkit-", "-o-", "-moz-"];
-						prefixes.forEach((prefix) => {
-							el.style[prefix + "transform"] = transform;
-						});
-					});
-					window.originalTransforms = null;
-				}
-			}
-		});
+                    const deg = Math.random() * 361 - 180;
+                    prefixes.forEach((prefix) => {
+                        el.style[prefix + "transform"] = `${current} rotate(${deg}deg)`;
+                    });
+                });
+            } else {
+                // Reset
+                window.disorientActive = false;
+                if (window.originalTransforms) {
+                    window.originalTransforms.forEach(({
+                        el,
+                        transform
+                    }) => {
+                        const prefixes = ["", "-ms-", "-webkit-", "-o-", "-moz-"];
+                        prefixes.forEach((prefix) => {
+                            el.style[prefix + "transform"] = transform;
+                        });
+                    });
+                    window.originalTransforms = null;
+                }
+            }
+        });
 
-		// Random Link Redirects
-		addBtn(vfx,"Random Link Redirects",() => {
-				window.linkRedirectsInt = setInterval(() => {
-					document.querySelectorAll("a").forEach((a) => {
-						if (window.isImmune(a)) return;
-						a.href = [
-							"https://longdogechallenge.com/",
-							"https://maze.toys/mazes/mini/daily/",
-							"https://optical.toys/",
-						][Math.floor(Math.random() * 3)];
-					});
-				}, 500);
-			},
-			() => {
-				clearInterval(window.linkRedirectsInt);
-			},
-		);
+        // Random Link Redirects
+        addBtn(vfx, "Random Link Redirects", () => {
+                window.linkRedirectsInt = setInterval(() => {
+                    document.querySelectorAll("a").forEach((a) => {
+                        if (window.isImmune(a)) return;
+                        a.href = [
+                            "https://longdogechallenge.com/",
+                            "https://maze.toys/mazes/mini/daily/",
+                            "https://optical.toys/",
+                        ][Math.floor(Math.random() * 3)];
+                    });
+                }, 500);
+            },
+            () => {
+                clearInterval(window.linkRedirectsInt);
+            },
+        );
 
-		// 3D Page
-		addBtn(vfx,"3D Page",() => {
-				let s = document.createElement("script");
-				s.src =
-					"https://rawgit.com/Krazete/bookmarklets/master/tri.js?cacheBust=" +
-					Date.now();
-				document.body.appendChild(s);
-				window.triScript = s;
-			},
-			() => {
-				if (window.triScript) {
-					window.triScript.remove();
-					window.triScript = null;
-				}
-				// reset transforms to normal
-				document.body.style.transform = "";
-				document.body.style.perspective = "";
-			},
-		);
+        // 3D Page
+        addBtn(vfx, "3D Page", () => {
+                let s = document.createElement("script");
+                s.src =
+                    "https://rawgit.com/Krazete/bookmarklets/master/tri.js?cacheBust=" +
+                    Date.now();
+                document.body.appendChild(s);
+                window.triScript = s;
+            },
+            () => {
+                if (window.triScript) {
+                    window.triScript.remove();
+                    window.triScript = null;
+                }
+                // reset transforms to normal
+                document.body.style.transform = "";
+                document.body.style.perspective = "";
+            },
+        );
 
-		// Explode Page
-		addBtn(vfx,"Explode Page",() => {
-				if (window.explodeActive) return;
-				window.explodeActive = true;
-				let o = document.createElement("div");
-				o.style.cssText =
-					"position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);color:#FF0000;font-size:50px;font-family:monospace;z-index:10000000;pointer-events:none;text-shadow:0 0 10px #FF0000;";
-				document.body.appendChild(o);
-				let c = 3;
-				o.innerText = c;
-				window.explodeInt = setInterval(() => {
-					c--;
-					if (c > 0) {
-						o.innerText = c;
-					} else {
-						clearInterval(window.explodeInt);
-						o.remove();
-						document
-							.querySelectorAll(
-								"body *:not(#mainGUI *):not(#vfxGUI *):not(#utilitiesGUI *)",
-							)
-							.forEach((e) => {
-								e.style.transition = "transform 1s ease-out";
-								let x = (Math.random() - 0.5) * 1000,
-									y = (Math.random() - 0.5) * 1000,
-									z = (Math.random() - 0.5) * 200;
-								e.style.transform = `translate3d(${x}px,${y}px,${z}px) rotate(${Math.random() * 720 - 360}deg)`;
-							});
-						setTimeout(() => {
-							document
-								.querySelectorAll(
-									"body *:not(#mainGUI *):not(#vfxGUI *):not(#utilitiesGUI *)",
-								)
-								.forEach((e) => {
-									e.style.transform = "";
-									e.style.transition = "";
-								});
-							window.explodeActive = false;
-						}, 1500);
-					}
-				}, 1000);
-			},
-			() => {
-				clearInterval(window.explodeInt);
-				window.explodeInt = null;
-				window.explodeActive = false;
-				document
-					.querySelectorAll(
-						"body *:not(#mainGUI *):not(#vfxGUI *):not(#utilitiesGUI *)",
-					)
-					.forEach((e) => {
-						e.style.transform = "";
-						e.style.transition = "";
-					});
-			},
-		);
+        // Explode Page
+        addBtn(vfx, "Explode Page", () => {
+                if (window.explodeActive) return;
+                window.explodeActive = true;
+                let o = document.createElement("div");
+                o.style.cssText =
+                    "position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);color:#FF0000;font-size:50px;font-family:monospace;z-index:10000000;pointer-events:none;text-shadow:0 0 10px #FF0000;";
+                document.body.appendChild(o);
+                let c = 3;
+                o.innerText = c;
+                window.explodeInt = setInterval(() => {
+                    c--;
+                    if (c > 0) {
+                        o.innerText = c;
+                    } else {
+                        clearInterval(window.explodeInt);
+                        o.remove();
+                        document
+                            .querySelectorAll(
+                                "body *:not(#mainGUI *):not(#vfxGUI *):not(#utilitiesGUI *)",
+                            )
+                            .forEach((e) => {
+                                e.style.transition = "transform 1s ease-out";
+                                let x = (Math.random() - 0.5) * 1000,
+                                    y = (Math.random() - 0.5) * 1000,
+                                    z = (Math.random() - 0.5) * 200;
+                                e.style.transform = `translate3d(${x}px,${y}px,${z}px) rotate(${Math.random() * 720 - 360}deg)`;
+                            });
+                        setTimeout(() => {
+                            document
+                                .querySelectorAll(
+                                    "body *:not(#mainGUI *):not(#vfxGUI *):not(#utilitiesGUI *)",
+                                )
+                                .forEach((e) => {
+                                    e.style.transform = "";
+                                    e.style.transition = "";
+                                });
+                            window.explodeActive = false;
+                        }, 1500);
+                    }
+                }, 1000);
+            },
+            () => {
+                clearInterval(window.explodeInt);
+                window.explodeInt = null;
+                window.explodeActive = false;
+                document
+                    .querySelectorAll(
+                        "body *:not(#mainGUI *):not(#vfxGUI *):not(#utilitiesGUI *)",
+                    )
+                    .forEach((e) => {
+                        e.style.transform = "";
+                        e.style.transition = "";
+                    });
+            },
+        );
 
-		// Image Glitch
-		addBtn(vfx,"Image Glitch",() => {
-				if (window.imgGlitchInt) return;
-				window.imgGlitchInt = setInterval(() => {
-					document.querySelectorAll("img").forEach((e) => {
-						if (window.isImmune(e)) return;
-						e.style.position = "absolute";
-						e.style.left = Math.random() * window.innerWidth + "px";
-						e.style.top = Math.random() * window.innerHeight + "px";
-					});
-				}, 50);
-			},
-			() => {
-				if (window.imgGlitchInt) {
-					clearInterval(window.imgGlitchInt);
-					window.imgGlitchInt = null;
-					document.querySelectorAll("img").forEach((e) => {
-						if (window.isImmune(e)) return;
-						e.style.position = "";
-						e.style.left = "";
-						e.style.top = "";
-					});
-				}
-			},
-		);
+        // Image Glitch
+        addBtn(vfx, "Image Glitch", () => {
+                if (window.imgGlitchInt) return;
+                window.imgGlitchInt = setInterval(() => {
+                    document.querySelectorAll("img").forEach((e) => {
+                        if (window.isImmune(e)) return;
+                        e.style.position = "absolute";
+                        e.style.left = Math.random() * window.innerWidth + "px";
+                        e.style.top = Math.random() * window.innerHeight + "px";
+                    });
+                }, 50);
+            },
+            () => {
+                if (window.imgGlitchInt) {
+                    clearInterval(window.imgGlitchInt);
+                    window.imgGlitchInt = null;
+                    document.querySelectorAll("img").forEach((e) => {
+                        if (window.isImmune(e)) return;
+                        e.style.position = "";
+                        e.style.left = "";
+                        e.style.top = "";
+                    });
+                }
+            },
+        );
 
-		// Glitch
-		addBtn(vfx,"Glitch",() => {
-				if (window.glitchActive) return;
-				window.glitchActive = true;
-				window.glitchInt = setInterval(() => {
-					document
-						.querySelectorAll(
-							"*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)",
-						)
-						.forEach((e) => {
-							e.style.backgroundColor = [
-								"red",
-								"orange",
-								"yellow",
-								"green",
-								"blue",
-								"purple",
-								"pink",
-							][Math.floor(Math.random() * 7)];
-						});
-				}, 25);
-			},
-			() => {
-				if (window.glitchInt) {
-					clearInterval(window.glitchInt);
-					window.glitchInt = null;
-				}
-				window.glitchActive = false;
+        // Glitch
+        addBtn(vfx, "Glitch", () => {
+                if (window.glitchActive) return;
+                window.glitchActive = true;
+                window.glitchInt = setInterval(() => {
+                    document
+                        .querySelectorAll(
+                            "*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)",
+                        )
+                        .forEach((e) => {
+                            e.style.backgroundColor = [
+                                "red",
+                                "orange",
+                                "yellow",
+                                "green",
+                                "blue",
+                                "purple",
+                                "pink",
+                            ][Math.floor(Math.random() * 7)];
+                        });
+                }, 25);
+            },
+            () => {
+                if (window.glitchInt) {
+                    clearInterval(window.glitchInt);
+                    window.glitchInt = null;
+                }
+                window.glitchActive = false;
 
-				document
-					.querySelectorAll(
-						"*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)",
-					)
-					.forEach((e) => {
-						e.style.backgroundColor = "";
-					});
-			},
-		);
+                document
+                    .querySelectorAll(
+                        "*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)",
+                    )
+                    .forEach((e) => {
+                        e.style.backgroundColor = "";
+                    });
+            },
+        );
 
-		// Smooth Disco
-		addBtn(vfx,"Smooth Disco",() => {
-				if (window.discoSmoothActive) return;
-				window.discoSmoothActive = true;
-				let colors = "red orange yellow green blue purple pink".split(" "),
-					i = 0;
-				window.discoSmoothInt = setInterval(() => {
-					i = (i + 1) % colors.length;
-					document
-						.querySelectorAll(
-							"*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)",
-						)
-						.forEach((e) => {
-							e.style.transition = "background-color 1s";
-							e.style.backgroundColor = colors[i];
-						});
-				}, 1000);
-			},
-			() => {
-				if (window.discoSmoothInt) {
-					clearInterval(window.discoSmoothInt);
-					window.discoSmoothInt = null;
-				}
-				window.discoSmoothActive = false;
+        // Smooth Disco
+        addBtn(vfx, "Smooth Disco", () => {
+                if (window.discoSmoothActive) return;
+                window.discoSmoothActive = true;
+                let colors = "red orange yellow green blue purple pink".split(" "),
+                    i = 0;
+                window.discoSmoothInt = setInterval(() => {
+                    i = (i + 1) % colors.length;
+                    document
+                        .querySelectorAll(
+                            "*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)",
+                        )
+                        .forEach((e) => {
+                            e.style.transition = "background-color 1s";
+                            e.style.backgroundColor = colors[i];
+                        });
+                }, 1000);
+            },
+            () => {
+                if (window.discoSmoothInt) {
+                    clearInterval(window.discoSmoothInt);
+                    window.discoSmoothInt = null;
+                }
+                window.discoSmoothActive = false;
 
-				document
-					.querySelectorAll(
-						"*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)",
-					)
-					.forEach((e) => {
-						e.style.transition = "";
-						e.style.backgroundColor = "";
-					});
-			},
-		);
+                document
+                    .querySelectorAll(
+                        "*:not(#mainGUI):not(#mainGUI *):not(#vfxGUI):not(#vfxGUI *):not(#utilitiesGUI):not(#utilitiesGUI *)",
+                    )
+                    .forEach((e) => {
+                        e.style.transition = "";
+                        e.style.backgroundColor = "";
+                    });
+            },
+        );
 
-		// ---------- Text Corruption ----------
-		addBtn(vfx,"Text Corruption",() => {
-				const chatEl = document.getElementById("globalChatContainer");
-				const isImmune = (el) =>
-					chatEl && (el === chatEl || chatEl.contains(el));
+        // ---------- Text Corruption ----------
+        addBtn(vfx, "Text Corruption", () => {
+                const chatEl = document.getElementById("globalChatContainer");
+                const isImmune = (el) =>
+                    chatEl && (el === chatEl || chatEl.contains(el));
 
-				if (window.textCorruptStyle) return;
+                if (window.textCorruptStyle) return;
 
-				// Create style element
-				let s = document.createElement("style");
-				s.id = "textCorruptStyle";
-				s.innerHTML = `
+                // Create style element
+                let s = document.createElement("style");
+                s.id = "textCorruptStyle";
+                s.innerHTML = `
         body { background:black !important; }
         body *:not(#globalChatContainer):not(#globalChatContainer *):not(#mainGUI):not(#mainGUI *) {
             color: green !important;
@@ -2058,426 +2081,429 @@ if (utilContainer) {
         }
         #mainGUI, #mainGUI * { animation:none !important; }
     `;
-				document.head.appendChild(s);
-				window.textCorruptStyle = s;
+                document.head.appendChild(s);
+                window.textCorruptStyle = s;
 
-				// Cleanup function
-				window._textCorruptCleanup = () => {
-					if (window.textCorruptStyle) {
-						window.textCorruptStyle.remove();
-						window.textCorruptStyle = null;
-					}
-					window._textCorruptCleanup = null;
-				};
-			},
-			() => {
-				if (window._textCorruptCleanup) window._textCorruptCleanup();
-			},
-		);
+                // Cleanup function
+                window._textCorruptCleanup = () => {
+                    if (window.textCorruptStyle) {
+                        window.textCorruptStyle.remove();
+                        window.textCorruptStyle = null;
+                    }
+                    window._textCorruptCleanup = null;
+                };
+            },
+            () => {
+                if (window._textCorruptCleanup) window._textCorruptCleanup();
+            },
+        );
 
-		// ---------- Bubble Text ----------
-		addBtn(vfx, "Bubble Text", () => {
-			if (window.bubbleActive) return;
-			window.bubbleActive = true;
+        // ---------- Bubble Text ----------
+        addBtn(vfx, "Bubble Text", () => {
+            if (window.bubbleActive) return;
+            window.bubbleActive = true;
 
-			const chatEl = document.getElementById("globalChatContainer");
-			const originalTextMap = new Map();
+            const chatEl = document.getElementById("globalChatContainer");
+            const originalTextMap = new Map();
 
-			const bubbleMap = {
-				a: "ⓐ",
-				b: "ⓑ",
-				c: "ⓒ",
-				d: "ⓓ",
-				e: "ⓔ",
-				f: "ⓕ",
-				g: "ⓖ",
-				h: "ⓗ",
-				i: "ⓘ",
-				j: "ⓙ",
-				k: "ⓚ",
-				l: "ⓛ",
-				m: "ⓜ",
-				n: "ⓝ",
-				o: "ⓞ",
-				p: "ⓟ",
-				q: "ⓠ",
-				r: "ⓡ",
-				s: "ⓢ",
-				t: "ⓣ",
-				u: "ⓤ",
-				v: "ⓥ",
-				w: "ⓦ",
-				x: "ⓧ",
-				y: "ⓨ",
-				z: "ⓩ",
-				A: "Ⓐ",
-				B: "Ⓑ",
-				C: "Ⓒ",
-				D: "Ⓓ",
-				E: "Ⓔ",
-				F: "Ⓕ",
-				G: "Ⓖ",
-				H: "Ⓗ",
-				I: "Ⓘ",
-				J: "Ⓙ",
-				K: "Ⓚ",
-				L: "Ⓛ",
-				M: "Ⓜ",
-				N: "Ⓝ",
-				O: "Ⓞ",
-				P: "Ⓟ",
-				Q: "Ⓠ",
-				R: "Ⓡ",
-				S: "Ⓢ",
-				T: "Ⓣ",
-				U: "Ⓤ",
-				V: "Ⓥ",
-				W: "Ⓦ",
-				X: "Ⓧ",
-				Y: "Ⓨ",
-				Z: "Ⓩ",
-				0: "⓪",
-				1: "①",
-				2: "②",
-				3: "③",
-				4: "④",
-				5: "⑤",
-				6: "⑥",
-				7: "⑦",
-				8: "⑧",
-				9: "⑨",
-			};
+            const bubbleMap = {
+                a: "ⓐ",
+                b: "ⓑ",
+                c: "ⓒ",
+                d: "ⓓ",
+                e: "ⓔ",
+                f: "ⓕ",
+                g: "ⓖ",
+                h: "ⓗ",
+                i: "ⓘ",
+                j: "ⓙ",
+                k: "ⓚ",
+                l: "ⓛ",
+                m: "ⓜ",
+                n: "ⓝ",
+                o: "ⓞ",
+                p: "ⓟ",
+                q: "ⓠ",
+                r: "ⓡ",
+                s: "ⓢ",
+                t: "ⓣ",
+                u: "ⓤ",
+                v: "ⓥ",
+                w: "ⓦ",
+                x: "ⓧ",
+                y: "ⓨ",
+                z: "ⓩ",
+                A: "Ⓐ",
+                B: "Ⓑ",
+                C: "Ⓒ",
+                D: "Ⓓ",
+                E: "Ⓔ",
+                F: "Ⓕ",
+                G: "Ⓖ",
+                H: "Ⓗ",
+                I: "Ⓘ",
+                J: "Ⓙ",
+                K: "Ⓚ",
+                L: "Ⓛ",
+                M: "Ⓜ",
+                N: "Ⓝ",
+                O: "Ⓞ",
+                P: "Ⓟ",
+                Q: "Ⓠ",
+                R: "Ⓡ",
+                S: "Ⓢ",
+                T: "Ⓣ",
+                U: "Ⓤ",
+                V: "Ⓥ",
+                W: "Ⓦ",
+                X: "Ⓧ",
+                Y: "Ⓨ",
+                Z: "Ⓩ",
+                0: "⓪",
+                1: "①",
+                2: "②",
+                3: "③",
+                4: "④",
+                5: "⑤",
+                6: "⑥",
+                7: "⑦",
+                8: "⑧",
+                9: "⑨",
+            };
 
-			function transform(node) {
-				if (!node) return;
-				if (node.nodeType === Node.ELEMENT_NODE) {
-					if (
-						node === chatEl ||
-						(node.closest && node.closest("#globalChatContainer,#mainGUI"))
-					)
-						return;
-					node.childNodes.forEach(transform);
-				} else if (node.nodeType === Node.TEXT_NODE) {
-					if (!node.nodeValue.trim()) return;
-					if (!originalTextMap.has(node))
-						originalTextMap.set(node, node.nodeValue);
-					node.nodeValue = node.nodeValue.replace(
-						/[a-zA-Z0-9]/g,
-						(ch) => bubbleMap[ch] || ch,
-					);
-				}
-			}
+            function transform(node) {
+                if (!node) return;
+                if (node.nodeType === Node.ELEMENT_NODE) {
+                    if (
+                        node === chatEl ||
+                        (node.closest && node.closest("#globalChatContainer,#mainGUI"))
+                    )
+                        return;
+                    node.childNodes.forEach(transform);
+                } else if (node.nodeType === Node.TEXT_NODE) {
+                    if (!node.nodeValue.trim()) return;
+                    if (!originalTextMap.has(node))
+                        originalTextMap.set(node, node.nodeValue);
+                    node.nodeValue = node.nodeValue.replace(
+                        /[a-zA-Z0-9]/g,
+                        (ch) => bubbleMap[ch] || ch,
+                    );
+                }
+            }
 
-			transform(document.body);
+            transform(document.body);
 
-			// Cleanup
-			const cleanup = () => {
-				originalTextMap.forEach((orig, node) => {
-					try {
-						node.nodeValue = orig;
-					} catch (e) {}
-				});
-				window.bubbleActive = false;
-			};
+            // Cleanup
+            const cleanup = () => {
+                originalTextMap.forEach((orig, node) => {
+                    try {
+                        node.nodeValue = orig;
+                    } catch (e) {}
+                });
+                window.bubbleActive = false;
+            };
 
-			window._bubbleCleanup = cleanup;
-			if (!window.stopAllVFX) window.stopAllVFX = [];
-			window.stopAllVFX = window.stopAllVFX.filter((f) => f !== cleanup);
-			window.stopAllVFX.push(cleanup);
-		});
+            window._bubbleCleanup = cleanup;
+            if (!window.stopAllVFX) window.stopAllVFX = [];
+            window.stopAllVFX = window.stopAllVFX.filter((f) => f !== cleanup);
+            window.stopAllVFX.push(cleanup);
+        });
 
-		// Page Spin
-		addBtn(vfx,"Page Spin",() => {
-				if (window.pageSpinActive) return;
-				window.pageSpinActive = true;
-				let s = document.createElement("style");
-				s.id = "pageSpinStyle";
-				s.innerHTML =
-					"@keyframes roll{100%{transform:rotate(129600deg);}} body > *:not(#mainGUI):not(#vfxGUI):not(#utilitiesGUI){animation:roll 140s linear 360;} body > *:not(#mainGUI):not(#vfxGUI):not(#utilitiesGUI) *{animation:roll 140s linear 360;}";
-				document.head.appendChild(s);
-				window.pageSpinStyle = s;
-			},
-			() => {
-				if (window.pageSpinStyle) {
-					window.pageSpinStyle.remove();
-					window.pageSpinStyle = null;
-				}
-				window.pageSpinActive = false;
-			},
-		);
+        // Page Spin
+        addBtn(vfx, "Page Spin", () => {
+                if (window.pageSpinActive) return;
+                window.pageSpinActive = true;
+                let s = document.createElement("style");
+                s.id = "pageSpinStyle";
+                s.innerHTML =
+                    "@keyframes roll{100%{transform:rotate(129600deg);}} body > *:not(#mainGUI):not(#vfxGUI):not(#utilitiesGUI){animation:roll 140s linear 360;} body > *:not(#mainGUI):not(#vfxGUI):not(#utilitiesGUI) *{animation:roll 140s linear 360;}";
+                document.head.appendChild(s);
+                window.pageSpinStyle = s;
+            },
+            () => {
+                if (window.pageSpinStyle) {
+                    window.pageSpinStyle.remove();
+                    window.pageSpinStyle = null;
+                }
+                window.pageSpinActive = false;
+            },
+        );
 
-		// Full chaos
-		addBtn(vfx, "Full Chaos", () => {
-			if (!window.fullChaosActive) {
-				window.fullChaosActive = true;
+        // Full chaos
+        addBtn(vfx, "Full Chaos", () => {
+            if (!window.fullChaosActive) {
+                window.fullChaosActive = true;
 
-				// Container just for chaos layers
-				let chaosContainer = document.createElement("div");
-				chaosContainer.id = "chaosContainer";
-				chaosContainer.style.cssText = `
+                // Container just for chaos layers
+                let chaosContainer = document.createElement("div");
+                chaosContainer.id = "chaosContainer";
+                chaosContainer.style.cssText = `
       position:fixed;
       top:0; left:0;
       width:100%; height:100%;
       pointer-events:none;
       z-index:99998; /* keep below GUIs */
     `;
-				document.body.appendChild(chaosContainer);
+                document.body.appendChild(chaosContainer);
 
-				function randColor() {
-					return "#" + Math.floor(16777215 * Math.random()).toString(16);
-				}
+                function randColor() {
+                    return "#" + Math.floor(16777215 * Math.random()).toString(16);
+                }
 
-				function rand(n) {
-					return Math.floor(Math.random() * n) + 1;
-				}
+                function rand(n) {
+                    return Math.floor(Math.random() * n) + 1;
+                }
 
-				// Build chaos bars
-				let h = window.innerHeight;
-				for (let i = 0; i < h; i++) {
-					let bar = document.createElement("div");
-					bar.id = "chaosBar" + i;
-					bar.style.cssText = `
+                // Build chaos bars
+                let h = window.innerHeight;
+                for (let i = 0; i < h; i++) {
+                    let bar = document.createElement("div");
+                    bar.id = "chaosBar" + i;
+                    bar.style.cssText = `
         width:100%; height:1px;
         background:${randColor()};
       `;
-					chaosContainer.appendChild(bar);
-				}
+                    chaosContainer.appendChild(bar);
+                }
 
-				// Loop effects
-				window.fullChaosLoop1 = setInterval(() => {
-					for (let e = 0; e < 10; e++) {
-						let bar = document.getElementById("chaosBar" + rand(h));
-						if (bar) {
-							bar.style.backgroundColor = randColor();
-							bar.style.height = rand(4) + "px";
-						}
-					}
-					chaosContainer.style.backgroundColor = randColor();
-					chaosContainer.style.transform =
-						rand(256) > 128
-							? `scale(3) rotate(${rand(35)}deg)`
-							: "scale(1) rotate(0deg)";
-					window.scrollTo(0, document.body.scrollHeight);
-				}, 10);
+                // Loop effects
+                window.fullChaosLoop1 = setInterval(() => {
+                    for (let e = 0; e < 10; e++) {
+                        let bar = document.getElementById("chaosBar" + rand(h));
+                        if (bar) {
+                            bar.style.backgroundColor = randColor();
+                            bar.style.height = rand(4) + "px";
+                        }
+                    }
+                    chaosContainer.style.backgroundColor = randColor();
+                    chaosContainer.style.transform =
+                        rand(256) > 128 ?
+                        `scale(3) rotate(${rand(35)}deg)` :
+                        "scale(1) rotate(0deg)";
+                    window.scrollTo(0, document.body.scrollHeight);
+                }, 10);
 
-				window.fullChaosLoop2 = setInterval(() => {
-					window.scrollTo(0, 0);
-				}, 50);
+                window.fullChaosLoop2 = setInterval(() => {
+                    window.scrollTo(0, 0);
+                }, 50);
 
-				// StopAll support
-				if (!window.stopAllVFX) window.stopAllVFX = [];
-				window.stopAllVFX.push(() => {
-					clearInterval(window.fullChaosLoop1);
-					clearInterval(window.fullChaosLoop2);
-					let c = document.getElementById("chaosContainer");
-					if (c) c.remove();
-					window.fullChaosActive = false;
-				});
-			} else {
-				clearInterval(window.fullChaosLoop1);
-				clearInterval(window.fullChaosLoop2);
-				let c = document.getElementById("chaosContainer");
-				if (c) c.remove();
-				window.fullChaosActive = false;
-			}
-		});
+                // StopAll support
+                if (!window.stopAllVFX) window.stopAllVFX = [];
+                window.stopAllVFX.push(() => {
+                    clearInterval(window.fullChaosLoop1);
+                    clearInterval(window.fullChaosLoop2);
+                    let c = document.getElementById("chaosContainer");
+                    if (c) c.remove();
+                    window.fullChaosActive = false;
+                });
+            } else {
+                clearInterval(window.fullChaosLoop1);
+                clearInterval(window.fullChaosLoop2);
+                let c = document.getElementById("chaosContainer");
+                if (c) c.remove();
+                window.fullChaosActive = false;
+            }
+        });
 
-		// ---------- Stop All VFX ----------
-		addBtn(vfx, "Stop All", () => {
-			const isImmune = (el) => window.isImmune(el);
-			if (window.stopAllVFX) {
-				window.stopAllVFX.forEach((fn) => {
-					try {
-						fn();
-					} catch (e) {}
-				});
-				window.stopAllVFX = [];
-			}
+        // ---------- Stop All VFX ----------
+        addBtn(vfx, "Stop All", () => {
+            const isImmune = (el) => window.isImmune(el);
+            if (window.stopAllVFX) {
+                window.stopAllVFX.forEach((fn) => {
+                    try {
+                        fn();
+                    } catch (e) {}
+                });
+                window.stopAllVFX = [];
+            }
 
-			// ------------------ Stop Invert Media ------------------
-			if (window.invertimgStyle)
-				(window.invertimgStyle.remove(), (window.invertimgStyle = null));
-			window.invertimgActive = false;
+            // ------------------ Stop Invert Media ------------------
+            if (window.invertimgStyle)
+                (window.invertimgStyle.remove(), (window.invertimgStyle = null));
+            window.invertimgActive = false;
 
-			// ------------------ Stop Censor Media ------------------
-			if (window.af) cancelAnimationFrame(window.af);
-			if (window.censorStyle) window.censorStyle.remove();
-			if (window.censors)
-				window.censors.forEach((c) => !isImmune(c) && c.remove());
-			if (window.sensed)
-				window.sensed.forEach(
-					(e) =>
-						!isImmune(e) && e.parentElement.classList.remove("censor-parent"),
-				);
-			window.censors = [];
-			window.sensed = [];
-			window.censorActive = false;
+            // ------------------ Stop Censor Media ------------------
+            if (window.af) cancelAnimationFrame(window.af);
+            if (window.censorStyle) window.censorStyle.remove();
+            if (window.censors)
+                window.censors.forEach((c) => !isImmune(c) && c.remove());
+            if (window.sensed)
+                window.sensed.forEach(
+                    (e) =>
+                    !isImmune(e) && e.parentElement.classList.remove("censor-parent"),
+                );
+            window.censors = [];
+            window.sensed = [];
+            window.censorActive = false;
 
-			// ------------------ Stop Invert Area ------------------
-			if (window.invertAreaShield && !isImmune(window.invertAreaShield))
-				window.invertAreaShield.remove();
-			window.removeEventListener("mousedown", window.invertAreaHold);
-			window.removeEventListener("touchstart", window.invertAreaHold);
-			window.invertAreaActive = false;
+            // ------------------ Stop Invert Area ------------------
+            if (window.invertAreaShield && !isImmune(window.invertAreaShield))
+                window.invertAreaShield.remove();
+            window.removeEventListener("mousedown", window.invertAreaHold);
+            window.removeEventListener("touchstart", window.invertAreaHold);
+            window.invertAreaActive = false;
 
-			// ------------------ Stop Disorientation ------------------
-			if (window.disorientActive) {
-				window.disorientActive = false;
-				if (window.originalTransforms) {
-					window.originalTransforms.forEach(({ el, transform }) => {
-						if (!isImmune(el)) {
-							["", "-ms-", "-webkit-", "-o-", "-moz-"].forEach((prefix) => {
-								el.style[prefix + "transform"] = transform;
-							});
-						}
-					});
-					window.originalTransforms = null;
-				}
-			}
+            // ------------------ Stop Disorientation ------------------
+            if (window.disorientActive) {
+                window.disorientActive = false;
+                if (window.originalTransforms) {
+                    window.originalTransforms.forEach(({
+                        el,
+                        transform
+                    }) => {
+                        if (!isImmune(el)) {
+                            ["", "-ms-", "-webkit-", "-o-", "-moz-"].forEach((prefix) => {
+                                el.style[prefix + "transform"] = transform;
+                            });
+                        }
+                    });
+                    window.originalTransforms = null;
+                }
+            }
 
-			// ------------------ Stop Bubble Text ------------------
-			if (window._bubbleCleanup) window._bubbleCleanup();
-			window.bubbleActive = false;
+            // ------------------ Stop Bubble Text ------------------
+            if (window._bubbleCleanup) window._bubbleCleanup();
+            window.bubbleActive = false;
 
-			// ------------------ Stop Matrix Rain ------------------
-			if (window.matrixInt)
-				(clearInterval(window.matrixInt), (window.matrixInt = null));
-			if (window.matrixCanvas && !isImmune(window.matrixCanvas))
-				window.matrixCanvas.remove();
-			window.matrixCanvas = null;
-			window.matrixActive = false;
+            // ------------------ Stop Matrix Rain ------------------
+            if (window.matrixInt)
+                (clearInterval(window.matrixInt), (window.matrixInt = null));
+            if (window.matrixCanvas && !isImmune(window.matrixCanvas))
+                window.matrixCanvas.remove();
+            window.matrixCanvas = null;
+            window.matrixActive = false;
 
-			// ------------------ Stop Glitch ------------------
-			if (window.glitchInt) {
-				clearInterval(window.glitchInt);
-				window.glitchInt = null;
-			}
-			window.glitchActive = false;
+            // ------------------ Stop Glitch ------------------
+            if (window.glitchInt) {
+                clearInterval(window.glitchInt);
+                window.glitchInt = null;
+            }
+            window.glitchActive = false;
 
-			// Clear all non-GUI backgrounds
-			document.querySelectorAll("body *").forEach((e) => {
-				if (!isImmune(e)) e.style.backgroundColor = "";
-			});
+            // Clear all non-GUI backgrounds
+            document.querySelectorAll("body *").forEach((e) => {
+                if (!isImmune(e)) e.style.backgroundColor = "";
+            });
 
-			// ------------------ Stop Smooth Disco ------------------
-			if (window.discoSmoothInt) {
-				clearInterval(window.discoSmoothInt);
-				window.discoSmoothInt = null;
-			}
-			window.discoSmoothActive = false;
+            // ------------------ Stop Smooth Disco ------------------
+            if (window.discoSmoothInt) {
+                clearInterval(window.discoSmoothInt);
+                window.discoSmoothInt = null;
+            }
+            window.discoSmoothActive = false;
 
-			// Clear disco background + transitions
-			document.querySelectorAll("body *").forEach((e) => {
-				if (!isImmune(e)) {
-					e.style.transition = "";
-					e.style.backgroundColor = "";
-				}
-			});
+            // Clear disco background + transitions
+            document.querySelectorAll("body *").forEach((e) => {
+                if (!isImmune(e)) {
+                    e.style.transition = "";
+                    e.style.backgroundColor = "";
+                }
+            });
 
-			// ------------------ Stop Full Chaos ------------------
-			if (window.fullChaosLoop1)
-				(clearInterval(window.fullChaosLoop1), (window.fullChaosLoop1 = null));
-			if (window.fullChaosLoop2)
-				(clearInterval(window.fullChaosLoop2), (window.fullChaosLoop2 = null));
-			const chaos = document.getElementById("chaosContainer");
-			if (chaos && !isImmune(chaos)) chaos.remove();
-			window.fullChaosActive = false;
+            // ------------------ Stop Full Chaos ------------------
+            if (window.fullChaosLoop1)
+                (clearInterval(window.fullChaosLoop1), (window.fullChaosLoop1 = null));
+            if (window.fullChaosLoop2)
+                (clearInterval(window.fullChaosLoop2), (window.fullChaosLoop2 = null));
+            const chaos = document.getElementById("chaosContainer");
+            if (chaos && !isImmune(chaos)) chaos.remove();
+            window.fullChaosActive = false;
 
-			// ------------------ Stop Page Spin ------------------
-			if (window.pageSpinStyle)
-				(window.pageSpinStyle.remove(), (window.pageSpinStyle = null));
-			window.pageSpinActive = false;
+            // ------------------ Stop Page Spin ------------------
+            if (window.pageSpinStyle)
+                (window.pageSpinStyle.remove(), (window.pageSpinStyle = null));
+            window.pageSpinActive = false;
 
-			// ------------------ Stop Text Corruption ------------------
-			if (window._textCorruptCleanup) window._textCorruptCleanup();
+            // ------------------ Stop Text Corruption ------------------
+            if (window._textCorruptCleanup) window._textCorruptCleanup();
 
-			// ------------------ Stop Image Glitch ------------------
-			if (window.imgGlitchInt) {
-				clearInterval(window.imgGlitchInt);
-				window.imgGlitchInt = null;
-				document.querySelectorAll("img").forEach((e) => {
-					if (!isImmune(e)) {
-						e.style.position = "";
-						e.style.left = "";
-						e.style.top = "";
-					}
-				});
-			}
+            // ------------------ Stop Image Glitch ------------------
+            if (window.imgGlitchInt) {
+                clearInterval(window.imgGlitchInt);
+                window.imgGlitchInt = null;
+                document.querySelectorAll("img").forEach((e) => {
+                    if (!isImmune(e)) {
+                        e.style.position = "";
+                        e.style.left = "";
+                        e.style.top = "";
+                    }
+                });
+            }
 
-			// ------------------ Stop Infection Virus ------------------
-			if (window.stopAllInfection) {
-				try {
-					window.stopAllInfection();
-				} catch (e) {}
-				window.stopAllInfection = null;
-			}
+            // ------------------ Stop Infection Virus ------------------
+            if (window.stopAllInfection) {
+                try {
+                    window.stopAllInfection();
+                } catch (e) {}
+                window.stopAllInfection = null;
+            }
 
-			// ------------------ Reset page-wide inline styles (skip GUI) ------------------
-			document.body.style.transform = "";
-			document.body.style.backgroundColor = "";
-			document.body.style.filter = "";
+            // ------------------ Reset page-wide inline styles (skip GUI) ------------------
+            document.body.style.transform = "";
+            document.body.style.backgroundColor = "";
+            document.body.style.filter = "";
 
-			document.querySelectorAll("body *").forEach((e) => {
-				if (!isImmune(e)) {
-					e.style.backgroundColor = "";
-					e.style.height = "";
-					e.style.transform = "";
-					e.style.transition = "";
-					e.style.color = "";
-					e.style.fontSize = "";
-					e.style.position = "";
-					e.style.left = "";
-					e.style.top = "";
-					e.style.textShadow = "";
-				}
-			});
+            document.querySelectorAll("body *").forEach((e) => {
+                if (!isImmune(e)) {
+                    e.style.backgroundColor = "";
+                    e.style.height = "";
+                    e.style.transform = "";
+                    e.style.transition = "";
+                    e.style.color = "";
+                    e.style.fontSize = "";
+                    e.style.position = "";
+                    e.style.left = "";
+                    e.style.top = "";
+                    e.style.textShadow = "";
+                }
+            });
 
-			// ------------------ Reset Utilities ------------------
-			if (window.stats) {
-				window.stats.dom.remove();
-				window.stats = null;
-			}
-			if (window.erudaInstance) {
-				window.erudaInstance.destroy();
-				window.erudaInstance = null;
-				window.erudaLoaded = false;
-			}
-			if (window.portaFrame) {
-				window.portaFrame.remove();
-				window.portaFrame = null;
-			}
-		});
+            // ------------------ Reset Utilities ------------------
+            if (window.stats) {
+                window.stats.dom.remove();
+                window.stats = null;
+            }
+            if (window.erudaInstance) {
+                window.erudaInstance.destroy();
+                window.erudaInstance = null;
+                window.erudaLoaded = false;
+            }
+            if (window.portaFrame) {
+                window.portaFrame.remove();
+                window.portaFrame = null;
+            }
+        });
 
-		// -------------------- FONT COLOR SLIDER --------------------
-		(function () {
-			const section = document.createElement("div");
-			section.style.marginTop = "10px";
-			section.style.padding = "8px";
-			section.style.background = "#001f00";
-			section.style.borderRadius = "10px";
-			section.style.color = "#00ff00";
-			section.innerHTML = `<b>Text Color</b><br>`;
-			const picker = document.createElement("input");
-			picker.type = "color";
-			picker.value = "#00ff00";
-			picker.oninput = () => {
-				document
-					.querySelectorAll(
-						"body *:not(#mainGUI *):not(#vfxGUI *):not(#utilitiesGUI *)",
-					)
-					.forEach((el) => (el.style.color = picker.value));
-			};
-			section.appendChild(picker);
-			vfx.appendChild(section);
-		})();
-		// -------------------- SHIFT+H TO HIDE --------------------
-		document.addEventListener("keydown", (e) => {
-			if (e.shiftKey && e.key.toLowerCase() === "h") {
-				const gui = document.getElementById("mainGUI");
-				if (gui) {
-					gui.style.display = gui.style.display === "none" ? "block" : "none";
-				}
-			}
-		});
-	}
+        // -------------------- FONT COLOR SLIDER --------------------
+        (function() {
+            const section = document.createElement("div");
+            section.style.marginTop = "10px";
+            section.style.padding = "8px";
+            section.style.background = "#001f00";
+            section.style.borderRadius = "10px";
+            section.style.color = "#00ff00";
+            section.innerHTML = `<b>Text Color</b><br>`;
+            const picker = document.createElement("input");
+            picker.type = "color";
+            picker.value = "#00ff00";
+            picker.oninput = () => {
+                document
+                    .querySelectorAll(
+                        "body *:not(#mainGUI *):not(#vfxGUI *):not(#utilitiesGUI *)",
+                    )
+                    .forEach((el) => (el.style.color = picker.value));
+            };
+            section.appendChild(picker);
+            vfx.appendChild(section);
+        })();
+        // -------------------- SHIFT+H TO HIDE --------------------
+        document.addEventListener("keydown", (e) => {
+            if (e.shiftKey && e.key.toLowerCase() === "h") {
+                const gui = document.getElementById("mainGUI");
+                if (gui) {
+                    gui.style.display = gui.style.display === "none" ? "block" : "none";
+                }
+            }
+        });
+    }
 })();
