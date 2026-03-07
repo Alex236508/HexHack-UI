@@ -240,9 +240,20 @@
          let page = 0;
          const resizeToContent = () => {
             const activePage = page === 0 ? util : vfx;
-            const contentHeight = activePage.scrollHeight + 45;
+            const contentHeight = activePage.scrollHeight + masterTitle.offsetHeight + 26;
             gui.style.height = `${contentHeight}px`;
          };
+         
+         const queueResize = () => requestAnimationFrame(resizeToContent);
+
+         [util, vfx].forEach((panel) => {
+            const observer = new MutationObserver(queueResize);
+            observer.observe(panel.querySelector(".btnGrid"), { childList: true, subtree: true });
+         });
+
+         window.addEventListener("load", queueResize, { once: true });
+         window.addEventListener("resize", queueResize);
+
 
          document.getElementById("prevPage").onclick = () => {
             page = Math.max(0, page - 1);
