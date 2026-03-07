@@ -2872,13 +2872,13 @@ document.addEventListener("keydown", (e) => {
 		})();
 
 		// ---------- Tab Title & Favicon Controls ----------
-		const vfxContainer = document.getElementById("vfxGUI");
-		if (vfxContainer) {
+		const mainGuiContainer = document.getElementById("mainGUI");
+		if (mainGuiContainer) {
 			const controlsWrapper = document.createElement("div");
 			controlsWrapper.style.cssText = `
 position:absolute;
-bottom:12px;
-right:12px;
+top:46px;
+right:-175px;
 display:flex;
 gap:8px;
 align-items:center;
@@ -2895,6 +2895,7 @@ box-shadow:0 6px 16px rgba(0,0,0,0.4);
 z-index:10000001;
 font-family: system-ui, sans-serif;
 `;
+			controlsWrapper.title = "Tab title & favicon controls";
 
 			// Hidden file input for favicon
 			const faviconInput = document.createElement("input");
@@ -2999,7 +3000,20 @@ transition:border 0.15s ease, box-shadow 0.15s ease;
 			controlsWrapper.appendChild(faviconBtn);
 			controlsWrapper.appendChild(faviconInput);
 			controlsWrapper.appendChild(titleInput);
-			vfxContainer.appendChild(controlsWrapper);
+			mainGuiContainer.appendChild(controlsWrapper);
+
+			const setControlsVisibility = () => {
+				controlsWrapper.style.display = page === 0 ? "flex" : "none";
+			};
+
+			document.getElementById("prevPage").addEventListener("click", () => {
+				requestAnimationFrame(setControlsVisibility);
+			});
+			document.getElementById("nextPage").addEventListener("click", () => {
+				requestAnimationFrame(setControlsVisibility);
+			});
+
+			setControlsVisibility();
 		}
 
 		// -------------------- FONT SIZE SLIDER --------------------
