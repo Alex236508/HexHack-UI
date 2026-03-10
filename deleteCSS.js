@@ -2,8 +2,8 @@
 const fs = require('fs');
 
 // === CONFIG ===
-const inputFile = 'bigfile.js';   // Your main JS file
-const outputFile = 'bigfile_clean.js'; // File after CSS removal
+const inputFile = 'UI.js';   // Your main JS file
+const outputFile = 'GUI.js'; // File after CSS removal
 const elementName = 'gui';        // The element whose CSS was removed
 
 // Read the original JS file
