@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const jsFile = fs.readFileSync('bigfile.js', 'utf-8');
+const jsFile = fs.readFileSync('UI.js', 'utf-8');
 
 const regex = /\.style\.cssText\s*=\s*`([\s\S]*?)`;/g;
 
