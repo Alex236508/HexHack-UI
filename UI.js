@@ -7,9 +7,8 @@
    function spawnGUIs() {
       // -------------------- Multi Page GUI --------------------
       (function() {
-         // Main container
+         
          const gui = document.createElement("div");
-
          // -------------------- CSS Variables --------------------
          gui.style.setProperty("--gui-bg", "#000");
          gui.style.setProperty("--gui-border", "#00ff00");
@@ -290,7 +289,7 @@
   box-sizing: border-box;
 `;
          themes.innerHTML = `
-  <div style="text-align:center;font-weight:bold;margin-bottom:10pxcolor:var(--gui-text);">
+  <div style="text-align:center;font-weight:bold;margin-bottom:10px;color:var(--gui-text);">
     Themes
   </div>
   <div class="btnGrid"></div>
@@ -385,30 +384,72 @@
                fcsBackground: "#001f00",
             },
 
-            light: {
-               guiBackground: "#f5f7fb",
-               borderColor: "#2d3a8c",
-               textColor: "#1a224f",
-               shadowColor: "rgba(45,58,140,0.25)",
-               titleBackground: "rgba(45,58,140,0.15)",
+            inverted: {
+               guiBackground: "#00ff00",
+               borderColor: "#000000",
+               textColor: "#000000",
+               shadowColor: "rgba(0,0,0,0.6)",
+               titleBackground: "rgba(0,0,0,0.18)",
                titleTextShadow: "none",
-               buttonBackground: "#ffffff",
-               buttonHoverBackground: "rgba(45,58,140,0.1)",
-               buttonHoverShadow: "inset 0 0 6px rgba(45,58,140,0.25), 0 0 8px rgba(45,58,140,0.35)",
-               navColor: "#1a224f",
+               buttonBackground: "#1aff1a",
+               buttonHoverBackground: "rgba(0,0,0,0.15)",
+               buttonHoverShadow: "inset 0 0 6px rgba(0,0,0,0.4), 0 0 10px rgba(0,0,0,0.45)",
+               navColor: "#000000",
+               fcsBackground: "#33ff33"
             },
 
-            dark: {
-               guiBackground: "#0f1117",
-               borderColor: "#61dafb",
-               textColor: "#c9f3ff",
-               shadowColor: "rgba(97,218,251,0.35)",
-               titleBackground: "rgba(97,218,251,0.16)",
-               titleTextShadow: "0 0 10px rgba(97,218,251,0.65)",
-               buttonBackground: "#161b22",
-               buttonHoverBackground: "rgba(97,218,251,0.12)",
-               buttonHoverShadow: "inset 0 0 6px rgba(97,218,251,0.4), 0 0 10px rgba(97,218,251,0.45)",
-               navColor: "#c9f3ff",
+            futuristic: {
+               guiBackground: "#05070d",
+               borderColor: "#00e5ff",
+               textColor: "#9bf6ff",
+               shadowColor: "rgba(0,229,255,0.5)",
+               titleBackground: "rgba(0,229,255,0.15)",
+               titleTextShadow: "0 0 12px #00e5ff",
+               buttonBackground: "#0b0f1a",
+               buttonHoverBackground: "rgba(0,229,255,0.12)",
+               buttonHoverShadow: "inset 0 0 8px rgba(0,229,255,0.7), 0 0 14px rgba(0,229,255,0.6)",
+               navColor: "#66f7ff",
+               fcsBackground: "#001a22"
+            },
+
+            light: {
+    guiBackground: "#f3f7fb",
+    borderColor: "#4E474B",
+    textColor: "#1c2733",
+    shadowColor: "rgba(58,111,143,0.18)",
+    titleBackground: "rgba(58,111,143,0.08)",
+    titleTextShadow: "0 0 6px rgba(58,111,143,0.25)",
+    buttonBackground: "#ffffff",
+    buttonHoverBackground: "rgba(58,111,143,0.12)",
+    buttonHoverShadow: "inset 0 0 5px rgba(58,111,143,0.20), 0 0 6px rgba(58,111,143,0.20)",
+    navColor: "#2c4e63",
+},
+
+			dark: {
+    guiBackground: "#0b0f14",
+    borderColor: "#b1b8b4",
+    textColor: "#c6d6e2",
+    shadowColor: "rgba(58,111,143,0.28)",
+    titleBackground: "rgba(58,111,143,0.12)",
+    titleTextShadow: "0 0 8px rgba(58,111,143,0.45)",
+    buttonBackground: "#121820",
+    buttonHoverBackground: "rgba(58,111,143,0.10)",
+    buttonHoverShadow: "inset 0 0 5px rgba(58,111,143,0.35), 0 0 8px rgba(58,111,143,0.35)",
+    navColor: "#b8cbd8",
+},
+
+            ocean: {
+               guiBackground: "#0a1f2e",
+               borderColor: "#1ca3ec",
+               textColor: "#cdefff",
+               shadowColor: "rgba(28,163,236,0.45)",
+               titleBackground: "rgba(28,163,236,0.18)",
+               titleTextShadow: "0 0 8px #1ca3ec",
+               buttonBackground: "#0f2c3d",
+               buttonHoverBackground: "rgba(28,163,236,0.15)",
+               buttonHoverShadow: "inset 0 0 6px rgba(28,163,236,0.5), 0 0 10px rgba(28,163,236,0.45)",
+               navColor: "#8ad8ff",
+               fcsBackground: "#061722"
             },
 
             forest: {
@@ -424,7 +465,7 @@
                navColor: "#8be3a1",
             },
 
-            sunset: {
+            ember: {
                guiBackground: "#2b0f0f",
                borderColor: "#ff7a3c",
                textColor: "#ffd6b8",
@@ -461,7 +502,64 @@
                buttonHoverBackground: "rgba(255,154,92,0.18)",
                buttonHoverShadow: "inset 0 0 6px rgba(255,154,92,0.35), 0 0 8px rgba(255,154,92,0.35)",
                navColor: "#8a4f2a",
-            }
+            },
+
+            matrix: {
+               guiBackground: "#000000",
+               borderColor: "#39ff14",
+               textColor: "#39ff14",
+               shadowColor: "rgba(57,255,20,0.5)",
+               titleBackground: "rgba(57,255,20,0.18)",
+               titleTextShadow: "0 0 10px #39ff14",
+               buttonBackground: "#0a0a0a",
+               buttonHoverBackground: "rgba(57,255,20,0.12)",
+               buttonHoverShadow: "inset 0 0 6px rgba(57,255,20,0.6), 0 0 12px rgba(57,255,20,0.6)",
+               navColor: "#39ff14",
+               fcsBackground: "#001800"
+            },
+
+				glass: {
+   guiBackground: "rgba(255,255,255,0.08)",
+   borderColor: "rgba(255,255,255,0.35)",
+   textColor: "#ffffff",
+   shadowColor: "rgba(0,0,0,0.35)",
+   titleBackground: "rgba(255,255,255,0.12)",
+   titleTextShadow: "0 0 6px rgba(255,255,255,0.5)",
+   buttonBackground: "rgba(255,255,255,0.08)",
+   buttonHoverBackground: "rgba(255,255,255,0.18)",
+   buttonHoverShadow: "inset 0 0 6px rgba(255,255,255,0.4), 0 0 10px rgba(255,255,255,0.25)",
+   navColor: "#ffffff",
+   fcsBackground: "rgba(255,255,255,0.06)"
+},
+
+			 terminal: {
+   guiBackground: "#000000",
+   borderColor: "#33ff33",
+   textColor: "#33ff33",
+   shadowColor: "rgba(51,255,51,0.45)",
+   titleBackground: "rgba(51,255,51,0.12)",
+   titleTextShadow: "0 0 8px #33ff33",
+   buttonBackground: "#050505",
+   buttonHoverBackground: "rgba(51,255,51,0.08)",
+   buttonHoverShadow: "inset 0 0 6px rgba(51,255,51,0.7), 0 0 10px rgba(51,255,51,0.5)",
+   navColor: "#66ff66",
+   fcsBackground: "#001500"
+},
+
+			 synthwave: {
+   guiBackground: "#140021",
+   borderColor: "#ff2bd6",
+   textColor: "#7df9ff",
+   shadowColor: "rgba(255,43,214,0.45)",
+   titleBackground: "rgba(255,43,214,0.15)",
+   titleTextShadow: "0 0 12px #ff2bd6",
+   buttonBackground: "#220033",
+   buttonHoverBackground: "rgba(255,140,0,0.18)",
+   buttonHoverShadow: "inset 0 0 8px rgba(255,140,0,0.6), 0 0 14px rgba(255,43,214,0.6)",
+   navColor: "#ff9a00",
+   fcsBackground: "#1a0030"
+}
+			 
          };
          const applyTheme = (themeName) => {
             const theme = themeConfigs[themeName] || themeConfigs.default;
@@ -469,11 +567,9 @@
             gui.style.setProperty("--gui-bg", theme.guiBackground);
             gui.style.setProperty("--gui-border", theme.borderColor);
             gui.style.setProperty("--gui-text", theme.textColor);
-
             gui.style.setProperty("--btn-bg", theme.buttonBackground);
             gui.style.setProperty("--btn-hover-bg", theme.buttonHoverBackground);
             gui.style.setProperty("--btn-hover-shadow", theme.buttonHoverShadow);
-
             gui.style.background = theme.guiBackground;
             gui.style.boxShadow = `0 0 20px ${theme.shadowColor}`;
 
@@ -547,15 +643,20 @@
          window.themes = themes.querySelector(".btnGrid");
 
          addBtn(themes, "Default", () => applyTheme("default"));
+		 addBtn(themes, "Inverted", () => applyTheme("inverted"));
+         addBtn(themes, "Futuristic", () => applyTheme("futuristic"));
          addBtn(themes, "Light", () => applyTheme("light"));
-         addBtn(themes, "Dark", () => applyTheme("dark"));
+		 addBtn(themes, "Dark", () => applyTheme("dark"));
+		 addBtn(themes, "Ocean", () => applyTheme("ocean"));
          addBtn(themes, "Forest", () => applyTheme("forest"));
-         addBtn(themes, "Sunset", () => applyTheme("sunset"));
+         addBtn(themes, "Ember", () => applyTheme("ember"));
          addBtn(themes, "Dusk", () => applyTheme("dusk"));
          addBtn(themes, "Dawn", () => applyTheme("dawn"));
+		 addBtn(themes, "Glass", () => applyTheme("glass"));
+         addBtn(themes, "Terminal", () => applyTheme("terminal"));
+		 addBtn(themes, "Synthwave", () => applyTheme("synthwave"));
 
          applyTheme("default");
-
          resizeToContent();
       })();
 
@@ -1360,9 +1461,9 @@
          const section = document.createElement("div");
          section.style.marginTop = "10px";
          section.style.padding = "8px";
-         section.style.background = "--btn-bg";
+         section.style.background = "var(--btn-bg)";
          section.style.borderRadius = "10px";
-         section.style.color = "--gui-text";
+         section.style.color = "var(--gui-text)";
          section.innerHTML = `<b>Font Size</b><br>`;
          const slider = document.createElement("input");
          slider.type = "range";
@@ -2042,22 +2143,128 @@
 
       // 3D Page
       addBtn(vfx, "3D Page", () => {
-            let s = document.createElement("script");
-            s.src =
-               "https://rawgit.com/Krazete/bookmarklets/master/tri.js?cacheBust=" +
-               Date.now();
-            document.body.appendChild(s);
-            window.triScript = s;
+            (function() {
+               var tri = {
+                  menu: document.createElement("div"),
+                  limit: document.createElement("input"),
+                  gap: document.createElement("input"),
+                  sag: document.createElement("input"),
+                  fov: document.createElement("input"),
+                  flo: document.createElement("input"),
+                  off: document.createElement("input"),
+                  non: document.createElement("input"),
+                  end: document.createElement("input"),
+                  tgl: document.createElement("input"),
+                  cssStatic: document.createElement("style"),
+                  cssDynamic: document.createElement("style"),
+                  orientation: {
+                     "yaw": 0,
+                     "pitch": 0,
+                     "roll": 0
+                  },
+                  mouseMove: function(e) {
+                     tri.orientation.yaw = -Math.cos(Math.PI * e.clientX / innerWidth) * 180 * tri.limit.value;
+                     tri.orientation.pitch = Math.cos(Math.PI * e.clientY / innerHeight) * 180 * tri.limit.value;
+                     tri.updateBody()
+                  },
+                  gyroMove: function(e) {
+                     var landscape = innerWidth > innerHeight;
+                     if (landscape) {
+                        tri.orientation.yaw = -(e.alpha + e.beta);
+                        tri.orientation.pitch = e.gamma - Math.sign(90 - Math.abs(e.beta)) * 90
+                     } else {
+                        tri.orientation.yaw = -(e.alpha + e.gamma);
+                        tri.orientation.pitch = e.beta - 90
+                     }
+                     tri.updateBody()
+                  },
+                  updateOrigin: function(e) {
+                     document.body.style.transformOrigin = (innerWidth / 2 + pageXOffset) + "px " + (innerHeight / 2 + pageYOffset) + "px"
+                  },
+                  updateBody: function() {
+                     document.body.style.transform = "perspective(" + Math.pow(2, tri.fov.value) + "px) translateZ(-" + tri.gap.value + "px) rotateX(" + tri.orientation.pitch + "deg) rotateY(" + tri.orientation.yaw + "deg)"
+                  },
+                  updateCSS: function() {
+                     if (tri.non.checked) tri.cssDynamic.textContent = "";
+                     else if (tri.off.checked) tri.cssDynamic.textContent = "* { transform-style: preserve-3d; }";
+                     else {
+                        for (var depth = 0; document.querySelector("body" + " > *".repeat(depth)); depth++);
+                        var gap = tri.gap.value / depth;
+                        var sag = -Math.PI * tri.sag.value / depth;
+                        tri.cssDynamic.textContent = ` *{transform:translateZ(${gap}px) rotateX(${sag}rad);transform-style:preserve-3d;transition:transform 1s;outline:1px solid rgb(0 0 0 / .0625);${tri.flo.checked ? "overflow: visible !important;":""}}*:hover{transform:translateZ(${gap * 2}px) rotateX(${sag * 2}rad);${!tri.flo.checked ? "overflow: visible;":""}}`
+                     }
+                  },
+                  toggle: function() {
+                     if (tri.menu.className == "active") {
+                        tri.menu.removeAttribute("class")
+                     } else {
+                        tri.menu.className = "active"
+                     }
+                  },
+                  quit: function() {
+                     window.removeEventListener("deviceorientation", tri.gyroMove);
+                     window.removeEventListener("mousemove", tri.mouseMove);
+                     window.removeEventListener("scroll", tri.updateOrigin);
+                     window.addEventListener("resize", tri.updateOrigin);
+                     tri.menu.remove();
+                     tri.cssStatic.remove();
+                     tri.cssDynamic.remove();
+                     document.body.removeAttribute("style")
+                  },
+                  newRange: function(e, label, min, step, max, value, f) {
+                     tri.menu.appendChild(e);
+                     e.type = "range";
+                     e.min = min;
+                     e.max = max;
+                     e.step = step;
+                     e.value = value;
+                     e.addEventListener("input", f);
+                     tri.menu.appendChild(document.createElement("span")).textContent = label;
+                     tri.menu.appendChild(document.createElement("br"))
+                  },
+                  newCheckbox: function(e, label, f) {
+                     tri.menu.appendChild(e);
+                     e.type = "checkbox";
+                     e.addEventListener("click", f);
+                     tri.menu.appendChild(document.createElement("span")).textContent = label;
+                     tri.menu.appendChild(document.createElement("br"))
+                  },
+                  newButton: function(e, label, f) {
+                     tri.menu.appendChild(e);
+                     e.type = "button";
+                     e.value = label;
+                     e.addEventListener("click", f)
+                  },
+                  init: function() {
+                     document.body.parentNode.appendChild(tri.menu).id = "tri-menu";
+                     tri.newRange(tri.limit, "limit", 0, .03125, 1, .125, tri.updateBody);
+                     tri.newRange(tri.gap, "gap / distance", 0, 32, 512, 128, function() {
+                        tri.updateCSS();
+                        tri.updateBody()
+                     });
+                     tri.newRange(tri.sag, "sag", -.25, .03125, .25, 0, tri.updateCSS);
+                     tri.newRange(tri.fov, "field of view", 7, 1, 13, 10, tri.updateBody);
+                     tri.newCheckbox(tri.flo, "force overflow", tri.updateCSS);
+                     tri.flo.setAttribute("checked", "");
+                     tri.newCheckbox(tri.off, "flatten layers", tri.updateCSS);
+                     tri.newCheckbox(tri.non, "flatten everything", tri.updateCSS);
+                     tri.newButton(tri.end, "Quit", tri.quit);
+                     tri.newButton(tri.tgl, "≡", tri.toggle);
+                     tri.tgl.id = "tri-toggle";
+                     tri.menu.appendChild(tri.cssStatic).textContent = ` html,body{transition-property:none;height:100%;width:100%}html,html:hover,#tri-menu,#tri-menu>*,#tri-menu>*:hover{transform:none;outline:none;overflow:auto!important;float:none}#tri-menu{position:fixed;top:0;left:0;background:rgb(0 0 0 / .5);color:#fff;border:1px solid rgb(255 255 255 / .5);;border-radius:0 0 16px 0;padding:8px;transform:translate(-100%,-100%) translate(32px,32px)}#tri-menu.active{transform:none}#tri-toggle{position:absolute;bottom:0;right:0;height:32px;width:32px;background:#fff0;color:#fff;border:none;cursor:pointer}#tri-menu.active>#tri-toggle{background:#fff;color:#000;border-radius:8px 0 0 0}`;
+                     tri.menu.appendChild(tri.cssDynamic);
+                     tri.updateCSS();
+                     window.addEventListener("deviceorientation", tri.gyroMove);
+                     window.addEventListener("mousemove", tri.mouseMove);
+                     window.addEventListener("scroll", tri.updateOrigin);
+                     window.addEventListener("resize", tri.updateOrigin);
+                     window.scrollBy(0, 1)
+                  }
+               };
+               tri.init()
+            })();
          },
-         () => {
-            if (window.triScript) {
-               window.triScript.remove();
-               window.triScript = null;
-            }
-            // reset transforms to normal
-            document.body.style.transform = "";
-            document.body.style.perspective = "";
-         },
+
       );
 
       // Explode Page
@@ -2637,10 +2844,10 @@
          const section = document.createElement("div");
          section.style.marginTop = "10px";
          section.style.padding = "8px";
-         section.style.background = "--btn-bg";
+         section.style.background = "var(--btn-bg)";
          section.style.borderRadius = "10px";
-         section.style.color = "--gui-text";
-         section.innerHTML = `<b>Text Color</b><br>`;
+         section.style.color = "var(--gui-text)";
+         section.innerHTML = `<b>Font Color</b><br>`;
          const picker = document.createElement("input");
          picker.type = "color";
          picker.value = "000000";
