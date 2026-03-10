@@ -11,14 +11,13 @@
          const gui = document.createElement("div");
 
          // -------------------- CSS Variables --------------------
-
          gui.style.setProperty("--gui-bg", "#000");
          gui.style.setProperty("--gui-border", "#00ff00");
          gui.style.setProperty("--gui-text", "#00ff00");
          gui.style.setProperty("--btn-bg", "#0a0a0a");
          gui.style.setProperty("--btn-hover-bg", "rgba(0,255,0,0.05)");
          gui.style.setProperty("--btn-hover-shadow", "inset 0 0 6px #00ff00, 0 0 8px #00ff00");
-
+         // -------------------- Create Main GUI Page --------------------
          gui.id = "mainGUI";
          gui.style.cssText = `
     position: fixed;
@@ -113,7 +112,7 @@
   position: relative;
 `;
          util.innerHTML = `
-  <div style="text-align:center;font-weight:bold;margin-bottom:10px;">
+  <div style="text-align:center;font-weight:bold;margin-bottom:10px;color:var(--gui-text);">
     Utilities
   </div>
   <div class="btnGrid"></div>
@@ -275,7 +274,7 @@
   box-sizing: border-box;
 `;
          vfx.innerHTML = `
-  <div style="text-align:center;font-weight:bold;margin-bottom:10px;">
+  <div style="text-align:center;font-weight:bold;margin-bottom:10px;color:var(--gui-text);">
     Page Effects
   </div>
   <div class="btnGrid"></div>
@@ -291,7 +290,7 @@
   box-sizing: border-box;
 `;
          themes.innerHTML = `
-  <div style="text-align:center;font-weight:bold;margin-bottom:10px;">
+  <div style="text-align:center;font-weight:bold;margin-bottom:10pxcolor:var(--gui-text);">
     Themes
   </div>
   <div class="btnGrid"></div>
@@ -370,7 +369,7 @@
     <button id="nextPage" style="background:none;border:none;color:#00ff00;font-size:22px;cursor:pointer;">▶</button>
   `;
          gui.appendChild(nav);
-
+         // -------------------- Themes --------------------
          const themeConfigs = {
             default: {
                guiBackground: "#000",
@@ -385,6 +384,7 @@
                navColor: "#00ff00",
                fcsBackground: "#001f00",
             },
+
             light: {
                guiBackground: "#f5f7fb",
                borderColor: "#2d3a8c",
@@ -397,6 +397,7 @@
                buttonHoverShadow: "inset 0 0 6px rgba(45,58,140,0.25), 0 0 8px rgba(45,58,140,0.35)",
                navColor: "#1a224f",
             },
+
             dark: {
                guiBackground: "#0f1117",
                borderColor: "#61dafb",
@@ -409,8 +410,59 @@
                buttonHoverShadow: "inset 0 0 6px rgba(97,218,251,0.4), 0 0 10px rgba(97,218,251,0.45)",
                navColor: "#c9f3ff",
             },
-         };
 
+            forest: {
+               guiBackground: "#0b1a12",
+               borderColor: "#3fa34d",
+               textColor: "#b8f5c6",
+               shadowColor: "rgba(63,163,77,0.45)",
+               titleBackground: "rgba(63,163,77,0.18)",
+               titleTextShadow: "0 0 8px #3fa34d",
+               buttonBackground: "#12261a",
+               buttonHoverBackground: "rgba(63,163,77,0.12)",
+               buttonHoverShadow: "inset 0 0 6px rgba(63,163,77,0.5), 0 0 10px rgba(63,163,77,0.5)",
+               navColor: "#8be3a1",
+            },
+
+            sunset: {
+               guiBackground: "#2b0f0f",
+               borderColor: "#ff7a3c",
+               textColor: "#ffd6b8",
+               shadowColor: "rgba(255,122,60,0.45)",
+               titleBackground: "rgba(255,122,60,0.18)",
+               titleTextShadow: "0 0 8px #ff7a3c",
+               buttonBackground: "#3a1616",
+               buttonHoverBackground: "rgba(255,122,60,0.15)",
+               buttonHoverShadow: "inset 0 0 6px rgba(255,122,60,0.5), 0 0 10px rgba(255,122,60,0.5)",
+               navColor: "#ffb07c",
+            },
+
+            dusk: {
+               guiBackground: "#1a1628",
+               borderColor: "#a970ff",
+               textColor: "#e3d6ff",
+               shadowColor: "rgba(169,112,255,0.4)",
+               titleBackground: "rgba(169,112,255,0.18)",
+               titleTextShadow: "0 0 10px #a970ff",
+               buttonBackground: "#231c36",
+               buttonHoverBackground: "rgba(169,112,255,0.15)",
+               buttonHoverShadow: "inset 0 0 6px rgba(169,112,255,0.5), 0 0 10px rgba(169,112,255,0.5)",
+               navColor: "#caa7ff",
+            },
+
+            dawn: {
+               guiBackground: "#fff4e6",
+               borderColor: "#ff9a5c",
+               textColor: "#5a3b1f",
+               shadowColor: "rgba(255,154,92,0.35)",
+               titleBackground: "rgba(255,154,92,0.18)",
+               titleTextShadow: "none",
+               buttonBackground: "#ffffff",
+               buttonHoverBackground: "rgba(255,154,92,0.18)",
+               buttonHoverShadow: "inset 0 0 6px rgba(255,154,92,0.35), 0 0 8px rgba(255,154,92,0.35)",
+               navColor: "#8a4f2a",
+            }
+         };
          const applyTheme = (themeName) => {
             const theme = themeConfigs[themeName] || themeConfigs.default;
 
@@ -494,9 +546,13 @@
          window.vfx = vfx.querySelector(".btnGrid");
          window.themes = themes.querySelector(".btnGrid");
 
-         addBtn(themes, "Default Theme", () => applyTheme("default"));
-         addBtn(themes, "Light Theme", () => applyTheme("light"));
-         addBtn(themes, "Dark Theme", () => applyTheme("dark"));
+         addBtn(themes, "Default", () => applyTheme("default"));
+         addBtn(themes, "Light", () => applyTheme("light"));
+         addBtn(themes, "Dark", () => applyTheme("dark"));
+         addBtn(themes, "Forest", () => applyTheme("forest"));
+         addBtn(themes, "Sunset", () => applyTheme("sunset"));
+         addBtn(themes, "Dusk", () => applyTheme("dusk"));
+         addBtn(themes, "Dawn", () => applyTheme("dawn"));
 
          applyTheme("default");
 
