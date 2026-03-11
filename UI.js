@@ -314,6 +314,19 @@
   background: var(--btn-hover-bg);
   transform: scale(0.98);
 }
+.btnGrid .themePreviewBtn {
+  background: var(--preview-btn-bg);
+  color: var(--preview-text);
+  border-color: var(--preview-border);
+  box-shadow: 0 0 8px var(--preview-shadow);
+}
+.btnGrid .themePreviewBtn:hover {
+  background: var(--preview-btn-hover-bg);
+  box-shadow: var(--preview-btn-hover-shadow);
+}
+.btnGrid .themePreviewBtn:active {
+  background: var(--preview-btn-hover-bg);
+}
 .btnGrid .guiBtn:nth-child(odd) {
   border-right: 1px solid var(--gui-border);
 }
@@ -330,7 +343,8 @@
                 btn.onclick = callback;
                 const grid = parent.querySelector(".btnGrid");
                 if (grid) grid.appendChild(btn);
-                else parent.appendChild(btn)
+                else parent.appendChild(btn);
+                return btn
             };
             // Navigation arrows
             const nav = document.createElement("div");
@@ -581,7 +595,15 @@
             window.themes = themes.querySelector(".btnGrid");
             Object.keys(themeConfigs).forEach(themeName => {
                 const displayName = themeName.charAt(0).toUpperCase() + themeName.slice(1);
-                addBtn(themes, displayName, () => applyTheme(themeName))
+                const theme = themeConfigs[themeName];
+                const themeBtn = window.addBtn(themes, displayName, () => applyTheme(themeName));
+                themeBtn.classList.add("themePreviewBtn");
+                themeBtn.style.setProperty("--preview-btn-bg", theme.buttonBackground);
+                themeBtn.style.setProperty("--preview-btn-hover-bg", theme.buttonHoverBackground || theme.buttonBackground);
+                themeBtn.style.setProperty("--preview-btn-hover-shadow", theme.buttonHoverShadow || `0 0 8px ${theme.shadowColor}`);
+                themeBtn.style.setProperty("--preview-border", theme.borderColor);
+                themeBtn.style.setProperty("--preview-text", theme.textColor);
+                themeBtn.style.setProperty("--preview-shadow", theme.shadowColor || theme.borderColor)
             });
             applyTheme("default");
             resizeToContent()
