@@ -526,7 +526,7 @@
                     navColor: "linear-gradient(90deg, #00ffe0, #f0ff4d)"
                 },
 
-				bobMarley: {
+				Jamaica: {
     				guiBackground: 'url("https://www.transparenttextures.com/patterns/subtle-grunge.png"), radial-gradient(circle at 20% 30%, rgba(0,0,0,0.08) 1px, transparent 2px), radial-gradient(circle at 80% 70%, rgba(0,0,0,0.06) 1px, transparent 2px), linear-gradient(to bottom, #d91f1f 0%, #f4d03f 50%, #0b8f3a 100%)',
     				borderColor: "#f4d03f",
     				textColor: "#fff8dc",
