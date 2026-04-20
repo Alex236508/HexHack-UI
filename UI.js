@@ -525,20 +525,7 @@
                     buttonHoverShadow: "inset 0 0 8px rgba(0,255,224,0.6), 0 0 12px rgba(255,255,77,0.7), 0 0 20px rgba(0,255,224,0.5)",
                     navColor: "linear-gradient(90deg, #00ffe0, #f0ff4d)"
                 },
-
-				Jamaica: {
-    				guiBackground: 'url("https://www.transparenttextures.com/patterns/subtle-grunge.png"), radial-gradient(circle at 20% 30%, rgba(0,0,0,0.08) 1px, transparent 2px), radial-gradient(circle at 80% 70%, rgba(0,0,0,0.06) 1px, transparent 2px), linear-gradient(to bottom, #d91f1f 0%, #f4d03f 50%, #0b8f3a 100%)',
-    				borderColor: "#f4d03f",
-    				textColor: "#fff8dc",
-    				shadowColor: "rgba(244,208,63,0.7)",
-    				titleBackground: "linear-gradient(90deg, #b22222 0%, #f4d03f 50%, #0b8f3a 100%)",
-    				titleTextShadow: "0 0 6px rgba(244,208,63,0.8), 0 0 12px rgba(11,143,58,0.6)",
-    				buttonBackground: "transparent",
-    				buttonBorder: "3px solid #111",
-    				buttonHoverBackground: "rgba(0,0,0,0.33)",
-    				buttonHoverShadow: "0 0 10px rgba(255,255,0,0.6)",
-    				navColor: "linear-gradient(90deg, #b22222, #f4d03f, #0b8f3a)"
-				}
+				
             };
             const applyTheme = themeName => {
                 const theme = themeConfigs[themeName] || themeConfigs["default"];
