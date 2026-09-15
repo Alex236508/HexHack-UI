@@ -6,4 +6,5 @@ javascript:(function(){fetch("https://raw.githubusercontent.com/Alex236508/HexHa
 ---
 
 #HexHack-UI
+
 A revolutionary bookmarklet for all your needs written in vanilla JS
