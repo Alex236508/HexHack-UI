@@ -3,6 +3,11 @@
   "name": "HexHack-UI",
   "version": "1.0.0",
   "description": "HexHack-UI browser extension",
+
+  "action": {
+    "default_title": "HexHack-UI"
+  },
+
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
@@ -10,5 +15,15 @@
       "run_at": "document_idle"
     }
   ],
-  "host_permissions": ["<all_urls>"]
+
+  "web_accessible_resources": [
+    {
+      "resources": ["UI.js"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+
+  "host_permissions": [
+    "<all_urls>"
+  ]
 }
