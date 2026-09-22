@@ -629,57 +629,79 @@
         height: 23px;
         overflow: hidden;
     }
-
-    .hgui-console-highlight,
-    .hgui-console-input {
+    
+    .hgui-console-highlight {
         position: absolute;
-
         inset: 0;
-
+    
+        z-index: 1;
+    
         width: 100%;
         height: 100%;
-
-        box-sizing: border-box;
-
-        padding: 0;
-        margin: 0;
-
+    
+        pointer-events: none;
+    
         font: inherit;
         line-height: 23px;
         white-space: pre;
+    
         overflow: hidden;
+    
+        color: #e7edf4;
     }
-
-    .hgui-console-highlight {
-        z-index: 1;
-        pointer-events: none;
-        color: transparent;
-    }
-
+    
     .hgui-console-input {
-        z-index: 2;
+        font-family:
+        "Cascadia Code",
+        "Cascadia Mono",
+        "JetBrains Mono",
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        monospace;
 
+        font-size: 13px;
+        font-weight: 400;
+        letter-spacing: normal;
+        word-spacing: normal;
+        
+        position: absolute;
+        inset: 0;
+    
+        z-index: 2;
+    
+        width: 100%;
+        height: 100%;
+    
+        box-sizing: border-box;
+    
+        padding: 0;
+        margin: 0;
+    
         appearance: none;
         border: 0;
         outline: 0;
-
+    
         background: transparent;
-
+    
+        font: inherit;
+        line-height: 23px;
+        white-space: pre;
+    
         color: transparent;
         caret-color: #edf4fb;
-
+    
         text-overflow: clip;
     }
-
+    
     .hgui-console-input::selection {
-        background: rgba(121, 200, 255, 0.20);
+        background: rgba(121, 200, 255, 0.25);
         color: transparent;
     }
-
+    
     .hgui-console-input:focus {
         outline: none;
     }
-
     /* Syntax colors */
 
     .syntax-command {
@@ -896,7 +918,7 @@
                 class="hgui-console-highlight"
                 aria-hidden="true"
             ></div>
-
+        
             <input
                 class="hgui-console-input"
                 type="text"
@@ -904,7 +926,7 @@
                 autocapitalize="off"
                 spellcheck="false"
                 aria-label="Console command"
-            >
+            >        
         </div>
     </div>
 
@@ -1098,68 +1120,83 @@
       };
 
       const updateConsoleHighlight = () => {
-        const value = consoleInput.value;
-
-        if (!value) {
-          consoleHighlight.innerHTML = "";
-          return;
-        }
-
-        const tokens = value.split(/(\s+)/);
-
-        let tokenIndex = 0;
-        let previousToken = "";
-
-        consoleHighlight.innerHTML = tokens
-          .map((token) => {
-            if (/^\s+$/.test(token)) {
-              return escapeConsoleHtml(token);
-            }
-
-            const lower = token.toLowerCase();
-
-            let className = "syntax-argument";
-
-            if (tokenIndex === 0) {
-              const validCommands = [
-                "help",
-                "list",
-                "stop",
-                "clear",
-                "cls",
-                "history",
-                "util",
-                "vfx",
-              ];
-
-              className = validCommands.includes(lower)
-                ? "syntax-command"
-                : "syntax-invalid";
-            } else if (lower === "t" || lower === "time") {
-              className = "syntax-flag";
-            } else if (lower === "util" || lower === "vfx" || lower === "all") {
-              className = "syntax-keyword";
-            } else if (
-              /^-?\d+(?:\.\d+)?$/.test(token) &&
-              (previousToken === "t" || previousToken === "time")
-            ) {
-              className = "syntax-number";
-            } else if (token.startsWith("-")) {
-              className = "syntax-argument";
-            }
-
-            previousToken = lower;
-            tokenIndex++;
-
-            return `
-                <span class="${className}">
-                    ${escapeConsoleHtml(token)}
-                </span>
-            `;
-          })
-          .join("");
+          const value = consoleInput.value;
+      
+          if (!value) {
+              consoleHighlight.innerHTML = "";
+              return;
+          }
+      
+          const tokens = value.split(/(\s+)/);
+      
+          let tokenIndex = 0;
+          let previousToken = "";
+      
+          consoleHighlight.innerHTML = tokens.map((token) => {
+      
+              if (/^\s+$/.test(token)) {
+                  return escapeConsoleHtml(token);
+              }
+      
+              const lower = token.toLowerCase();
+      
+              let className = "syntax-argument";
+      
+              if (tokenIndex === 0) {
+      
+                  const validCommands = [
+                      "help",
+                      "list",
+                      "stop",
+                      "clear",
+                      "cls",
+                      "history",
+                      "util",
+                      "vfx"
+                  ];
+      
+                  className =
+                      validCommands.includes(lower)
+                          ? "syntax-command"
+                          : "syntax-invalid";
+      
+              } else if (
+                  lower === "t" ||
+                  lower === "time"
+              ) {
+      
+                  className = "syntax-flag";
+      
+              } else if (
+                  lower === "util" ||
+                  lower === "vfx" ||
+                  lower === "all"
+              ) {
+      
+                  className = "syntax-keyword";
+      
+              } else if (
+                  /^-?\d+(?:\.\d+)?$/.test(token) &&
+                  (
+                      previousToken === "t" ||
+                      previousToken === "time"
+                  )
+              ) {
+      
+                  className = "syntax-number";
+      
+              } else if (token.startsWith("-")) {
+      
+                  className = "syntax-argument";
+              }
+      
+              previousToken = lower;
+              tokenIndex++;
+      
+              return `<span class="${className}">${escapeConsoleHtml(token)}</span>`;
+      
+          }).join("");
       };
-
       consoleInput.addEventListener("scroll", () => {
         consoleHighlight.scrollLeft = consoleInput.scrollLeft;
       });
@@ -1362,7 +1399,7 @@
         return true;
       };
 
-      const parseAndRun = (rawString) => {
+      const parseAndRunSingle = (rawString) => {
         const raw = rawString.trim();
 
         if (!raw) {
@@ -1485,6 +1522,27 @@
         }
 
         runConsoleCommand(pageKey, slug, seconds);
+      };
+
+      const parseAndRun = (rawString) => {
+        const statements = String(rawString)
+          .split(";")
+          .flatMap((statement) => {
+            const commands = statement
+              .split(",")
+              .map((commandText) => commandText.trim())
+              .filter(Boolean);
+
+            const pageMatch = commands[0]?.match(/^(util|vfx)\b/i);
+
+            return commands.map((commandText, index) =>
+              index > 0 && pageMatch && /^-/.test(commandText)
+                ? `${pageMatch[1]} ${commandText}`
+                : commandText,
+            );
+          });
+
+        statements.forEach(parseAndRunSingle);
       };
 
       const clampConsoleWindow = () => {
@@ -1816,7 +1874,7 @@
    .hgui-console-input-row {
    display: flex;
    align-items: center;
-   gap: 6px;
+  gap: 0;
    margin-top: 8px;
   position: relative;
    color: var(--console-text);
@@ -1824,17 +1882,17 @@
    }
   .hgui-console-highlight {
   position: absolute;
-  left: 18px;
+  left: 0;
   right: 0;
-  top: 1px;
-  bottom: 1px;
-  padding: 6px;
+  top: 0;
+  bottom: 0;
+  padding: 0;
   box-sizing: border-box;
   overflow: hidden;
   white-space: pre;
   pointer-events: none;
   font: 13px Consolas, monospace;
-  line-height: normal;
+  line-height: 23px;
   }
   .hgui-console-highlight .syntax-command {
   color: var(--console-command);
@@ -1846,13 +1904,14 @@
    flex: 1;
    min-width: 0;
    box-sizing: border-box;
-   padding: 6px;
+  padding: 0;
   background: transparent;
-   border: 1px solid var(--gui-border);
+  border: 0;
   color: transparent;
    caret-color: var(--gui-border);
    outline: none;
    font: 13px Consolas, monospace;
+  line-height: 23px;
   position: relative;
   z-index: 1;
    }
@@ -2572,7 +2631,7 @@
               "width:100%;height:calc(100% - 70px);border:none;";
             i.id = "rusic-modal";
             i.src =
-              "https://blrublrbuerigieroklghlvyavmliarelhsmuazuka.realonesflow.infinityfreeapp.com/";
+              "https://browser.rammerhead.org/";
             /* History system */
             var historyArray = [],
               currentIndex = -1;
