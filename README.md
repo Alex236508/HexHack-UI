@@ -19,7 +19,7 @@ Designed with a hacker themed aesthetic, HexHack-UI combines a distinctive termi
 
 ### How It Works
 
-HexHack-UI uses a JavaScript bookmarklet to load its main interface script from the project's GitHub repository. When activated, it injects the UI into the current webpage, allowing its available features to interact with that page.
+HexHack-UI uses a [bookmarklet](https://en.wikipedia.org/wiki/Bookmarklet) to load its main interface script. When activated, it injects the UI into the current webpage, allowing its available features to interact with that page.
 
 ---
 
