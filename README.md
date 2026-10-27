@@ -1,5 +1,5 @@
 # Yo
-### You can use this for whatever you want, don't need to give credits, just don't say you made it. and share with everyone you know because i want to get cool
+### You can use this for whatever you want don't need to give credits just don't say you made it. and share with everyone you know because i want to get cool. If you gatekeep, consider yourself an opp
 ---
 
 # Bookmarklet
