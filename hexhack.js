@@ -2859,8 +2859,11 @@
       );
       // Calculator
       addBtn(util, "Calculator", () => {
-        // My other project "MathLab": https://github.com/Alex236508/Math-Lab
         mathlab();
+      });
+      // Waveform
+      addBtn(util, "Waveform", () => {
+        waveform();
       });
       // DNS Lookup
       addBtn(util, "DNS Lookup", () => {
